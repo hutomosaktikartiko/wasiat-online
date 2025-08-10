@@ -29,4 +29,10 @@ pub enum AppError {
     /// Heartbeat errors
     #[msg("Heartbeat period must be greater than zero.")]
     InvalidHeartbeatPeriod,
+    #[msg("Heartbeat period is too short.")]
+    HeartbeatPeriodTooShort,
+
+    /// Program errors
+    #[msg("Program is paused.")]
+    ProgramPaused,
 }

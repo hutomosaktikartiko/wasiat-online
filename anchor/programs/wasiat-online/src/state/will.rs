@@ -9,8 +9,8 @@ pub struct Will {
     pub vault: Pubkey, // pda for assets
 
     // configurations
-    pub heartbeat_period: i64, // seconds
-    pub service_fee: u16,      // basis points
+    pub heartbeat_period: u32, // seconds
+    pub fee: u16,              // basis points
 
     // status & timing
     pub status: WillStatus,

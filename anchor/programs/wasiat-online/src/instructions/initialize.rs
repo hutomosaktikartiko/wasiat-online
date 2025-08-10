@@ -18,7 +18,7 @@ pub struct Initialize<'info> {
     )]
     pub config: Account<'info, Config>,
 
-    /// Vault for fee collection
+    /// Vault pda for fee collection
     #[account(
         mut,
         seeds = [FEE_VAULT_SEED.as_bytes()],
@@ -66,6 +66,7 @@ pub fn handler(
     config.max_heartbeat_period = max_heartbeat_period;
     config.paused = false;
     config.bump = ctx.bumps.config;
+    config.reserved = [0; 32];
 
     Ok(())
 }

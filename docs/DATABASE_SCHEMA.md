@@ -16,7 +16,7 @@ pub struct Will {
 
     // Configuration
     pub heartbeat_period: i64,      // 8 bytes - Periode heartbeat (seconds)
-    pub service_fee_bps: u16,       // 2 bytes - Biaya layanan (basis points)
+    pub fee: u16,       // 2 bytes - Biaya layanan (basis points)
 
     // Status & Timing
     pub status: WillStatus,         // 1 byte - Status wasiat
