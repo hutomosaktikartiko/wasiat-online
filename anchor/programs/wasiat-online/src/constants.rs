@@ -1,4 +1,25 @@
 use anchor_lang::prelude::*;
 
+/// PDA Seeds - for deterministic address generation
 #[constant]
-pub const SEED: &str = "anchor";
+pub const CONFIG_SEED: &str = "config";
+#[constant]
+pub const WILL_SEED: &str = "will";
+#[constant]
+pub const VAULT_SEED: &str = "vault";
+#[constant]
+pub const FEE_VAULT_SEED: &str = "fee_vault";
+
+/// Date - for parse seconds
+#[constant]
+pub const SECONDS_PER_MINUTE: u32 = 60;
+#[constant]
+pub const SECONDS_PER_HOUR: u32 = 60 * 60;
+#[constant]
+pub const SECONDS_PER_DAY: u32 = 24 * 60 * 60;
+#[constant]
+pub const SECONDS_PER_WEEK: u32 = 7 * 24 * 60 * 60;
+
+/// Heartbeat period - for default value
+#[constant]
+pub const MIN_HEARTBEAT_PERIOD: u32 = 1 * SECONDS_PER_DAY; // 1 day

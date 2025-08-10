@@ -1,7 +1,32 @@
 use anchor_lang::prelude::*;
 
 #[error_code]
-pub enum ErrorCode {
-    #[msg("Custom error message")]
-    CustomError,
+pub enum AppError {
+    /// Mathematical errors
+    #[msg("Mathematical overflow detected.")]
+    Overflow,
+    #[msg("Mathematical underflow detected.")]
+    Underflow,
+    #[msg("Invalid amount provided.")]
+    InvalidAmount,
+
+    /// Balance errors
+    #[msg("Insufficient balance for operation.")]
+    InsufficientBalance,
+    #[msg("Zero balance not allowed.")]
+    ZeroBalance,
+
+    /// Authorization errors
+    #[msg("Unauthorized access attempt.")]
+    Unauthorized,
+
+    /// Configuration errors
+    #[msg("Minimum of heartbeat period must be greater than zero.")]
+    InvalidMinimumHeartbeatPeriod,
+    #[msg("Maximum of heartbeat period must be greater than minimum heartbeat period")]
+    InvalidMaximumHeartbeatPeriod,
+
+    /// Heartbeat errors
+    #[msg("Heartbeat period must be greater than zero.")]
+    InvalidHeartbeatPeriod,
 }

@@ -54,9 +54,9 @@ pub enum WillStatus {
 pub struct GlobalConfig {
     pub authority: Pubkey,          // 32 bytes - Admin program
     pub fee_vault: Pubkey,          // 32 bytes - Vault untuk fee collection
-    pub default_service_fee_bps: u16, // 2 bytes - Default fee
-    pub min_heartbeat_period: i64,  // 8 bytes - Minimum heartbeat period
-    pub max_heartbeat_period: i64,  // 8 bytes - Maximum heartbeat period
+    pub fee: u16,                   // 2 bytes - Default fee
+    pub min_heartbeat_period: u32,  // 8 bytes - Minimum heartbeat period
+    pub max_heartbeat_period: u32,  // 8 bytes - Maximum heartbeat period
     pub paused: bool,               // 1 byte - Emergency pause
     pub bump: u8,                   // 1 byte - PDA bump
     pub reserved: [u8; 32],         // 32 bytes - Reserved
