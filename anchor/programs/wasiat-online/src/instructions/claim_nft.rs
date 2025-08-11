@@ -17,7 +17,7 @@ pub struct ClaimNft<'info> {
     /// Will account - must be triggered and beneficiary must match
     #[account(
         mut,
-        constraint = will.status == WillStatus::Triggered @ AppError::InvalidWillStatus,
+        constraint = will.status == WillStatus::Triggered || will.status == WillStatus::Claimed @ AppError::InvalidWillStatus,
         constraint = will.beneficiary == beneficiary.key() @ AppError::Unauthorized,
     )]
     pub will: Account<'info, Will>,
@@ -134,6 +134,9 @@ pub fn handler(ctx: Context<ClaimNft>) -> Result<()> {
     );
 
     token_transfer(nft_transfer_ctx, NFT_AMOUNT as u64)?;
+
+    // update will status
+    will.status = WillStatus::Claimed;
 
     Ok(())
 }

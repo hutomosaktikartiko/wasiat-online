@@ -11,7 +11,7 @@ pub struct ClaimSol<'info> {
     // Will account - must be triggered and beneficiary must match
     #[account(
         mut,
-        constraint = will.status == WillStatus::Triggered @ AppError::InvalidWillStatus,
+        constraint = will.status == WillStatus::Triggered || will.status == WillStatus::Claimed @ AppError::InvalidWillStatus,
         constraint = will.beneficiary == beneficiary.key() @ AppError::Unauthorized,
     )]
     pub will: Account<'info, Will>,

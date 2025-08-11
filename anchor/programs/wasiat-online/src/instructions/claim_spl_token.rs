@@ -14,7 +14,7 @@ pub struct ClaimSplToken<'info> {
     /// Will account - must be triggered and beneficiary must match
     #[account(
         mut,
-        constraint = will.status == WillStatus::Triggered @ AppError::InvalidWillStatus,
+        constraint = will.status == WillStatus::Triggered || will.status == WillStatus::Claimed @ AppError::InvalidWillStatus,
         constraint = will.beneficiary == beneficiary.key() @ AppError::Unauthorized,
     )]
     pub will: Account<'info, Will>,
@@ -58,7 +58,7 @@ pub struct ClaimSplToken<'info> {
 
     /// Fee vault pda (authority for fee_vault_token_account)
     #[account(
-        seeds = [VAULT_SEED.as_bytes()],
+        seeds = [FEE_VAULT_SEED.as_bytes()],
         bump,
     )]
     pub fee_vault_pda: SystemAccount<'info>,
@@ -121,6 +121,9 @@ pub fn handler(ctx: Context<ClaimSplToken>) -> Result<()> {
     );
 
     token_transfer(claim_transfer_ctx, claimable_amount)?;
+
+    // update will status
+    will.status = WillStatus::Claimed;
 
     Ok(())
 }

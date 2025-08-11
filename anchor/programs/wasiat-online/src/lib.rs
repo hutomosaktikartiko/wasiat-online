@@ -58,4 +58,8 @@ pub mod wasiat_online {
     pub fn claim_spl_token(ctx: Context<ClaimSplToken>) -> Result<()> {
         claim_spl_token::handler(ctx)
     }
+
+    pub fn claim_nft(ctx: Context<ClaimNft>) -> Result<()> {
+        claim_nft::handler(ctx)
+    }
 }
