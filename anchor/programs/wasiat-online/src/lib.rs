@@ -31,16 +31,16 @@ pub mod wasiat_online {
         )
     }
 
+    pub fn create_will(
+        ctx: Context<CreateWill>,
+        beneficiary: Pubkey,
+        heartbeat_period: u32,
+    ) -> Result<()> {
+        create_will::handler(ctx, beneficiary, heartbeat_period)
+    }
+
     pub fn deposit_sol(ctx: Context<DepositSol>, amount: u64) -> Result<()> {
         deposit_sol::handler(ctx, amount)
-    }
-
-    pub fn deposit_spl_token(ctx: Context<DepositSplToken>, amount: u64) -> Result<()> {
-        deposit_spl_token::handler(ctx, amount)
-    }
-
-    pub fn deposit_nft(ctx: Context<DepositNft>) -> Result<()> {
-        deposit_nft::handler(ctx)
     }
 
     pub fn send_heartbeat(ctx: Context<SendHeartbeat>) -> Result<()> {
@@ -55,11 +55,7 @@ pub mod wasiat_online {
         claim_sol::handler(ctx)
     }
 
-    pub fn claim_spl_token(ctx: Context<ClaimSplToken>) -> Result<()> {
-        claim_spl_token::handler(ctx)
-    }
-
-    pub fn claim_nft(ctx: Context<ClaimNft>) -> Result<()> {
-        claim_nft::handler(ctx)
+    pub fn withdraw_sol(ctx: Context<WithdrawSol>) -> Result<()> {
+        withdrawn_sol::handler(ctx)
     }
 }

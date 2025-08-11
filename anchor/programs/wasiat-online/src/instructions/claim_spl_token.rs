@@ -45,7 +45,7 @@ pub struct ClaimSplToken<'info> {
         init_if_needed,
         payer = beneficiary,
         associated_token::mint = mint,
-        associated_token::authority = fee_vault_pda
+        associated_token::authority = fee_vault
     )]
     pub fee_vault_token_account: Account<'info, TokenAccount>,
 
@@ -61,7 +61,7 @@ pub struct ClaimSplToken<'info> {
         seeds = [FEE_VAULT_SEED.as_bytes()],
         bump,
     )]
-    pub fee_vault_pda: SystemAccount<'info>,
+    pub fee_vault: SystemAccount<'info>,
 
     /// Config - fee configuration and validate program paused
     #[account(

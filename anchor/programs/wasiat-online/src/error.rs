@@ -69,4 +69,16 @@ pub enum AppError {
     NoClaimableAmount,
     #[msg("Will must triggered before claiming")]
     WillNotTriggered,
+
+    /// Withdrawal errors
+    #[msg("cannot withdraw after will has been triggered or claimed.")]
+    CannotWithdrawAfterTriggered,
+    #[msg("Will has already been withdrawn.")]
+    AlreadyWithdrawn,
+    #[msg("No assets available to withdraw.")]
+    NoAssetsToWithdraw,
+    #[msg("No withdrawable amount after rent exemption.")]
+    NoWithdrawableAmount,
+    #[msg("Insufficient balance for rent exemption.")]
+    InsufficientBalanceForRent,
 }
