@@ -27,4 +27,8 @@ pub mod wasiat_online {
     pub fn deposit_sol(ctx: Context<DepositSol>, amount: u64) -> Result<()> {
         deposit_sol::handler(ctx, amount)
     }
+
+    pub fn deposit_spl_token(ctx: Context<DepositSplToken>, amount: u64) -> Result<()> {
+        deposit_spl_token::handler(ctx, amount)
+    }
 }

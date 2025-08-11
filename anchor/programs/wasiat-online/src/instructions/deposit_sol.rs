@@ -1,10 +1,6 @@
 use crate::{constants::*, error::AppError, state::*};
 use anchor_lang::prelude::*;
 use anchor_lang::system_program::{transfer, Transfer};
-use anchor_spl::{
-    associated_token::AssociatedToken,
-    token::{transfer as token_transfer, Mint, Token, TokenAccount, Transfer as TokenTransfer},
-};
 
 #[derive(Accounts)]
 pub struct DepositSol<'info> {
