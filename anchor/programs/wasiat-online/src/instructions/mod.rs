@@ -8,7 +8,8 @@ pub mod deposit_spl_token;
 pub mod initialize;
 pub mod send_heartbeat;
 pub mod trigger_will;
-pub mod withdrawn_sol;
+pub mod update_config;
+pub mod withdraw_sol;
 
 pub use claim_nft::*;
 pub use claim_sol::*;
@@ -20,4 +21,5 @@ pub use deposit_spl_token::*;
 pub use initialize::*;
 pub use send_heartbeat::*;
 pub use trigger_will::*;
-pub use withdrawn_sol::*;
+pub use update_config::*;
+pub use withdraw_sol::*;

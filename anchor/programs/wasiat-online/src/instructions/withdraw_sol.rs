@@ -44,7 +44,7 @@ impl<'info> WithdrawSol<'info> {
         require!(vault_balance > 0, AppError::NoAssetsToWithdraw);
 
         // validate balance for rent exemption
-        let mint_rent = Rent::get()?.minimum_balance(9);
+        let mint_rent = Rent::get()?.minimum_balance(0);
         require!(
             vault_balance > mint_rent,
             AppError::InsufficientBalanceForRent
@@ -86,6 +86,9 @@ pub fn handler(ctx: Context<WithdrawSol>) -> Result<()> {
     let withdrawable_amount = vault_balance.saturating_sub(min_rent);
 
     transfer(withdraw_transfer_ctx, withdrawable_amount)?;
+
+    // update will status
+    will.status = WillStatus::Withdrawn;
 
     Ok(())
 }

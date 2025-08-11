@@ -19,15 +19,17 @@ pub mod wasiat_online {
         ctx: Context<Initialize>,
         token_fee_bps: u16,
         nft_fee_lamports: u64,
+        min_heartbeat_period: u32,
+        max_heartbeat_period: u32,
         min_heartbeat_interval: u32,
-        max_heartbeat_interval: u32,
     ) -> Result<()> {
         initialize::handler(
             ctx,
             token_fee_bps,
             nft_fee_lamports,
+            min_heartbeat_period,
+            max_heartbeat_period,
             min_heartbeat_interval,
-            max_heartbeat_interval,
         )
     }
 
@@ -56,6 +58,26 @@ pub mod wasiat_online {
     }
 
     pub fn withdraw_sol(ctx: Context<WithdrawSol>) -> Result<()> {
-        withdrawn_sol::handler(ctx)
+        withdraw_sol::handler(ctx)
+    }
+
+    pub fn update_config(
+        ctx: Context<UpdateConfig>,
+        token_fee_bps: Option<u16>,
+        nft_fee_lamports: Option<u64>,
+        min_heartbeat_period: Option<u32>,
+        max_heartbeat_period: Option<u32>,
+        min_heartbeat_interval: Option<u32>,
+        paused: Option<bool>,
+    ) -> Result<()> {
+        update_config::handler(
+            ctx,
+            token_fee_bps,
+            nft_fee_lamports,
+            min_heartbeat_period,
+            max_heartbeat_period,
+            min_heartbeat_interval,
+            paused,
+        )
     }
 }

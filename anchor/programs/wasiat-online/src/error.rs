@@ -25,6 +25,8 @@ pub enum AppError {
     InvalidMinimumHeartbeatPeriod,
     #[msg("Maximum of heartbeat period must be greater than minimum heartbeat period")]
     InvalidMaximumHeartbeatPeriod,
+    #[msg("Minimum of heartbeat interval must be greater than zero.")]
+    InvalidMinimumHeartbeatInterval,
 
     /// Heartbeat errors
     #[msg("Heartbeat period must be greater than zero.")]

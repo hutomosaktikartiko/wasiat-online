@@ -2,7 +2,7 @@ use crate::{constants::*, error::AppError, state::Config};
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-#[instruction(fee: u16, min_heartbeat_period: u32, max_heartbeat_period: u32)]
+#[instruction(token_fee_bps: u16, nft_fee_lamports: u64, min_heartbeat_period: u32, max_heartbeat_period: u32, min_heartbeat_interval: u32)]
 pub struct Initialize<'info> {
     /// Aurhority that can initialize
     #[account(mut)]
@@ -31,7 +31,12 @@ pub struct Initialize<'info> {
 }
 
 impl<'info> Initialize<'info> {
-    pub fn validate(&self, min_heartbeat_period: u32, max_heartbeat_period: u32) -> Result<()> {
+    pub fn validate(
+        &self,
+        min_heartbeat_period: u32,
+        max_heartbeat_period: u32,
+        min_heartbeat_interval: u32,
+    ) -> Result<()> {
         // validate heartbeat period
         require!(
             min_heartbeat_period > 0,
@@ -41,6 +46,7 @@ impl<'info> Initialize<'info> {
             max_heartbeat_period > min_heartbeat_period,
             AppError::InvalidMaximumHeartbeatPeriod
         );
+        require!(min_heartbeat_interval > 0, AppError::InvalidHeartbeatPeriod);
 
         Ok(())
     }
@@ -52,10 +58,14 @@ pub fn handler(
     nft_fee_lamports: u64,
     min_heartbeat_period: u32,
     max_heartbeat_period: u32,
+    min_heartbeat_interval: u32,
 ) -> Result<()> {
     // validate inputs
-    ctx.accounts
-        .validate(min_heartbeat_period, max_heartbeat_period)?;
+    ctx.accounts.validate(
+        min_heartbeat_period,
+        max_heartbeat_period,
+        min_heartbeat_interval,
+    )?;
 
     let config = &mut ctx.accounts.config;
 
@@ -66,9 +76,10 @@ pub fn handler(
     config.nft_fee_lamports = nft_fee_lamports;
     config.min_heartbeat_period = min_heartbeat_period;
     config.max_heartbeat_period = max_heartbeat_period;
+    config.min_heartbeat_interval = min_heartbeat_interval;
     config.paused = false;
     config.bump = ctx.bumps.config;
-    config.reserved = [0; 32];
+    config.reserved = [0; 28];
 
     Ok(())
 }

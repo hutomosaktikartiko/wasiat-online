@@ -5,6 +5,7 @@ use anchor_lang::system_program::{transfer, Transfer};
 #[derive(Accounts)]
 pub struct DepositSol<'info> {
     /// Testator depositing SOL
+    #[account(mut)]
     pub testator: Signer<'info>,
 
     /// Will account - mus be owned by testator

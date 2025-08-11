@@ -6,6 +6,13 @@ pub struct SendHeartbeat<'info> {
     /// Testator sending heartbeat
     pub testator: Signer<'info>,
 
+    /// Config account for validation
+    #[account(
+        seeds = [CONFIG_SEED.as_bytes()],
+        bump
+    )]
+    pub config: Account<'info, Config>,
+
     /// Will account - must be owned by testator and in active status
     #[account(
         mut,
@@ -24,12 +31,13 @@ pub struct SendHeartbeat<'info> {
 impl<'info> SendHeartbeat<'info> {
     pub fn validate(&self) -> Result<()> {
         let will = &self.will;
+        let config = &self.config;
         let current_time = Clock::get()?.unix_timestamp;
 
         // validate prevent spam heartbeats (cooldown period)
         let time_since_last = current_time - will.last_heartbeat;
         require!(
-            time_since_last >= MIN_HEARTBEAT_INTERVAL as i64,
+            time_since_last >= config.min_heartbeat_interval as i64,
             AppError::HeartbeatPeriodTooShort
         );
 
