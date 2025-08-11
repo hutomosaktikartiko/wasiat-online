@@ -51,4 +51,12 @@ pub enum AppError {
     InvalidNftDecimals,
     #[msg("Testator does not own this NFT.")]
     NftNotOwned,
+
+    /// Trigger errors
+    #[msg("Will has not expired ye. Cannot trigger.")]
+    WillNotExpired,
+    #[msg("Will is still in grace period. Please wait.")]
+    StillInGracePeriod,
+    #[msg("Only active wills ca be triigered.")]
+    CannotTriggerInactiveWill,
 }

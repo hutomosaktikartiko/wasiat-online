@@ -26,14 +26,14 @@ impl<'info> SendHeartbeat<'info> {
         let will = &self.will;
         let current_time = Clock::get()?.unix_timestamp;
 
-        // prevent spam heartbeats (cooldown period)
+        // validate prevent spam heartbeats (cooldown period)
         let time_since_last = current_time - will.last_heartbeat;
         require!(
             time_since_last >= MIN_HEARTBEAT_INTERVAL as i64,
             AppError::HeartbeatPeriodTooShort
         );
 
-        // check if heartbeat is still meaningful (not expired)
+        // validate if heartbeat is still meaningful (not expired)
         let expiry_time = will.last_heartbeat + will.heartbeat_period as i64;
         require!(current_time < expiry_time, AppError::WillAlreadyExpired);
 

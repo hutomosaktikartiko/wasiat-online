@@ -39,4 +39,8 @@ pub mod wasiat_online {
     pub fn send_heartbeat(ctx: Context<SendHeartbeat>) -> Result<()> {
         send_heartbeat::handler(ctx)
     }
+
+    pub fn trigger_will(ctx: Context<TriggerWill>) -> Result<()> {
+        trigger_will::handler(ctx)
+    }
 }

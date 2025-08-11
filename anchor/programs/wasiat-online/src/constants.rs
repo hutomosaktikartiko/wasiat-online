@@ -25,3 +25,7 @@ pub const SECONDS_PER_WEEK: u32 = 7 * 24 * 60 * 60;
 pub const MIN_HEARTBEAT_PERIOD: u32 = 1 * SECONDS_PER_DAY; // 1 day
 #[constant]
 pub const MIN_HEARTBEAT_INTERVAL: u32 = 60; // 1 minute
+
+/// Trigger
+#[constant]
+pub const TRIGGER_GRACE_PERIOD: u32 = 300; // 5 minutes
