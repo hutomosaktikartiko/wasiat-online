@@ -15,7 +15,7 @@ pub struct Will {
     // status & timing
     pub status: WillStatus,
     pub created_at: i64,         // timestamp
-    pub last_hearbeat: i64,      // timestamp
+    pub last_heartbeat: i64,     // timestamp
     pub trigger_at: Option<i64>, // timestamp
 
     // metadata

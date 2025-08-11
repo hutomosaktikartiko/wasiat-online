@@ -23,4 +23,8 @@ pub mod wasiat_online {
     ) -> Result<()> {
         initialize::handler(ctx, fee, min_heartbeat_interval, max_heartbeat_interval)
     }
+
+    pub fn deposit_sol(ctx: Context<DepositSol>, amount: u64) -> Result<()> {
+        deposit_sol::handler(ctx, amount)
+    }
 }

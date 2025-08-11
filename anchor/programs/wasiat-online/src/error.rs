@@ -35,4 +35,16 @@ pub enum AppError {
     /// Program errors
     #[msg("Program is paused.")]
     ProgramPaused,
+
+    /// Will status errors
+    #[msg("Invalid will status for this operation.")]
+    InvalidWillStatus,
+
+    /// NFT errors
+    #[msg("NFT supply must be exactly 1.")]
+    InvalidNftSupply,
+    #[msg("NFT decimals must be 0.")]
+    InvalidNftDecimals,
+    #[msg("Testator does not own this NFT.")]
+    NftNotOwned,
 }

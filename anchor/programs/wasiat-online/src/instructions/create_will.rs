@@ -73,7 +73,7 @@ pub fn handler(ctx: Context<CreateWill>, beneficiary: Pubkey, heartbeat_period: 
     will.fee = config.fee;
     will.status = WillStatus::Created;
     will.created_at = clock.unix_timestamp;
-    will.last_hearbeat = clock.unix_timestamp;
+    will.last_heartbeat = clock.unix_timestamp;
     will.trigger_at = None;
     will.bump = ctx.bumps.will;
     will.vault_bump = ctx.bumps.vault;

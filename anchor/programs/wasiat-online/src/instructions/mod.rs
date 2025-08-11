@@ -1,13 +1,17 @@
 pub mod claim_assets;
 pub mod create_will;
-pub mod deposit_assets;
+pub mod deposit_nft;
+pub mod deposit_sol;
+pub mod deposit_spl_token;
 pub mod initialize;
 pub mod send_heartbeat;
 pub mod trigger_will;
 
 pub use claim_assets::*;
 pub use create_will::*;
-pub use deposit_assets::*;
+pub use deposit_nft::*;
+pub use deposit_sol::*;
+pub use deposit_spl_token::*;
 pub use initialize::*;
 pub use send_heartbeat::*;
 pub use trigger_will::*;
