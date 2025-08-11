@@ -69,12 +69,6 @@ impl<'info> DepositSplToken<'info> {
             AppError::InvalidWillStatus,
         );
 
-        // validate token account balance
-        require!(
-            self.testator_token_account.amount >= amount,
-            AppError::InsufficientBalance,
-        );
-
         Ok(())
     }
 }
