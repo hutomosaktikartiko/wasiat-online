@@ -47,4 +47,8 @@ pub mod wasiat_online {
     pub fn claim_sol(ctx: Context<ClaimSol>) -> Result<()> {
         claim_sol::handler(ctx)
     }
+
+    pub fn claim_spl_token(ctx: Context<ClaimSplToken>) -> Result<()> {
+        claim_spl_token::handler(ctx)
+    }
 }
