@@ -29,3 +29,11 @@ pub const MIN_HEARTBEAT_INTERVAL: u32 = 60; // 1 minute
 /// Trigger
 #[constant]
 pub const TRIGGER_GRACE_PERIOD: u32 = 300; // 5 minutes
+
+/// Fee
+#[constant]
+pub const NFT_SERVICE_FEE_LAMPORTS: u64 = 1_000_000;
+
+/// NFT
+#[constant]
+pub const NFT_AMOUNT: u32 = 1;

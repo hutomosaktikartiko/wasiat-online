@@ -48,7 +48,8 @@ impl<'info> Initialize<'info> {
 
 pub fn handler(
     ctx: Context<Initialize>,
-    fee: u16,
+    token_fee_bps: u16,
+    nft_fee_lamports: u64,
     min_heartbeat_period: u32,
     max_heartbeat_period: u32,
 ) -> Result<()> {
@@ -61,7 +62,8 @@ pub fn handler(
     // set initial values
     config.authority = ctx.accounts.authority.key();
     config.fee_vault = ctx.accounts.fee_vault.key();
-    config.fee = fee;
+    config.token_fee_bps = token_fee_bps;
+    config.nft_fee_lamports = nft_fee_lamports;
     config.min_heartbeat_period = min_heartbeat_period;
     config.max_heartbeat_period = max_heartbeat_period;
     config.paused = false;

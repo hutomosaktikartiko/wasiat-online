@@ -63,6 +63,14 @@ pub struct ClaimSplToken<'info> {
     )]
     pub fee_vault_pda: SystemAccount<'info>,
 
+    /// Config - fee configuration and validate program paused
+    #[account(
+        seeds = [CONFIG_SEED.as_bytes()],
+        bump,
+        constraint = !config.paused @ AppError::ProgramPaused,
+    )]
+    pub config: Account<'info, Config>,
+
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub system_program: Program<'info, System>,
@@ -73,7 +81,8 @@ pub fn handler(ctx: Context<ClaimSplToken>) -> Result<()> {
     let total_amount = ctx.accounts.vault_token_account.amount;
 
     // calculate service fee
-    let service_fee = (total_amount as u128 * will.fee as u128 / 10_000) as u64;
+    let token_fee_bps = ctx.accounts.config.token_fee_bps;
+    let service_fee = (total_amount as u128 * token_fee_bps as u128 / 10_000) as u64;
     let claimable_amount = total_amount.saturating_sub(service_fee);
 
     // prepare pda signer seeds

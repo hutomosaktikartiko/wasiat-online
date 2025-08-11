@@ -17,11 +17,18 @@ pub mod wasiat_online {
 
     pub fn initialize(
         ctx: Context<Initialize>,
-        fee: u16,
+        token_fee_bps: u16,
+        nft_fee_lamports: u64,
         min_heartbeat_interval: u32,
         max_heartbeat_interval: u32,
     ) -> Result<()> {
-        initialize::handler(ctx, fee, min_heartbeat_interval, max_heartbeat_interval)
+        initialize::handler(
+            ctx,
+            token_fee_bps,
+            nft_fee_lamports,
+            min_heartbeat_interval,
+            max_heartbeat_interval,
+        )
     }
 
     pub fn deposit_sol(ctx: Context<DepositSol>, amount: u64) -> Result<()> {

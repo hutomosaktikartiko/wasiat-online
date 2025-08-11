@@ -90,7 +90,7 @@ pub fn handler(ctx: Context<DepositNft>) -> Result<()> {
         nft_transfer_accounts,
     );
 
-    token_transfer(nft_transfer_ctx, 1)?; // nft amount always = 1
+    token_transfer(nft_transfer_ctx, NFT_AMOUNT as u64)?;
 
     // update will status if first deposit
     let will = &mut ctx.accounts.will;

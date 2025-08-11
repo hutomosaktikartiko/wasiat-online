@@ -62,7 +62,6 @@ pub fn handler(ctx: Context<CreateWill>, beneficiary: Pubkey, heartbeat_period: 
     ctx.accounts.validate(heartbeat_period)?;
 
     let will = &mut ctx.accounts.will;
-    let config = &ctx.accounts.config;
     let clock = Clock::get()?;
 
     // set will data
@@ -70,7 +69,6 @@ pub fn handler(ctx: Context<CreateWill>, beneficiary: Pubkey, heartbeat_period: 
     will.beneficiary = beneficiary;
     will.vault = ctx.accounts.vault.key();
     will.heartbeat_period = heartbeat_period;
-    will.fee = config.fee;
     will.status = WillStatus::Created;
     will.created_at = clock.unix_timestamp;
     will.last_heartbeat = clock.unix_timestamp;

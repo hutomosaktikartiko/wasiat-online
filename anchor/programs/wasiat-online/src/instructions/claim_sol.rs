@@ -68,8 +68,8 @@ pub fn handler(ctx: Context<ClaimSol>) -> Result<()> {
     let vault_balance = ctx.accounts.vault.lamports();
 
     // calculate service fee
-    let service_fee_bps = will.fee;
-    let service_fee = (vault_balance as u128 * service_fee_bps as u128 / 10_000) as u64;
+    let token_fee_bps = ctx.accounts.config.token_fee_bps;
+    let service_fee = (vault_balance as u128 * token_fee_bps as u128 / 10_000) as u64;
     let claimable_amount = vault_balance.saturating_sub(service_fee);
 
     // keep minimum rent in vault to prevent account closure

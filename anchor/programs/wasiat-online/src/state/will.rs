@@ -10,7 +10,6 @@ pub struct Will {
 
     // configurations
     pub heartbeat_period: u32, // seconds
-    pub fee: u16,              // basis points
 
     // status & timing
     pub status: WillStatus,
