@@ -31,6 +31,8 @@ pub enum AppError {
     InvalidHeartbeatPeriod,
     #[msg("Heartbeat period is too short.")]
     HeartbeatPeriodTooShort,
+    #[msg("Heartbeat sent too frequently. Please wait before sending another.")]
+    HeartbeatTooFrequent,
 
     /// Program errors
     #[msg("Program is paused.")]
@@ -39,6 +41,8 @@ pub enum AppError {
     /// Will status errors
     #[msg("Invalid will status for this operation.")]
     InvalidWillStatus,
+    #[msg("Will has already expired. Heartbeat no longer effective.")]
+    WillAlreadyExpired,
 
     /// NFT errors
     #[msg("NFT supply must be exactly 1.")]

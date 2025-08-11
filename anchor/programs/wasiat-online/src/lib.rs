@@ -35,4 +35,8 @@ pub mod wasiat_online {
     pub fn deposit_nft(ctx: Context<DepositNft>) -> Result<()> {
         deposit_nft::handler(ctx)
     }
+
+    pub fn send_heartbeat(ctx: Context<SendHeartbeat>) -> Result<()> {
+        send_heartbeat::handler(ctx)
+    }
 }
