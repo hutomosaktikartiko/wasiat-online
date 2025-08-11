@@ -2,18 +2,20 @@
 
 Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheritance crypto yang mature.
 
-## Phase 1: MVP (Minimum Viable Product)
+## Phase 1: MVP (Minimum Viable Product) - SOL Only
 
 **Target**: Q3 2025  
 **Goal**: Core functionality dengan single beneficiary
 
 ### Features
 
-- ✅ Single beneficiary per will
-- ✅ Basic heartbeat mechanism (90 days default)
-- ✅ Simple trigger system via keeper
-- ✅ Basic claim functionality
-- ✅ SOL, SPL Token, dan NFT support
+- ✅ **Single beneficiary per will**
+- ✅ **Basic heartbeat mechanism** (configurable period, 90 days default)
+- ✅ **Simple trigger system** via keeper service
+- ✅ **SOL deposits & withdrawals** - Testator dapat deposit dan withdraw SOL
+- ✅ **SOL claim functionality** - Beneficiary dapat claim SOL setelah triggered
+- ✅ **Service fee collection** - Percentage-based fees untuk sustainability
+- ✅ **Emergency pause mechanism** - Admin dapat pause system jika diperlukan
 
 ### Technical Implementation
 
@@ -24,25 +26,35 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Deliverables
 
-- [ ] Anchor program deployed to devnet
-- [ ] Frontend dApp dengan basic UI
-- [ ] Go backend dengan REST API
-- [ ] Keeper service running
-- [ ] Basic documentation
+- [ ] **Anchor program deployed to devnet** - SOL-only instructions
+- [ ] **Frontend dApp dengan basic UI** - Create, deposit, heartbeat, claim SOL
+- [ ] **Go backend dengan REST API** - Will monitoring & status tracking
+- [ ] **Keeper service running** - Automated will triggering
+- [ ] **Basic documentation** - User guides & API docs
 
 ### Success Metrics
 
-- Program dapat deploy tanpa error
-- Users dapat create, fund, dan claim wills
-- Keeper service dapat trigger expired wills
-- Zero critical bugs
+- ✅ Program dapat deploy tanpa error ke devnet
+- ✅ Users dapat create wills dengan SOL deposits
+- ✅ Heartbeat mechanism berfungsi dengan baik
+- ✅ Keeper service dapat trigger expired wills
+- ✅ Beneficiaries dapat claim SOL dengan fee deduction
+- ✅ Testators dapat withdraw SOL sebelum triggered
+- ✅ Zero critical bugs dalam core functionality
 
-## Phase 2: Enhanced Features
+## Phase 2: Multi-Asset Support
 
 **Target**: Q4 2025  
-**Goal**: Advanced features dan user experience improvements
+**Goal**: Expand to SPL Tokens dan NFTs dengan enhanced features
 
-### Features
+### New Asset Support
+
+- 🪙 **SPL Token support**: Deposit, withdraw, dan claim SPL tokens
+- 🖼️ **NFT support**: Deposit, withdraw, dan claim NFTs
+- 💰 **Enhanced fee structure**: Different fee models per asset type
+- 📊 **Multi-asset dashboard**: Better UI untuk managing different assets
+
+### Enhanced Features
 
 - 🔄 **Permissionless trigger bounty**: Anyone dapat trigger expired wills dengan reward
 - 🎯 **Multi-beneficiary support**: Split inheritance ke multiple wallets dengan persentase
@@ -52,10 +64,10 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Technical Enhancements
 
-- **Smart Contract**: Upgrade program structure untuk multi-beneficiary
+- **Smart Contract**: Expand program structure untuk multi-asset support
 - **Backend**: Email service integration
-- **Frontend**: Improved UI/UX design
-- **Database**: Additional tables untuk notifications
+- **Frontend**: Enhanced UI/UX untuk asset management
+- **Database**: Additional tables untuk asset tracking & notifications
 - **Monitoring**: Better observability dan alerting
 
 ### New Components
@@ -69,9 +81,9 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Deliverables
 
-- [ ] Multi-beneficiary smart contract
+- [ ] Multi-asset smart contract upgrade
 - [ ] Email notification system
-- [ ] Improved frontend design
+- [ ] Enhanced frontend design
 - [ ] Analytics dashboard
 - [ ] Mobile PWA support
 
@@ -169,17 +181,23 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 ### Smart Contract Evolution
 
 ```rust
-// Phase 1: Basic structure
+// Phase 1: SOL-only structure
 struct Will {
     testator: Pubkey,
     beneficiary: Pubkey,
+    vault: Pubkey,              // Single SOL vault
+    heartbeat_period: u32,
+    status: WillStatus,
     // ... basic fields
 }
 
-// Phase 2: Multi-beneficiary
+// Phase 2: Multi-asset support
 struct Will {
     testator: Pubkey,
     beneficiaries: Vec<Beneficiary>,
+    sol_vault: Pubkey,          // Separate vaults per asset type
+    token_vaults: Vec<TokenVault>,
+    nft_vaults: Vec<NftVault>,
     // ... enhanced fields
 }
 
@@ -227,62 +245,41 @@ struct Will {
 
 ### Technical Risks
 
-- **Smart contract bugs**: Comprehensive testing + audit
-- **Keeper failures**: Redundant keeper instances
+- **Smart contract bugs**: Comprehensive testing + audit (Phase 3)
+- **Keeper failures**: Redundant keeper instances (Phase 3)
 - **Database corruption**: Regular backups + replication
 - **Scaling issues**: Gradual architecture evolution
 
 ### Business Risks
 
+- **Market adoption**: Start simple dengan SOL-only untuk easier onboarding
 - **Regulatory changes**: Legal consultation + compliance
-- **Market adoption**: Community building + partnerships
 - **Competition**: Focus on security + user experience
-- **Token economics**: Careful tokenomics design
+- **Token economics**: Careful tokenomics design (Phase 3)
 
 ### Security Risks
 
 - **Private key loss**: Education + best practices
 - **Social engineering**: User awareness campaigns
-- **Protocol exploits**: Bug bounty programs
+- **Protocol exploits**: Bug bounty programs (Phase 3)
 - **Centralization**: Gradual decentralization
-
-## Resource Requirements
-
-### Development Team
-
-- **Phase 1**: 3-4 developers (Rust, Go, React)
-- **Phase 2**: 5-6 developers + 1 designer
-- **Phase 3**: 8-10 developers + security experts
-- **Phase 4**: 12-15 developers + business development
-
-### Budget Estimates
-
-- **Phase 1**: $100K-200K (development + basic infrastructure)
-- **Phase 2**: $300K-500K (enhanced features + team expansion)
-- **Phase 3**: $500K-1M (audit + enterprise features)
-- **Phase 4**: $1M+ (ecosystem expansion + scaling)
-
-### Infrastructure Costs
-
-- **Phase 1**: $50-100/month (VPS + domains)
-- **Phase 2**: $200-500/month (enhanced services)
-- **Phase 3**: $1K-3K/month (enterprise infrastructure)
-- **Phase 4**: $5K+/month (global scaling)
 
 ---
 
 ## Current Status
 
-🎯 **Currently in**: Phase 1 (MVP Development)  
+🎯 **Currently in**: Phase 1 (SOL-Only MVP Development)  
 📅 **Last Updated**: August 2025  
-🚀 **Next Milestone**: MVP deployment to devnet
+🚀 **Next Milestone**: Complete SOL-only MVP deployment to devnet
 
 ### Immediate Next Steps
 
-1. Complete Anchor program basic structure
-2. Implement Go backend REST API
-3. Build basic React frontend
-4. Deploy keeper service
-5. Integration testing
+1. ✅ **Complete core Anchor instructions** (SOL-only)
+2. ✅ **Implement withdraw_sol()** functionality
+3. 🔄 **Build basic React frontend** (SOL operations)
+4. 🔄 **Implement Go backend REST API**
+5. 🔄 **Deploy keeper service**
+6. 🔄 **Integration testing** end-to-end
+7. 🔄 **Deploy to devnet**
 
 **For detailed technical implementation, see [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) and [ARCHITECTURE.md](ARCHITECTURE.md)**
