@@ -1,4 +1,6 @@
-pub mod claim_assets;
+pub mod claim_nft;
+pub mod claim_sol;
+pub mod claim_spl_token;
 pub mod create_will;
 pub mod deposit_nft;
 pub mod deposit_sol;
@@ -7,7 +9,9 @@ pub mod initialize;
 pub mod send_heartbeat;
 pub mod trigger_will;
 
-pub use claim_assets::*;
+pub use claim_nft::*;
+pub use claim_sol::*;
+pub use claim_spl_token::*;
 pub use create_will::*;
 pub use deposit_nft::*;
 pub use deposit_sol::*;

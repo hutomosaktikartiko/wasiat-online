@@ -59,4 +59,14 @@ pub enum AppError {
     StillInGracePeriod,
     #[msg("Only active wills ca be triigered.")]
     CannotTriggerInactiveWill,
+
+    /// Claim errors
+    #[msg("No assets available to claim.")]
+    NoAssetsToClaim,
+    #[msg("Insufficient balance to cover fees.")]
+    InsuffcientBalanceForFees,
+    #[msg("No claimable amount after fees.")]
+    NoClaimableAmount,
+    #[msg("Will must triggered before claiming")]
+    WillNotTriggered,
 }

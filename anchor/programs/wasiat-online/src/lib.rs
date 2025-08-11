@@ -43,4 +43,8 @@ pub mod wasiat_online {
     pub fn trigger_will(ctx: Context<TriggerWill>) -> Result<()> {
         trigger_will::handler(ctx)
     }
+
+    pub fn claim_sol(ctx: Context<ClaimSol>) -> Result<()> {
+        claim_sol::handler(ctx)
+    }
 }

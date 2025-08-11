@@ -55,13 +55,3 @@ pub fn handler(ctx: Context<TriggerWill>) -> Result<()> {
 
     Ok(())
 }
-
-#[event]
-pub struct WillTriggeredEvent {
-    pub will_pubkey: Pubkey,
-    pub testator: Pubkey,
-    pub beneficiary: Pubkey,
-    pub triggered_at: i64,
-    pub expired_duration: i64,
-    pub triggered_by: Pubkey,
-}
