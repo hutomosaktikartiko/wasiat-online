@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { useWill } from "../../hooks/use-will";
 import { formatDate, formatSOL } from "../../lib/utils/format";
+import { TxHistory } from "../../components/transaction/tx-history";
 import { DepositDialog } from "../../components/will/dialogs/deposit-dialog";
 import { HeartbeatDialog } from "../../components/will/dialogs/heartbeat-dialog";
 import { WithdrawDialog } from "../../components/will/dialogs/withdraw-dialog";
@@ -235,7 +236,12 @@ export default function WillDetail({ params }: Route.ComponentProps) {
             </div>
           )}
 
-          {/* Note: Riwayat transaksi belum diimplementasi */}
+          {/* Transaction History */}
+          {will && (
+            <div className="mt-8">
+              <TxHistory willAddress={will.address} />
+            </div>
+          )}
         </div>
       </div>
     </MainLayout>
