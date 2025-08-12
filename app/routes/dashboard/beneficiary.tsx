@@ -1,10 +1,17 @@
 import type { Route } from "./+types/beneficiary";
+import { useNavigate } from "react-router";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
-import { EmptyState } from "../../components/ui/empty-state";
+import { Badge } from "../../components/ui/badge";
+import { ClientOnlyWallet } from "../../components/wallet/client-only-wallet";
+import { WillList } from "../../components/will/will-list";
+import { WillSearch } from "../../components/will/will-search";
+import { useWallet } from "../../hooks/use-wallet";
+import { useWills } from "../../hooks/use-wills";
+import { formatSOL } from "../../lib/utils/format";
+import { WillStatus } from "../../types/will";
+import type { WillWithStatus } from "../../types/will";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -14,52 +21,162 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function BeneficiaryDashboard() {
+  const navigate = useNavigate();
+  const wallet = useWallet();
+  const willsData = useWills();
+  const { 
+    beneficiaryWills, 
+    stats, 
+    isLoading, 
+    error,
+    hasBeneficiaryWills,
+    getWillsNeedingAttention 
+  } = willsData;
+
+  const handleWillAction = (will: WillWithStatus, action: string) => {
+    switch (action) {
+      case "view":
+      case "claim":
+        navigate(`/will/${will.address.toBase58()}`);
+        break;
+      default:
+        console.log(`Action ${action} for will:`, will.address.toBase58());
+    }
+  };
+
+  const handleWillFound = (will: WillWithStatus) => {
+    // Optional: Do something when will is found via search
+    console.log("Will found:", will.address.toBase58());
+  };
+
+  // Calculate beneficiary-specific stats
+  const beneficiaryStats = {
+    total: beneficiaryWills.length,
+    triggered: beneficiaryWills.filter(w => w.status === WillStatus.Triggered).length,
+    claimable: beneficiaryWills.filter(w => w.canClaim).length,
+    totalValue: beneficiaryWills.reduce((sum, w) => sum + w.vaultBalance, 0),
+    claimableValue: beneficiaryWills
+      .filter(w => w.canClaim)
+      .reduce((sum, w) => sum + w.vaultBalance, 0),
+  };
+
   return (
     <MainLayout>
-      <div className="py-8 px-4">
-        <div className="container">
+      <div className="py-4 sm:py-8 px-4">
+        <div className="container max-w-7xl">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">Dashboard Beneficiary</h1>
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold">Dashboard Penerima Manfaat</h1>
             <p className="text-muted-foreground">
               Cek status wasiat dan klaim warisan yang ditujukan untuk Anda
             </p>
           </div>
 
           {/* Search Section */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>🔍 Cek Status Wasiat</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <Label htmlFor="will-search" className="sr-only">Alamat Wasiat</Label>
-                  <Input 
-                    id="will-search"
-                    placeholder="Masukkan alamat wasiat untuk dicek..."
-                    disabled
-                  />
-                </div>
-                <Button disabled>
-                  🔍 Cari Wasiat
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Alamat wasiat biasanya diberikan oleh pewasiat atau tersimpan dalam dokumen warisan
-              </p>
-            </CardContent>
-          </Card>
+          <div className="mb-8">
+            <WillSearch 
+              onWillFound={handleWillFound}
+              onWillAction={handleWillAction}
+              userRole="beneficiary"
+            />
+          </div>
 
-          {/* Empty State */}
-          <EmptyState
-            icon="🎯"
-            title="Belum Ada Wasiat Ditemukan"
-            description="Masukkan alamat wasiat di atas untuk mengecek status dan mengklaim warisan yang ditujukan untuk Anda."
-          />
+          <ClientOnlyWallet>
+            {wallet.isConnected ? (
+              <>
+                {hasBeneficiaryWills ? (
+                  <>
+                    {/* Stats */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+                      <Card>
+                        <CardContent className="p-4">
+                          <div className="text-2xl font-bold text-primary">{beneficiaryStats.total}</div>
+                          <div className="text-sm text-muted-foreground">Wasiat untuk Anda</div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardContent className="p-4">
+                          <div className="text-2xl font-bold text-orange-600">{beneficiaryStats.triggered}</div>
+                          <div className="text-sm text-muted-foreground">Dipicu</div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardContent className="p-4">
+                          <div className="text-2xl font-bold text-green-600">{beneficiaryStats.claimable}</div>
+                          <div className="text-sm text-muted-foreground">Bisa Diklaim</div>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardContent className="p-4">
+                          <div className="text-2xl font-bold text-blue-600">{formatSOL(beneficiaryStats.claimableValue)}</div>
+                          <div className="text-sm text-muted-foreground">SOL Tersedia</div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Wills List */}
+                    <WillList
+                      wills={beneficiaryWills}
+                      isLoading={isLoading}
+                      error={error}
+                      userRole="beneficiary"
+                      onWillAction={handleWillAction}
+                      showStats={false} // Stats sudah ditampilkan di atas
+                      title="Wasiat Sebagai Penerima Manfaat"
+                    />
+
+                    {/* Claim Alert */}
+                    {beneficiaryStats.claimable > 0 && (
+                      <div className="mt-8">
+                        <Card className="bg-green-50 border-green-200">
+                          <CardHeader>
+                            <CardTitle className="text-green-900 flex items-center gap-2">
+                              🎯 Ada Aset yang Bisa Diklaim!
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-green-800 text-sm mb-4">
+                              Anda memiliki {beneficiaryStats.claimable} wasiat dengan total {formatSOL(beneficiaryStats.claimableValue)} SOL 
+                              yang siap diklaim. Klik tombol "Klaim Aset" pada wasiat yang berstatus "Dipicu".
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                              {beneficiaryWills
+                                .filter(w => w.canClaim)
+                                .slice(0, 3) // Show max 3 claimable wills
+                                .map((will) => (
+                                  <Button 
+                                    key={will.address.toBase58()}
+                                    size="sm"
+                                    className="w-full sm:w-auto"
+                                    onClick={() => handleWillAction(will, "claim")}
+                                  >
+                                    Klaim {formatSOL(will.vaultBalance)} SOL
+                                  </Button>
+                                ))
+                              }
+                            </div>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <div className="text-4xl mb-4">🔒</div>
+                  <h3 className="text-xl font-semibold mb-2">Wallet Belum Terhubung</h3>
+                  <p className="text-muted-foreground">
+                    Hubungkan wallet Anda untuk melihat wasiat yang ditujukan untuk Anda
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </ClientOnlyWallet>
 
           {/* Info Cards */}
-          <div className="grid md:grid-cols-2 gap-6 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6 md:mt-8">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">📋 Status Wasiat</CardTitle>
@@ -109,22 +226,6 @@ export default function BeneficiaryDashboard() {
                     </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Demo Section */}
-          <div className="mt-8">
-            <Card className="bg-blue-50 border-blue-200">
-              <CardHeader>
-                <CardTitle className="text-blue-900">💡 Demo Mode</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-blue-800 text-sm">
-                  Saat ini dalam mode demo. Wallet integration sedang dalam pengembangan. 
-                  Dalam versi production, Anda akan dapat melihat status wasiat real-time 
-                  dan mengklaim aset yang tersedia langsung melalui dashboard ini.
-                </p>
               </CardContent>
             </Card>
           </div>

@@ -102,11 +102,11 @@ export function WillCard({
   };
 
   return (
-    <Card className="p-6 space-y-4">
+    <Card className="p-4 sm:p-6 space-y-4">
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
+        <div className="space-y-1 flex-1">
+          <div className="flex items-center gap-2 flex-wrap">
             <h3 className="font-semibold">Wasiat</h3>
             <StatusBadge 
               status={getStatusColor(will.status)} 
@@ -118,7 +118,7 @@ export function WillCard({
           </p>
         </div>
         
-        <div className="text-right">
+        <div className="text-left sm:text-right w-full sm:w-auto">
           <p className="text-lg font-bold">{formatSOL(will.vaultBalance)} SOL</p>
           <p className="text-xs text-gray-500">Saldo Vault</p>
         </div>
@@ -126,20 +126,20 @@ export function WillCard({
 
       {/* Participants */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
           <span className="text-sm text-gray-600">Pewasiat:</span>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-mono">
+            <span className="text-sm font-mono break-all">
               {formatAddress(will.testator.toBase58())}
             </span>
             <CopyButton text={will.testator.toBase58()} size="sm" />
           </div>
         </div>
         
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
           <span className="text-sm text-gray-600">Penerima:</span>
           <div className="flex items-center gap-1">
-            <span className="text-sm font-mono">
+            <span className="text-sm font-mono break-all">
               {formatAddress(will.beneficiary.toBase58())}
             </span>
             <CopyButton text={will.beneficiary.toBase58()} size="sm" />
@@ -212,10 +212,12 @@ export function WillCard({
       )}
 
       {/* Actions */}
-      <div className="flex items-center justify-between pt-2 border-t">
-        {renderActions()}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between pt-2 border-t gap-2">
+        <div className="flex gap-2 flex-wrap">
+          {renderActions()}
+        </div>
         
-        <Button size="sm" variant="ghost" onClick={onViewDetails}>
+        <Button size="sm" variant="ghost" onClick={onViewDetails} className="w-full sm:w-auto">
           Detail →
         </Button>
       </div>

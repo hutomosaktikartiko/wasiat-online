@@ -82,6 +82,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
                      wallet.publicKey?.equals(willData.testator) || false,
         canHeartbeat: willData.status.active && 
                       wallet.publicKey?.equals(willData.testator) || false,
+        address: willPDA,
       };
 
       setWill(willWithStatus);

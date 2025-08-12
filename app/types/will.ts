@@ -2,11 +2,11 @@ import { PublicKey } from "@solana/web3.js";
 
 // Will Status Enum - matches smart contract
 export enum WillStatus {
-  Created = "created",
-  Active = "active", 
-  Triggered = "triggered",
-  Claimed = "claimed",
-  Withdrawn = "withdrawn",
+  Created = 0,
+  Active = 1, 
+  Triggered = 2,
+  Claimed = 3,
+  Withdrawn = 4,
 }
 
 // Will Account Interface - matches IDL structure
@@ -67,4 +67,5 @@ export interface WillWithStatus extends Will {
   canWithdraw: boolean;
   canHeartbeat: boolean;
   vaultBalance: number;
+  address: PublicKey; // PDA address of the will account
 }

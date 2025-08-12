@@ -757,7 +757,7 @@ xl: '1280px',  /* Desktops */
 - ✅ Implementasi Will-specific components (WillCard, CreateWillForm, etc)
 - ✅ Implementasi Create Will
 - ✅ Implementasi Dashboard
-- ✅ Implementasi Details Will
+- Implementasi Details Will
 - Implementasi Deposit SOL
 - Implementasi Send Heartbeat
 - Implementasi Withdraw SOL
