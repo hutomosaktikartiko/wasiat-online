@@ -11,16 +11,19 @@ import {
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { clusterApiUrl } from "@solana/web3.js";
 
+// Import polyfills for browser compatibility
+import "../lib/polyfills";
+
 // Import wallet adapter CSS
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 // Get network from environment
-const network = (process.env.NODE_ENV === "production" 
+const network = (import.meta.env.MODE === "production" 
   ? WalletAdapterNetwork.Mainnet 
   : WalletAdapterNetwork.Devnet) as WalletAdapterNetwork;
 
 // Custom RPC endpoint if provided
-const endpoint = process.env.REACT_APP_RPC_ENDPOINT || clusterApiUrl(network);
+const endpoint = import.meta.env.VITE_RPC_ENDPOINT || clusterApiUrl(network);
 
 interface WalletProviderProps {
   children: React.ReactNode;

@@ -4,8 +4,8 @@ import { clusterApiUrl } from "@solana/web3.js";
 export const PROGRAM_ID = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw";
 
 // Network configuration
-export const NETWORK = process.env.NODE_ENV === "production" ? "mainnet-beta" : "devnet";
-export const RPC_ENDPOINT = process.env.REACT_APP_RPC_ENDPOINT || clusterApiUrl(NETWORK as any);
+export const NETWORK = import.meta.env.MODE === "production" ? "mainnet-beta" : "devnet";
+export const RPC_ENDPOINT = import.meta.env.VITE_RPC_ENDPOINT || clusterApiUrl(NETWORK as any);
 
 // PDA Seeds
 export const SEEDS = {

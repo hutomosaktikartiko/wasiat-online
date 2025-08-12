@@ -46,13 +46,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <WalletProvider>
-      <ProgramProvider>
+    // Temporarily disable wallet providers for SSR compatibility
+    // <WalletProvider>
+    //   <ProgramProvider>
         <NotificationProvider>
           <Outlet />
         </NotificationProvider>
-      </ProgramProvider>
-    </WalletProvider>
+    //   </ProgramProvider>
+    // </WalletProvider>
   );
 }
 
