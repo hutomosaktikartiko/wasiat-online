@@ -14,6 +14,5 @@ export default [
   // Will management routes
   route("will/create", "routes/will/create.tsx"),
   route("will/:id", "routes/will/$id.tsx"),
-  route("will/manage", "routes/will/manage.tsx"),
 
 ] satisfies RouteConfig;

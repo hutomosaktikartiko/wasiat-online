@@ -74,8 +74,7 @@ export function useWills() {
       timeUntilExpiry,
       vaultBalance,
       canClaim: willData.status.triggered && wallet.publicKey?.equals(willData.beneficiary) || false,
-      canWithdraw: (willData.status.created || willData.status.active) && 
-                   wallet.publicKey?.equals(willData.testator) || false,
+      canWithdraw: willData.status.active && wallet.publicKey?.equals(willData.testator) || false,
       canHeartbeat: willData.status.active && 
                     wallet.publicKey?.equals(willData.testator) || false,
       // PDA address

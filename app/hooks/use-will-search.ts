@@ -71,7 +71,7 @@ export function useWillSearch() {
       timeUntilExpiry,
       vaultBalance,
       canClaim: willData.status.triggered,
-      canWithdraw: willData.status.created || willData.status.active,
+      canWithdraw: willData.status.active,
       canHeartbeat: willData.status.active,
       address: willPDA,
     };

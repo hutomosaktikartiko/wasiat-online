@@ -7,22 +7,22 @@ import { LoadingSpinner } from "../ui/loading-spinner";
 import { WillCard } from "./will-card";
 import { useWillSearch } from "../../hooks/use-will-search";
 import type { WillWithStatus } from "../../types/will";
+import { useWallet } from "~/hooks/use-wallet";
 
 interface WillSearchProps {
   onWillFound?: (will: WillWithStatus) => void;
   onWillAction?: (will: WillWithStatus, action: string) => void;
-  userRole?: "testator" | "beneficiary" | "viewer";
   showTips?: boolean;
 }
 
 export function WillSearch({ 
   onWillFound, 
   onWillAction,
-  userRole = "viewer",
   showTips = true,
 }: WillSearchProps) {
   const [searchAddress, setSearchAddress] = useState("");
   const { will, found, isLoading, error, searchWill, clearSearch, isValidSolanaAddress } = useWillSearch();
+  const { getUserRoleByWill } = useWallet();
 
   const handleSearch = async () => {
     const result = await searchWill(searchAddress);
@@ -144,7 +144,7 @@ export function WillSearch({
           {/* Will Details */}
           <WillCard
             will={will}
-            userRole={userRole}
+            userRole={getUserRoleByWill(will.testator, will.beneficiary)}
             onDeposit={() => onWillAction?.(will, "deposit")}
             onHeartbeat={() => onWillAction?.(will, "heartbeat")}
             onWithdraw={() => onWillAction?.(will, "withdraw")}

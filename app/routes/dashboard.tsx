@@ -11,6 +11,11 @@ import { useWallet } from "../hooks/use-wallet";
 import { useWills } from "../hooks/use-wills";
 import { formatSOL, formatAddress } from "../lib/utils/format";
 import type { WillWithStatus } from "../types/will";
+import { useState } from "react";
+import { DepositDialog } from "~/components/will/dialogs/deposit-dialog";
+import { HeartbeatDialog } from "~/components/will/dialogs/heartbeat-dialog";
+import { useWill } from "~/hooks/use-will";
+import { WithdrawDialog } from "~/components/will/dialogs/withdraw-dialog";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,19 +25,28 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Dashboard() {
+  // Dialog states
+  const [selectedWill, setSelectedWill] = useState<WillWithStatus | null>(null);
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [heartbeatOpen, setHeartbeatOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [claimOpen, setClaimOpen] = useState(false);
+
   const navigate = useNavigate();
   const wallet = useWallet();
   const { 
     wills, 
-    testatorWills, 
-    beneficiaryWills, 
     stats, 
     isLoading, 
     error,
     hasWills,
-    hasTestatorWills,
-    hasBeneficiaryWills 
+    fetchWills,
   } = useWills();
+  const { sendHeartbeat, withdrawSOL, claimSOL } = useWill(
+    undefined,
+    undefined,
+    selectedWill?.address ?? undefined
+  );
 
   const handleCreateWill = () => {
     navigate("/will/create");
@@ -44,10 +58,20 @@ export default function Dashboard() {
         navigate(`/will/${will.address.toBase58()}`);
         break;
       case "deposit":
+        setSelectedWill(will);
+        setDepositOpen(true);
+        break;
       case "heartbeat":
+        setSelectedWill(will);
+        setHeartbeatOpen(true);
+        break;
       case "withdraw":
+        setSelectedWill(will);
+        setWithdrawOpen(true);
+        break;
       case "claim":
-        navigate(`/will/${will.address.toBase58()}`);
+        setSelectedWill(will);
+        setClaimOpen(true);
         break;
       default:
         console.log(`Action ${action} for will:`, will.address.toBase58());
@@ -172,7 +196,6 @@ export default function Dashboard() {
                     wills={wills}
                     isLoading={isLoading}
                     error={error}
-                    userRole="testator" // Default role, bisa berubah berdasarkan context
                     onCreateWill={handleCreateWill}
                     onWillAction={handleWillAction}
                     showStats={false} // Stats sudah ditampilkan di sidebar
@@ -194,6 +217,32 @@ export default function Dashboard() {
                 )}
               </ClientOnlyWallet>
             </div>
+            {selectedWill && (
+              <DepositDialog
+                open={depositOpen}
+                onOpenChange={(v) => setDepositOpen(v)}
+                will={selectedWill}
+                onSuccess={() => fetchWills()}
+              />
+            )}
+
+            {selectedWill && (
+              <HeartbeatDialog
+                open={heartbeatOpen}
+                onOpenChange={(v) => setHeartbeatOpen(v)}
+                will={selectedWill}
+                onConfirm={sendHeartbeat}
+              />
+            )}
+
+            {selectedWill && (
+              <WithdrawDialog
+                open={withdrawOpen}
+                onOpenChange={(v) => setWithdrawOpen(v)}
+                will={selectedWill}
+                onConfirm={withdrawSOL}
+              />
+            )}
           </div>
         </div>
       </div>

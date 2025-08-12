@@ -5,15 +5,16 @@ import { Button } from "../../components/ui/button";
 import { StatusBadge } from "../../components/ui/status-badge";
 import { CopyAddress } from "../../components/ui/copy-button";
 import { CountdownTimer } from "../../components/ui/countdown-timer";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { useWill } from "../../hooks/use-will";
-import { useWallet } from "../../hooks/use-wallet";
-import { DepositForm } from "../../components/will/deposit-form";
-import { HeartbeatButton } from "../../components/will/heartbeat-button";
-import { WithdrawForm } from "../../components/will/withdraw-form";
-import { ClaimButton } from "../../components/will/claim-button";
-import { formatSOL } from "../../lib/utils/format";
+import { formatDate, formatSOL } from "../../lib/utils/format";
+import { DepositDialog } from "../../components/will/dialogs/deposit-dialog";
+import { HeartbeatDialog } from "../../components/will/dialogs/heartbeat-dialog";
+import { WithdrawDialog } from "../../components/will/dialogs/withdraw-dialog";
+import { ClaimDialog } from "../../components/will/dialogs/claim-dialog";
+import { WillStatus } from "../../types/will";
+import { useWallet } from "~/hooks/use-wallet";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -27,8 +28,19 @@ export default function WillDetail({ params }: Route.ComponentProps) {
   const willPubkey = useMemo(() => {
     try { return new PublicKey(willId); } catch { return null; }
   }, [willId]);
-  const { will, isLoading, error, fetchWill } = useWill(undefined, undefined, willPubkey ?? undefined);
-  const wallet = useWallet();
+  const { will, isLoading, error, fetchWill, sendHeartbeat, withdrawSOL, claimSOL } = useWill(
+    undefined,
+    undefined,
+    willPubkey ?? undefined
+  );
+
+  const { getUserRoleByWill } = useWallet();
+
+  // Dialog states
+  const [depositOpen, setDepositOpen] = useState(false);
+  const [heartbeatOpen, setHeartbeatOpen] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [claimOpen, setClaimOpen] = useState(false);
 
   useEffect(() => {
     if (!willPubkey) return;
@@ -110,7 +122,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                     </div>
                     <div>
                       <label className="text-sm font-semibold">Heartbeat Terakhir</label>
-                      <p className="text-sm">{new Date(will.lastHeartbeat * 1000).toLocaleString('id-ID')}</p>
+                      <p className="text-sm">{formatDate(will.lastHeartbeat)}</p>
                     </div>
                     <div>
                       <label className="text-sm font-semibold">Waktu Tersisa</label>
@@ -125,26 +137,102 @@ export default function WillDetail({ params }: Route.ComponentProps) {
           </div>
 
           {/* Actions */}
-          {will && (
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>⚡ Aksi</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {/* Deposit hanya saat status Created */}
-                  {will.status === 0 && (
-                    <DepositForm willAddress={will.address.toBase58()} />
-                  )}
-                  {/* Heartbeat */}
-                  <HeartbeatButton will={will} />
-                  {/* Withdraw untuk testator saat Created/Active */}
-                  <WithdrawForm will={will} />
-                  {/* Claim untuk beneficiary saat Triggered */}
-                  <ClaimButton will={will} />
-                </div>
-              </CardContent>
-            </Card>
+          {will &&
+            (getUserRoleByWill(will.testator, will.beneficiary) === "testator" ||
+            getUserRoleByWill(will.testator, will.beneficiary) === "beneficiary") && (
+            <div className="mt-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-xl">⚡ Aksi</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                    {/* Deposit */}
+                    {getUserRoleByWill(will.testator, will.beneficiary) === "testator" && (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-auto flex-col py-4"
+                          onClick={() => setDepositOpen(true)}
+                          disabled={!(will.status === WillStatus.Created || will.status === WillStatus.Active)}
+                        >
+                          <div className="text-2xl mb-2">💰</div>
+                          <div>Tambah Aset</div>
+                        </Button>
+                        <DepositDialog
+                          open={depositOpen}
+                          onOpenChange={(v) => setDepositOpen(v)}
+                          will={will}
+                          onSuccess={() => fetchWill()}
+                        />
+                      </>
+                    )}
+                    {/* Heartbeat */}
+                    {getUserRoleByWill(will.testator, will.beneficiary) === "testator" && (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-auto flex-col py-4"
+                          onClick={() => setHeartbeatOpen(true)}
+                          disabled={!will.canHeartbeat}
+                        >
+                          <div className="text-2xl mb-2">💓</div>
+                          <div>Kirim Heartbeat</div>
+                        </Button>
+                        <HeartbeatDialog
+                          open={heartbeatOpen}
+                          onOpenChange={(v) => setHeartbeatOpen(v)}
+                          will={will}
+                          onConfirm={sendHeartbeat}
+                        />
+                      </>
+                    )}
+
+                    {/* Withdraw */}
+                    {getUserRoleByWill(will.testator, will.beneficiary) === "testator" && (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-auto flex-col py-4"
+                          onClick={() => setWithdrawOpen(true)}
+                          disabled={!will.canWithdraw}
+                        >
+                          <div className="text-2xl mb-2">💸</div>
+                          <div>Tarik Aset</div>
+                        </Button>
+                        <WithdrawDialog
+                          open={withdrawOpen}
+                          onOpenChange={(v) => setWithdrawOpen(v)}
+                          will={will}
+                          onConfirm={withdrawSOL}
+                        />
+                      </>
+                    )}
+
+                    {/* Claim */}
+                    {getUserRoleByWill(will.testator, will.beneficiary) === "beneficiary" && (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="h-auto flex-col py-4"
+                          onClick={() => setClaimOpen(true)}
+                          disabled={!will.canClaim}
+                        >
+                        <div className="text-2xl mb-2">🎯</div>
+                        <div>Klaim Aset</div>
+                        </Button>
+                        <ClaimDialog
+                          open={claimOpen}
+                          onOpenChange={(v) => setClaimOpen(v)}
+                          will={will}
+                          onConfirm={claimSOL}
+                        />
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {/* Note: Riwayat transaksi belum diimplementasi */}

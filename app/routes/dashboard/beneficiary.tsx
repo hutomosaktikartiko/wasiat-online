@@ -77,7 +77,6 @@ export default function BeneficiaryDashboard() {
             <WillSearch 
               onWillFound={handleWillFound}
               onWillAction={handleWillAction}
-              userRole="beneficiary"
             />
           </div>
 
@@ -119,7 +118,6 @@ export default function BeneficiaryDashboard() {
                       wills={beneficiaryWills}
                       isLoading={isLoading}
                       error={error}
-                      userRole="beneficiary"
                       onWillAction={handleWillAction}
                       showStats={false} // Stats sudah ditampilkan di atas
                       title="Wasiat Sebagai Penerima Manfaat"

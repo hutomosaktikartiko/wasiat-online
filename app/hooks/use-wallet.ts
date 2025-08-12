@@ -1,6 +1,7 @@
 import { useWallet as useSolanaWallet, useConnection } from "@solana/wallet-adapter-react";
 import { useState, useEffect } from "react";
 import { getSOLBalance } from "../lib/solana/utils";
+import { PublicKey } from "@solana/web3.js";
 
 export function useWallet() {
   const wallet = useSolanaWallet();
@@ -35,11 +36,22 @@ export function useWallet() {
     fetchBalance();
   };
 
+  const getUserRoleByWill = (testator: PublicKey, beneficiary: PublicKey) => {
+    if (wallet.publicKey?.equals(testator)) {
+      return "testator";
+    } else if (wallet.publicKey?.equals(beneficiary)) {
+      return "beneficiary";
+    } else {
+      return "viewer";
+    }
+  }
+
   return {
     ...wallet,
     balance,
     isLoading,
     refreshBalance,
     isConnected: wallet.connected && !!wallet.publicKey,
+    getUserRoleByWill,
   };
 }

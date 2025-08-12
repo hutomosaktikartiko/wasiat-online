@@ -15,7 +15,6 @@ import type {
 } from "../types/will";
 import { 
   getWillPDA, 
-  getVaultPDA, 
   getAllWillPDAs,
   getGlobalConfigPDA,
   getFeeVaultPDA 
@@ -38,23 +37,24 @@ export function useWill(
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Determine will PDA: prefer explicit willAddress, fallback to derived from testator+beneficiary
-  const willPDA = willAddress
-    ? willAddress
+  // Deterministic key string untuk menghindari perubahan referensi PublicKey pada setiap render
+  const willKey = willAddress
+    ? willAddress.toBase58()
     : testator && beneficiary
-      ? getWillPDA(testator, beneficiary)[0]
+      ? getWillPDA(testator, beneficiary)[0].toBase58()
       : null;
 
   // Fetch will data
   const fetchWill = useCallback(async () => {
-    if (!willPDA || !readOnlyProgram) return;
+    if (!willKey || !readOnlyProgram) return;
 
     // Hindari setState berlebih jika pemanggil sering memicu
     setIsLoading((prev) => (prev ? prev : true));
     setError(null);
 
     try {
-      const willData = await readOnlyProgram.account.will.fetch(willPDA);
+      const pda = new PublicKey(willKey);
+      const willData = await readOnlyProgram.account.will.fetch(pda);
       const vaultBalance = await getSOLBalance(connection, willData.vault);
       
       // Calculate computed properties
@@ -87,11 +87,10 @@ export function useWill(
         timeUntilExpiry,
         vaultBalance,
         canClaim: willData.status.triggered && wallet.publicKey?.equals(willData.beneficiary) || false,
-        canWithdraw: (willData.status.created || willData.status.active) && 
-                     wallet.publicKey?.equals(willData.testator) || false,
+        canWithdraw: willData.status.active && wallet.publicKey?.equals(willData.testator) || false,
         canHeartbeat: willData.status.active && 
                       wallet.publicKey?.equals(willData.testator) || false,
-        address: willPDA,
+        address: pda,
       };
 
       setWill(willWithStatus);
@@ -101,15 +100,14 @@ export function useWill(
     } finally {
       setIsLoading(false);
     }
-  }, [willPDA, readOnlyProgram, connection, wallet.publicKey]);
+  }, [willKey, readOnlyProgram, connection, wallet.publicKey]);
 
   // Auto-fetch when dependencies change
   useEffect(() => {
-    if (!willPDA) return;
+    if (!willKey) return;
     fetchWill();
-    // Hanya rerun saat alamat will berubah agar tidak loop karena referensi fungsi berubah
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [willPDA]);
+  }, [willKey]);
 
   // Create Will
   const createWill = useCallback(async (
@@ -183,7 +181,7 @@ export function useWill(
         .depositSol(new BN(lamports))
         .accounts({
           testator: wallet.publicKey,
-          will: willPDA!,
+          will: will.address,
           vault: will.vault,
           systemProgram: SystemProgram.programId,
         } as any)
@@ -211,7 +209,7 @@ export function useWill(
       toast.error(`Gagal deposit SOL: ${error}`);
       return { signature: "", success: false, error };
     }
-  }, [program, wallet, will, willPDA, transaction, fetchWill]);
+  }, [program, wallet, will, transaction, fetchWill]);
 
   // Send Heartbeat
   const sendHeartbeat = useCallback(async (): Promise<WillOperationResult> => {
@@ -227,7 +225,7 @@ export function useWill(
         .accounts({
           testator: wallet.publicKey,
           config: configPDA,
-          will: willPDA!,
+          will: will?.address,
         } as any)
         .transaction();
 
@@ -252,7 +250,7 @@ export function useWill(
       toast.error(`Gagal kirim heartbeat: ${error}`);
       return { signature: "", success: false, error };
     }
-  }, [program, wallet.publicKey, will, willPDA, transaction, fetchWill]);
+  }, [program, wallet.publicKey, will, transaction, fetchWill]);
 
   // Withdraw SOL
   const withdrawSOL = useCallback(async (): Promise<WillOperationResult> => {
@@ -267,7 +265,7 @@ export function useWill(
         .withdrawSol()
         .accounts({
           testator: wallet.publicKey,
-          will: willPDA!,
+          will: will.address,
           vault: will.vault,
           config: configPDA,
           systemProgram: SystemProgram.programId,
@@ -296,7 +294,7 @@ export function useWill(
       toast.error(`Gagal tarik SOL: ${error}`);
       return { signature: "", success: false, error };
     }
-  }, [program, wallet, will, willPDA, transaction, fetchWill]);
+  }, [program, wallet, will, transaction, fetchWill]);
 
   // Claim SOL
   const claimSOL = useCallback(async (): Promise<WillOperationResult> => {
@@ -312,7 +310,7 @@ export function useWill(
         .claimSol()
         .accounts({
           beneficiary: wallet.publicKey,
-          will: willPDA!,
+          will: will.address,
           vault: will.vault,
           config: configPDA,
           feeVault: feeVaultPDA,
@@ -342,7 +340,7 @@ export function useWill(
       toast.error(`Gagal klaim SOL: ${error}`);
       return { signature: "", success: false, error };
     }
-  }, [program, wallet, will, willPDA, transaction, fetchWill]);
+  }, [program, wallet, will, transaction, fetchWill]);
 
   return {
     will,

@@ -12,7 +12,7 @@ import { formatSOL } from "../../lib/utils/format";
 
 interface DepositFormProps {
   willAddress: string;
-  onSuccess?: () => void;
+  onSuccess?: (signature?: string) => void;
   onCancel?: () => void;
 }
 
@@ -73,7 +73,7 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
     const result = await depositSOL(parseFloat(amount));
     
     if (result.success) {
-      onSuccess?.();
+      onSuccess?.(result.signature);
     }
   };
 
@@ -199,26 +199,6 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
             </Button>
           </div>
         </form>
-
-        {/* Transaction Status */}
-        {transaction.signature && (
-          <div className="bg-green-50 p-3 rounded-lg">
-            <p className="text-sm text-green-800">
-              ✅ Deposit berhasil!
-            </p>
-            <p className="text-xs text-green-600 mt-1 break-all">
-              Signature: {transaction.signature}
-            </p>
-          </div>
-        )}
-
-        {transaction.error && (
-          <div className="bg-red-50 p-3 rounded-lg">
-            <p className="text-sm text-red-800">
-              ❌ {transaction.error}
-            </p>
-          </div>
-        )}
 
         {/* Deposit Guidelines */}
         <div className="text-xs text-gray-500 space-y-1">

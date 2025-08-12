@@ -118,69 +118,11 @@ export default function TestatorDashboard() {
                   wills={testatorWills}
                   isLoading={isLoading}
                   error={error}
-                  userRole="testator"
                   onCreateWill={handleCreateWill}
                   onWillAction={handleWillAction}
                   showStats={false} // Stats sudah ditampilkan di atas
                   title="Wasiat Sebagai Pewasiat"
                 />
-
-                {/* Quick Actions - only show if user has wills */}
-                {hasTestatorWills && (
-                  <div className="mt-8">
-                    <Card className="p-6 bg-primary/5">
-                      <CardHeader>
-                        <CardTitle className="text-xl">🚀 Aksi Cepat</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
-                          <Button 
-                            variant="outline" 
-                            className="h-auto flex-col py-4"
-                            onClick={handleCreateWill}
-                          >
-                            <div className="text-2xl mb-2">📝</div>
-                            <div>Buat Wasiat Baru</div>
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            className="h-auto flex-col py-4"
-                            onClick={() => {
-                              // Find first active will that can send heartbeat
-                              const activeWill = testatorWills.find(w => w.canHeartbeat);
-                              if (activeWill) {
-                                navigate(`/will/${activeWill.address.toBase58()}`);
-                              }
-                            }}
-                            disabled={!testatorWills.some(w => w.canHeartbeat)}
-                          >
-                            <div className="text-2xl mb-2">💓</div>
-                            <div>Kirim Heartbeat</div>
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            className="h-auto flex-col py-4"
-                            onClick={() => {
-                              // Find first will that can receive deposits
-                              const willForDeposit = testatorWills.find(w => 
-                                w.status === WillStatus.Created || w.status === WillStatus.Active
-                              );
-                              if (willForDeposit) {
-                                navigate(`/will/${willForDeposit.address.toBase58()}`);
-                              }
-                            }}
-                            disabled={!testatorWills.some(w => 
-                              w.status === WillStatus.Created || w.status === WillStatus.Active
-                            )}
-                          >
-                            <div className="text-2xl mb-2">💰</div>
-                            <div>Tambah Aset</div>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
               </>
             ) : (
               <Card>

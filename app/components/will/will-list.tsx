@@ -10,12 +10,12 @@ import { WillCard } from "./will-card";
 import { WillStatus } from "../../types/will";
 import type { WillWithStatus } from "../../types/will";
 import { formatSOL } from "../../lib/utils/format";
+import { useWallet } from "~/hooks/use-wallet";
 
 interface WillListProps {
   wills: WillWithStatus[];
   isLoading?: boolean;
   error?: string | null;
-  userRole: "testator" | "beneficiary" | "viewer";
   onCreateWill?: () => void;
   onWillAction?: (will: WillWithStatus, action: string) => void;
   showStats?: boolean;
@@ -29,12 +29,13 @@ export function WillList({
   wills,
   isLoading = false,
   error = null,
-  userRole,
   onCreateWill,
   onWillAction,
   showStats = true,
   title = "Your Wills"
 }: WillListProps) {
+  const { getUserRoleByWill } = useWallet();
+
   const [filter, setFilter] = useState<FilterType>("all");
   const [sort, setSort] = useState<SortType>("newest");
   const [searchTerm, setSearchTerm] = useState("");
@@ -207,7 +208,7 @@ export function WillList({
                 }
               </p>
             </div>
-            {onCreateWill && userRole === "testator" && (
+            {onCreateWill && (
               <Button onClick={onCreateWill}>
                 ➕ Buat Wasiat Baru
               </Button>
@@ -220,12 +221,8 @@ export function WillList({
             <EmptyState
               icon="📋"
               title="Belum Ada Wasiat"
-              description={
-                userRole === "testator" 
-                  ? "Buat wasiat pertama Anda untuk mulai mengamankan warisan digital"
-                  : "Anda belum ditunjuk sebagai penerima manfaat di wasiat manapun"
-              }
-              action={onCreateWill && userRole === "testator" ? {
+              description="Buat wasiat pertama Anda untuk mulai mengamankan warisan digital"
+              action={onCreateWill ? {
                 label: "Buat Wasiat Sekarang",
                 onClick: onCreateWill,
               } : undefined}
@@ -293,7 +290,7 @@ export function WillList({
                     <WillCard
                       key={will.address.toBase58()}
                       will={will}
-                      userRole={userRole}
+                      userRole={getUserRoleByWill(will.testator, will.beneficiary)}
                       onDeposit={() => onWillAction?.(will, "deposit")}
                       onHeartbeat={() => onWillAction?.(will, "heartbeat")}
                       onWithdraw={() => onWillAction?.(will, "withdraw")}
