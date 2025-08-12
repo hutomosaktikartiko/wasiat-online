@@ -29,10 +29,11 @@ export function HeroSection() {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="text-lg px-8 py-6">
+            {/* Go to create will page */}
+            <Button onClick={() => window.location.href = "/will/create"} size="lg" className="text-lg px-8 py-6">
               🎯 Mulai Buat Wasiat
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button onClick={() => window.location.href = "/about"} variant="outline" size="lg" className="text-lg px-8 py-6">
               📚 Pelajari Cara Kerja
             </Button>
           </div>

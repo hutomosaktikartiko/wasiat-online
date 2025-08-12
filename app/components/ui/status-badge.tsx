@@ -6,95 +6,58 @@ export type WillStatus = "created" | "active" | "triggered" | "claimed" | "withd
 export type TransactionStatus = "pending" | "success" | "failed" | "cancelled";
 
 interface StatusBadgeProps {
-  status: WillStatus | TransactionStatus;
+  status: "default" | "secondary" | "destructive" | "outline";
+  text: string;
   className?: string;
 }
 
-export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const getStatusConfig = (status: WillStatus | TransactionStatus) => {
-    switch (status) {
-      // Will statuses
-      case "created":
-        return {
-          label: "Dibuat",
-          color: "bg-blue-100 text-blue-800 border-blue-200",
-          icon: "📝"
-        };
-      case "active":
-        return {
-          label: "Aktif", 
-          color: "bg-green-100 text-green-800 border-green-200",
-          icon: "✅"
-        };
-      case "triggered":
-        return {
-          label: "Dipicu",
-          color: "bg-orange-100 text-orange-800 border-orange-200",
-          icon: "⚡"
-        };
-      case "claimed":
-        return {
-          label: "Diklaim",
-          color: "bg-purple-100 text-purple-800 border-purple-200", 
-          icon: "🎯"
-        };
-      case "withdrawn":
-        return {
-          label: "Ditarik",
-          color: "bg-gray-100 text-gray-800 border-gray-200",
-          icon: "↩️"
-        };
-      
-      // Transaction statuses
-      case "pending":
-        return {
-          label: "Menunggu",
-          color: "bg-yellow-100 text-yellow-800 border-yellow-200",
-          icon: "⏳"
-        };
-      case "success":
-        return {
-          label: "Berhasil",
-          color: "bg-green-100 text-green-800 border-green-200",
-          icon: "✅"
-        };
-      case "failed":
-        return {
-          label: "Gagal",
-          color: "bg-red-100 text-red-800 border-red-200",
-          icon: "❌"
-        };
-      case "cancelled":
-        return {
-          label: "Dibatalkan",
-          color: "bg-gray-100 text-gray-800 border-gray-200",
-          icon: "🚫"
-        };
-      
-      default:
-        return {
-          label: "Unknown",
-          color: "bg-gray-100 text-gray-800 border-gray-200",
-          icon: "❓"
-        };
-    }
-  };
-
-  const config = getStatusConfig(status);
-
+export function StatusBadge({ status, text, className }: StatusBadgeProps) {
   return (
-    <Badge className={cn(config.color, "gap-1", className)}>
-      <span>{config.icon}</span>
-      <span>{config.label}</span>
+    <Badge variant={status} className={className}>
+      {text}
     </Badge>
   );
 }
 
 // Convenience components
 export function WillStatusBadge({ status, className }: { status: WillStatus; className?: string }) {
-  return <StatusBadge status={status} className={className} />;
+  const getStatusProps = (status: WillStatus) => {
+    switch (status) {
+      case "created":
+        return { status: "secondary" as const, text: "Dibuat" };
+      case "active":
+        return { status: "default" as const, text: "Aktif" };
+      case "triggered":
+        return { status: "outline" as const, text: "Dipicu" };
+      case "claimed":
+        return { status: "default" as const, text: "Diklaim" };
+      case "withdrawn":
+        return { status: "destructive" as const, text: "Ditarik" };
+      default:
+        return { status: "secondary" as const, text: "Unknown" };
+    }
+  };
+
+  const props = getStatusProps(status);
+  return <StatusBadge status={props.status} text={props.text} className={className} />;
 }
 
 export function TransactionStatusBadge({ status, className }: { status: TransactionStatus; className?: string }) {
-  return <StatusBadge status={status} className={className} />;
+  const getStatusProps = (status: TransactionStatus) => {
+    switch (status) {
+      case "pending":
+        return { status: "outline" as const, text: "Menunggu" };
+      case "success":
+        return { status: "default" as const, text: "Berhasil" };
+      case "failed":
+        return { status: "destructive" as const, text: "Gagal" };
+      case "cancelled":
+        return { status: "secondary" as const, text: "Dibatalkan" };
+      default:
+        return { status: "secondary" as const, text: "Unknown" };
+    }
+  };
+
+  const props = getStatusProps(status);
+  return <StatusBadge status={props.status} text={props.text} className={className} />;
 }

@@ -1,26 +1,53 @@
 import { useState, useCallback } from "react";
+import { Transaction, Connection, PublicKey } from "@solana/web3.js";
+import type { TransactionSignature } from "@solana/web3.js";
 import { useConnection } from "@solana/wallet-adapter-react";
-import { Transaction, VersionedTransaction } from "@solana/web3.js";
-import { confirmTransaction } from "../lib/solana/utils";
-import { useNotification } from "../providers/notification-provider";
-import type { TransactionStatus } from "../types/transaction";
+import { useWallet } from "./use-wallet";
+import { TX_CONFIRMATION_TIMEOUT } from "../lib/utils/constants";
+
+export interface TransactionState {
+  isLoading: boolean;
+  signature: string | null;
+  error: string | null;
+}
+
+export interface TransactionOptions {
+  onSuccess?: (signature: string) => void;
+  onError?: (error: string) => void;
+  skipConfirmation?: boolean;
+}
 
 export function useTransaction() {
   const { connection } = useConnection();
-  const { showLoading, dismissLoading, showSuccess, showError } = useNotification();
-  const [pending, setPending] = useState<TransactionStatus[]>([]);
+  const wallet = useWallet();
+  const [state, setState] = useState<TransactionState>({
+    isLoading: false,
+    signature: null,
+    error: null,
+  });
 
-  const sendTransaction = useCallback(
+  const executeTransaction = useCallback(
     async (
-      transaction: Transaction | VersionedTransaction,
-      signTransaction: (tx: Transaction | VersionedTransaction) => Promise<Transaction | VersionedTransaction>,
-      description = "Mengirim transaksi..."
-    ): Promise<{ success: boolean; signature?: string; error?: string }> => {
-      const loadingId = showLoading(description);
-      
+      transaction: Transaction,
+      options: TransactionOptions = {}
+    ): Promise<string | null> => {
+      if (!wallet.publicKey || !wallet.signTransaction) {
+        const error = "Wallet not connected";
+        setState({ isLoading: false, signature: null, error });
+        options.onError?.(error);
+        return null;
+      }
+
+      setState({ isLoading: true, signature: null, error: null });
+
       try {
+        // Get latest blockhash
+        const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash("confirmed");
+        transaction.recentBlockhash = blockhash;
+        transaction.feePayer = wallet.publicKey;
+
         // Sign transaction
-        const signedTransaction = await signTransaction(transaction);
+        const signedTransaction = await wallet.signTransaction(transaction);
         
         // Send transaction
         const signature = await connection.sendRawTransaction(
@@ -31,56 +58,77 @@ export function useTransaction() {
           }
         );
 
-        // Add to pending
-        const txStatus: TransactionStatus = {
-          signature,
-          status: "pending",
-          timestamp: Date.now(),
-        };
-        setPending(prev => [...prev, txStatus]);
+        setState({ isLoading: !options.skipConfirmation, signature, error: null });
 
-        dismissLoading(loadingId);
-        showLoading(`Mengkonfirmasi transaksi...`);
+        // Confirm transaction if not skipped
+        if (!options.skipConfirmation) {
+          const confirmation = await connection.confirmTransaction(
+            {
+              signature,
+              blockhash,
+              lastValidBlockHeight,
+            },
+            "confirmed"
+          );
 
-        // Wait for confirmation
-        const confirmed = await confirmTransaction(connection, signature);
-        
-        // Update status
-        setPending(prev => 
-          prev.map(tx => 
-            tx.signature === signature 
-              ? { ...tx, status: confirmed ? "confirmed" : "failed" }
-              : tx
-          )
-        );
+          if (confirmation.value.err) {
+            throw new Error(`Transaction failed: ${confirmation.value.err}`);
+          }
 
-        dismissLoading(loadingId);
-
-        if (confirmed) {
-          showSuccess("Transaksi berhasil!", `Signature: ${signature.slice(0, 8)}...`);
-          return { success: true, signature };
-        } else {
-          showError("Transaksi gagal!", "Silakan coba lagi.");
-          return { success: false, error: "Transaction failed to confirm" };
+          setState({ isLoading: false, signature, error: null });
         }
-      } catch (error) {
-        dismissLoading(loadingId);
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
-        showError("Transaksi gagal!", errorMessage);
-        
-        return { success: false, error: errorMessage };
+
+        options.onSuccess?.(signature);
+        return signature;
+
+      } catch (err) {
+        const error = err instanceof Error ? err.message : "Transaction failed";
+        setState({ isLoading: false, signature: null, error });
+        options.onError?.(error);
+        return null;
       }
     },
-    [connection, showLoading, dismissLoading, showSuccess, showError]
+    [connection, wallet]
   );
 
-  const clearPending = useCallback(() => {
-    setPending([]);
+  const reset = useCallback(() => {
+    setState({ isLoading: false, signature: null, error: null });
   }, []);
 
   return {
-    sendTransaction,
-    pending,
-    clearPending,
+    ...state,
+    executeTransaction,
+    reset,
   };
+}
+
+// Utility function to wait for transaction confirmation
+export async function confirmTransaction(
+  connection: Connection,
+  signature: TransactionSignature,
+  commitment: "processed" | "confirmed" | "finalized" = "confirmed"
+): Promise<boolean> {
+  const startTime = Date.now();
+  
+  while (Date.now() - startTime < TX_CONFIRMATION_TIMEOUT) {
+    try {
+      const result = await connection.getSignatureStatus(signature);
+      
+      if (result.value?.confirmationStatus === commitment) {
+        return !result.value.err;
+      }
+      
+      if (result.value?.err) {
+        return false;
+      }
+      
+      // Wait before checking again
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    } catch (error) {
+      console.error("Error checking transaction status:", error);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+  
+  return false; // Timeout
 }

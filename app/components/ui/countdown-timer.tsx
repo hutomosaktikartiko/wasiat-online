@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { cn } from "../../lib/utils";
 
 interface CountdownTimerProps {
-  targetDate: Date;
-  onExpired?: () => void;
+  targetTime: number; // Unix timestamp in seconds
+  onExpire?: () => void;
   className?: string;
   size?: "sm" | "md" | "lg";
 }
@@ -17,27 +17,27 @@ interface TimeRemaining {
 }
 
 export function CountdownTimer({ 
-  targetDate, 
-  onExpired, 
+  targetTime, 
+  onExpire, 
   className,
   size = "md" 
 }: CountdownTimerProps) {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(() => 
-    calculateTimeRemaining(targetDate)
+    calculateTimeRemaining(targetTime)
   );
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const remaining = calculateTimeRemaining(targetDate);
+      const remaining = calculateTimeRemaining(targetTime);
       setTimeRemaining(remaining);
       
-      if (remaining.expired && onExpired) {
-        onExpired();
+      if (remaining.expired && onExpire) {
+        onExpire();
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [targetDate, onExpired]);
+  }, [targetTime, onExpire]);
 
   const sizeClasses = {
     sm: "text-sm",
@@ -77,10 +77,9 @@ export function CountdownTimer({
   );
 }
 
-function calculateTimeRemaining(targetDate: Date): TimeRemaining {
-  const now = new Date().getTime();
-  const target = targetDate.getTime();
-  const difference = target - now;
+function calculateTimeRemaining(targetTime: number): TimeRemaining {
+  const now = Math.floor(Date.now() / 1000);
+  const difference = targetTime - now;
 
   if (difference <= 0) {
     return {
@@ -92,10 +91,10 @@ function calculateTimeRemaining(targetDate: Date): TimeRemaining {
     };
   }
 
-  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  const days = Math.floor(difference / (24 * 60 * 60));
+  const hours = Math.floor((difference % (24 * 60 * 60)) / (60 * 60));
+  const minutes = Math.floor((difference % (60 * 60)) / 60);
+  const seconds = difference % 60;
 
   return {
     days,
@@ -112,16 +111,16 @@ export function HeartbeatCountdown({
   heartbeatPeriod, 
   className 
 }: { 
-  lastHeartbeat: Date; 
-  heartbeatPeriod: number; // in days
+  lastHeartbeat: number; // Unix timestamp in seconds
+  heartbeatPeriod: number; // in seconds
   className?: string;
 }) {
-  const targetDate = new Date(lastHeartbeat.getTime() + heartbeatPeriod * 24 * 60 * 60 * 1000);
+  const targetTime = lastHeartbeat + heartbeatPeriod;
   
   return (
     <div className={className}>
       <div className="text-sm text-muted-foreground mb-1">Heartbeat expires in:</div>
-      <CountdownTimer targetDate={targetDate} />
+      <CountdownTimer targetTime={targetTime} />
     </div>
   );
 }
