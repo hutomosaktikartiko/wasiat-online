@@ -4,8 +4,36 @@ import { clusterApiUrl } from "@solana/web3.js";
 export const PROGRAM_ID = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw";
 
 // Network configuration
-export const NETWORK = import.meta.env.MODE === "production" ? "mainnet-beta" : "devnet";
-export const RPC_ENDPOINT = import.meta.env.VITE_RPC_ENDPOINT || clusterApiUrl(NETWORK as any);
+const getNetworkConfig = () => {
+  // Default berdasarkan mode
+  if (import.meta.env.MODE === "production") {
+    return { network: "mainnet-beta", endpoint: clusterApiUrl("mainnet-beta") };
+  }
+
+  // Jika ada custom RPC endpoint
+  const customRpcEndpoint = import.meta.env.RPC_ENDPOINT;
+  if (customRpcEndpoint) {
+    if (customRpcEndpoint.includes("devnet")) {
+      return { network: "devnet", endpoint: customRpcEndpoint };
+    }
+    if (customRpcEndpoint.includes("mainnet")) {
+      return { network: "mainnet-beta", endpoint: customRpcEndpoint };
+    }
+    if (customRpcEndpoint.includes("localhost") || customRpcEndpoint.includes("127.0.0.1")) {
+      return { network: "testnet", endpoint: customRpcEndpoint };
+    }
+
+    // Default untuk custom endpoint
+    return { network: "custom", endpoint: customRpcEndpoint };
+  }
+  
+  // Default ke test network untuk development
+  return { network: "testnet", endpoint: "http://localhost:8899" };
+};
+
+const { network, endpoint } = getNetworkConfig();
+export const NETWORK = network;
+export const RPC_ENDPOINT = endpoint;
 
 // PDA Seeds
 export const SEEDS = {

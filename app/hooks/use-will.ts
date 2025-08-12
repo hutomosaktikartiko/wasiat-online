@@ -20,6 +20,7 @@ import {
   getGlobalConfigPDA,
   getFeeVaultPDA 
 } from "../lib/anchor/pda";
+import { MIN_HEARTBEAT_PERIOD } from "../lib/utils/constants";
 import { getSOLBalance } from "../lib/solana/utils";
 import { toast } from "react-hot-toast";
 
@@ -107,16 +108,15 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
       return { signature: "", success: false, error: "Wallet not connected" };
     }
 
-    if (!config) {
-      return { signature: "", success: false, error: "Config not loaded" };
-    }
-
+    // Use default values if config not loaded yet
+    const minHeartbeatPeriod = config?.minHeartbeatPeriod || MIN_HEARTBEAT_PERIOD;
+    
     // Validate heartbeat period
-    if (params.heartbeatPeriod < config.minHeartbeatPeriod) {
+    if (params.heartbeatPeriod < minHeartbeatPeriod) {
       return { 
         signature: "", 
         success: false, 
-        error: `Heartbeat period must be at least ${config.minHeartbeatPeriod} seconds` 
+        error: `Heartbeat period must be at least ${minHeartbeatPeriod} seconds` 
       };
     }
 

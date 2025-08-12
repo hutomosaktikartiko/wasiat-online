@@ -21,7 +21,7 @@ interface CreateWillFormProps {
 
 export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
   const wallet = useWallet();
-  const { config } = useProgram();
+  const { config, program, readOnlyProgram } = useProgram();
   const { createWill, transaction } = useWill(wallet.publicKey || undefined, undefined);
   
   const [beneficiaryAddress, setBeneficiaryAddress] = useState("");

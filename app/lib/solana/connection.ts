@@ -18,7 +18,18 @@ export function createConnection(): Connection {
  * Get cluster name for display
  */
 export function getClusterName(): string {
-  return NETWORK === "mainnet-beta" ? "Mainnet" : "Devnet";
+  switch (NETWORK) {
+    case "mainnet-beta":
+      return "Mainnet";
+    case "devnet":
+      return "Devnet";
+    case "testnet":
+      return "Testnet";
+    case "custom":
+      return "Custom";
+    default:
+      return "Unknown";
+  }
 }
 
 /**

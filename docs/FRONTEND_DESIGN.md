@@ -752,10 +752,15 @@ xl: '1280px',  /* Desktops */
 - ✅ Setup React Router v7 dengan semua routes
 - ✅ Buat basic UI components (Button, Input, Card, Dialog, etc)
 - ✅ Setup wallet adapter dan wallet connection components - Works but with minor buffer warnings
-- Setup Anchor program client dan PDA utilities
-- Buat custom hooks (useWallet, useProgram, useWill, useTransaction)
-- Implementasi Will-specific components (WillCard, CreateWillForm, etc)
-- Implementasi Create Will, Deposit SOL, Send Heartbeat, Withdraw SOL
+- ✅ Setup Anchor program client dan PDA utilities
+- ✅ Buat custom hooks (useWallet, useProgram, useWill, useTransaction)
+- ✅ Implementasi Will-specific components (WillCard, CreateWillForm, etc)
+- ✅ Implementasi Create Will
+- ✅ Implementasi Dashboard
+- ✅ Implementasi Details Will
+- Implementasi Deposit SOL
+- Implementasi Send Heartbeat
+- Implementasi Withdraw SOL
 - Implementasi Check Will Status dan Claim SOL
 - Implementasi transaction status tracking dan error handling
 - ✅ Pastikan semua components responsive untuk mobile

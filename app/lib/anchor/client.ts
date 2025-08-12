@@ -27,7 +27,7 @@ export function createProgram(
   );
 
   return new anchor.Program<WasiatOnline>(
-    IDL,
+    IDL as any,
     provider
   );
 }
@@ -52,7 +52,7 @@ export function createReadOnlyProgram(
   );
 
   return new anchor.Program<WasiatOnline>(
-    IDL,
+    IDL as any,
     provider
   );
 }

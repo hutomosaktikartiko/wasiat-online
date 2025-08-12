@@ -55,7 +55,10 @@ export function ProgramProvider({ children }: { children: ReactNode }) {
 
   // Fetch config data
   const fetchConfig = async () => {
-    if (!readOnlyProgram) return;
+    if (!readOnlyProgram) {
+      console.log("No readOnlyProgram available");
+      return;
+    }
 
     try {
       setIsLoading(true);

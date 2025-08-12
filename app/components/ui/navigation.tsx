@@ -77,7 +77,7 @@ export const footerNavItems: NavigationItem[] = [
   { label: "Terms of Service", href: "/terms", icon: "📄" },
   { label: "FAQ", href: "/faq", icon: "❓" },
   { label: "Support", href: "/support", icon: "💬" },
-  { label: "GitHub", href: "https://github.com/wasiat-online", icon: "💻", isExternal: true }
+  { label: "GitHub", href: "https://github.com/hutomosaktikartiko/wasiat-online", icon: "💻", isExternal: true }
 ];
 
 // Mobile navigation component

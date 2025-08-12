@@ -189,7 +189,7 @@ export default function Features() {
                     📊 Lihat Roadmap
                   </a>
                   <a 
-                    href="https://github.com/wasiat-online/wasiat-online" 
+                    href="https://github.com/hutomosaktikartiko/wasiat-online" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 border border-primary text-primary rounded-md hover:bg-primary/10 transition-colors"

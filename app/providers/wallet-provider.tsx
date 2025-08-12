@@ -17,13 +17,11 @@ import "../lib/polyfills";
 // Import wallet adapter CSS
 import "@solana/wallet-adapter-react-ui/styles.css";
 
-// Get network from environment
-const network = (import.meta.env.MODE === "production" 
-  ? WalletAdapterNetwork.Mainnet 
-  : WalletAdapterNetwork.Devnet) as WalletAdapterNetwork;
+// Import network config from constants
+import { RPC_ENDPOINT, NETWORK } from "../lib/utils/constants";
 
-// Custom RPC endpoint if provided
-const endpoint = import.meta.env.VITE_RPC_ENDPOINT || clusterApiUrl(network);
+// Use the same endpoint configuration as the rest of the app
+const endpoint = RPC_ENDPOINT;
 
 interface WalletProviderProps {
   children: React.ReactNode;
