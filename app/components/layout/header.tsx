@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { Navigation, mainNavItems, MobileNavigation } from "../ui/navigation";
+import { WalletMultiButton } from "../wallet/wallet-multi-button";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -24,7 +25,7 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline">Connect Wallet (Coming Soon)</Button>
+          <WalletMultiButton variant="outline" />
           
           {/* Mobile Menu Button */}
           <Button

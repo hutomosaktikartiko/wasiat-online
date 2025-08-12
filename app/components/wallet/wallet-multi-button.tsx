@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletReadyState } from "@solana/wallet-adapter-base";
+import type { Wallet } from "@solana/wallet-adapter-react";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
 import { Badge } from "../ui/badge";
 import { formatAddress } from "../../lib/utils/format";
 
@@ -16,9 +17,16 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
   const { wallets, wallet, select, connect, disconnect, connecting, connected, publicKey } = useWallet();
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleWalletSelect = async (walletName: string) => {
+  // Auto-close dialog when wallet connects successfully
+  useEffect(() => {
+    if (connected) {
+      setIsOpen(false);
+    }
+  }, [connected]);
+
+  const handleWalletSelect = async (selectedWallet: Wallet) => {
     try {
-      select(walletName);
+      select(selectedWallet.adapter.name);
       setIsOpen(false);
       // Give a small delay for wallet selection to complete
       setTimeout(async () => {
@@ -35,9 +43,10 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
 
   const handleConnect = async () => {
     if (connected) {
-      disconnect();
+      // Disconnect directly without opening dialog
+      await disconnect();
     } else {
-      // Always open wallet selection dialog
+      // Open wallet selection dialog
       setIsOpen(true);
     }
   };
@@ -57,6 +66,7 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
         <>
           <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
           {formatAddress(publicKey.toString(), 4)}
+          <div className="w-4 h-4 ml-2 text-muted-foreground">🔌</div>
         </>
       );
     }
@@ -73,21 +83,24 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          onClick={handleConnect}
-          variant={variant}
-          size={size}
-          className={className}
-          disabled={connecting}
-        >
-          {getButtonContent()}
-        </Button>
-      </DialogTrigger>
+    <>
+      <Button
+        onClick={handleConnect}
+        variant={variant}
+        size={size}
+        className={className}
+        disabled={connecting}
+      >
+        {getButtonContent()}
+      </Button>
+      
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Connect Wallet</DialogTitle>
+          <DialogDescription>
+            Choose a wallet to connect to the application
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           {availableWallets.length > 0 && (
@@ -99,7 +112,7 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
                     key={wallet.adapter.name}
                     variant="outline"
                     className="w-full justify-start"
-                    onClick={() => handleWalletSelect(wallet.adapter.name)}
+                    onClick={() => handleWalletSelect(wallet)}
                   >
                     <img
                       src={wallet.adapter.icon}
@@ -149,6 +162,7 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
           )}
         </div>
       </DialogContent>
-    </Dialog>
+      </Dialog>
+    </>
   );
 }

@@ -11,11 +11,10 @@ export default defineConfig({
   resolve: {
     alias: {
       buffer: "buffer",
-      process: "process",
     },
   },
   optimizeDeps: {
-    include: ["buffer", "process"],
+    include: ["buffer"],
   },
   ssr: {
     noExternal: ["@solana/wallet-adapter-react", "@solana/wallet-adapter-react-ui"],

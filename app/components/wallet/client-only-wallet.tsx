@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { WalletMultiButton as SolanaWalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { Button } from "../ui/button";
+
+interface ClientOnlyWalletProps {
+  children: React.ReactNode;
+}
 
 // Client-only wrapper for wallet components
-export function ClientOnlyWallet() {
+export function ClientOnlyWallet({ children }: ClientOnlyWalletProps) {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -11,14 +13,10 @@ export function ClientOnlyWallet() {
   }, []);
 
   if (!isClient) {
-    // Server-side fallback
-    return (
-      <Button variant="outline">
-        Connect Wallet
-      </Button>
-    );
+    // Server-side fallback - render children without wallet providers
+    return <>{children}</>;
   }
 
-  // Client-side wallet component
-  return <SolanaWalletMultiButton />;
+  // Client-side - render with wallet providers
+  return <>{children}</>;
 }
