@@ -138,4 +138,19 @@ body {
     @apply w-full mx-auto px-4 sm:px-6 lg:px-8;
     max-width: 1280px;
   }
+  
+  /* Mobile-first responsive text */
+  .text-responsive {
+    @apply text-sm sm:text-base;
+  }
+  
+  /* Mobile-friendly spacing */
+  .section-padding {
+    @apply py-8 sm:py-12 lg:py-16;
+  }
+  
+  /* Mobile card spacing */
+  .card-mobile {
+    @apply p-4 sm:p-6;
+  }
 }

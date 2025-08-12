@@ -100,7 +100,31 @@ export function MobileNavigation({
           <h2 className="text-lg font-semibold">Menu</h2>
           <button onClick={onClose} className="text-2xl">×</button>
         </div>
-        <Navigation items={items} orientation="vertical" />
+        <nav className="space-y-4">
+          {items.map((item, index) => (
+            <div key={index} onClick={onClose}>
+              {item.isExternal ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {item.icon && <span>{item.icon}</span>}
+                  <span>{item.label}</span>
+                </a>
+              ) : (
+                <Link 
+                  to={item.href} 
+                  className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                >
+                  {item.icon && <span>{item.icon}</span>}
+                  <span>{item.label}</span>
+                </Link>
+              )}
+            </div>
+          ))}
+        </nav>
       </div>
     </div>
   );
