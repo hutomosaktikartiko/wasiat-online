@@ -15,8 +15,5 @@ export default [
   route("will/create", "routes/will/create.tsx"),
   route("will/:id", "routes/will/$id.tsx"),
   route("will/manage", "routes/will/manage.tsx"),
-  
-  // Beneficiary routes
-  route("beneficiary/check", "routes/beneficiary/check.tsx"),
-  route("beneficiary/claim", "routes/beneficiary/claim.tsx"),
+
 ] satisfies RouteConfig;

@@ -24,7 +24,11 @@ import { MIN_HEARTBEAT_PERIOD } from "../lib/utils/constants";
 import { getSOLBalance } from "../lib/solana/utils";
 import { toast } from "react-hot-toast";
 
-export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
+export function useWill(
+  testator?: PublicKey,
+  beneficiary?: PublicKey,
+  willAddress?: PublicKey
+) {
   const { connection } = useConnection();
   const { program, readOnlyProgram, config } = useProgram();
   const wallet = useWallet();
@@ -34,14 +38,19 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Get will PDA if testator and beneficiary are provided
-  const willPDA = testator && beneficiary ? getWillPDA(testator, beneficiary)[0] : null;
+  // Determine will PDA: prefer explicit willAddress, fallback to derived from testator+beneficiary
+  const willPDA = willAddress
+    ? willAddress
+    : testator && beneficiary
+      ? getWillPDA(testator, beneficiary)[0]
+      : null;
 
   // Fetch will data
   const fetchWill = useCallback(async () => {
     if (!willPDA || !readOnlyProgram) return;
 
-    setIsLoading(true);
+    // Hindari setState berlebih jika pemanggil sering memicu
+    setIsLoading((prev) => (prev ? prev : true));
     setError(null);
 
     try {
@@ -96,10 +105,11 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
 
   // Auto-fetch when dependencies change
   useEffect(() => {
-    if (willPDA) {
-      fetchWill();
-    }
-  }, [fetchWill]);
+    if (!willPDA) return;
+    fetchWill();
+    // Hanya rerun saat alamat will berubah agar tidak loop karena referensi fungsi berubah
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [willPDA]);
 
   // Create Will
   const createWill = useCallback(async (
@@ -132,7 +142,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
           will: pdas.will,
           vault: pdas.vault,
           systemProgram: SystemProgram.programId,
-        })
+        } as any)
         .transaction();
 
       const signature = await transaction.executeTransaction(tx, {
@@ -176,7 +186,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
           will: willPDA!,
           vault: will.vault,
           systemProgram: SystemProgram.programId,
-        })
+        } as any)
         .transaction();
 
       const signature = await transaction.executeTransaction(tx, {
@@ -218,7 +228,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
           testator: wallet.publicKey,
           config: configPDA,
           will: willPDA!,
-        })
+        } as any)
         .transaction();
 
       const signature = await transaction.executeTransaction(tx, {
@@ -261,7 +271,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
           vault: will.vault,
           config: configPDA,
           systemProgram: SystemProgram.programId,
-        })
+        } as any)
         .transaction();
 
       const signature = await transaction.executeTransaction(tx, {
@@ -307,7 +317,7 @@ export function useWill(testator?: PublicKey, beneficiary?: PublicKey) {
           config: configPDA,
           feeVault: feeVaultPDA,
           systemProgram: SystemProgram.programId,
-        })
+        } as any)
         .transaction();
 
       const signature = await transaction.executeTransaction(tx, {

@@ -1,4 +1,4 @@
-import { Will } from "./will";
+import type { Will } from "./will";
 
 export interface WillCardProps {
   will: Will;

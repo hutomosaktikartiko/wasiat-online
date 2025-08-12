@@ -13,7 +13,7 @@ interface HeartbeatButtonProps {
 }
 
 export function HeartbeatButton({ will, onSuccess, className }: HeartbeatButtonProps) {
-  const { sendHeartbeat, transaction } = useWill();
+  const { sendHeartbeat, transaction } = useWill(undefined, undefined, will?.address);
   const { config } = useProgram();
 
   const handleHeartbeat = async () => {

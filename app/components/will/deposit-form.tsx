@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { PublicKey } from "@solana/web3.js";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -17,7 +18,11 @@ interface DepositFormProps {
 
 export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormProps) {
   const wallet = useWallet();
-  const { depositSOL, transaction, will } = useWill();
+  const { depositSOL, transaction, will } = useWill(
+    undefined,
+    undefined,
+    willAddress ? new PublicKey(willAddress) : undefined
+  );
   
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");

@@ -2,10 +2,18 @@ import type { Route } from "./+types/$id";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Badge } from "../../components/ui/badge";
 import { StatusBadge } from "../../components/ui/status-badge";
-import { CopyAddress, CopyHash } from "../../components/ui/copy-button";
+import { CopyAddress } from "../../components/ui/copy-button";
 import { CountdownTimer } from "../../components/ui/countdown-timer";
+import { useEffect, useMemo } from "react";
+import { PublicKey } from "@solana/web3.js";
+import { useWill } from "../../hooks/use-will";
+import { useWallet } from "../../hooks/use-wallet";
+import { DepositForm } from "../../components/will/deposit-form";
+import { HeartbeatButton } from "../../components/will/heartbeat-button";
+import { WithdrawForm } from "../../components/will/withdraw-form";
+import { ClaimButton } from "../../components/will/claim-button";
+import { formatSOL } from "../../lib/utils/format";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -16,45 +24,16 @@ export function meta({ params }: Route.MetaArgs) {
 
 export default function WillDetail({ params }: Route.ComponentProps) {
   const willId = params.id;
+  const willPubkey = useMemo(() => {
+    try { return new PublicKey(willId); } catch { return null; }
+  }, [willId]);
+  const { will, isLoading, error, fetchWill } = useWill(undefined, undefined, willPubkey ?? undefined);
+  const wallet = useWallet();
 
-  // Mock data - will be replaced with real data later
-  const mockWill = {
-    id: willId,
-    testator: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
-    beneficiary: "8WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWN",
-    status: "active" as const,
-    createdAt: new Date("2024-01-15"),
-    lastHeartbeat: new Date("2024-01-20"),
-    heartbeatPeriod: 90,
-    assets: {
-      sol: 2.5,
-      tokens: [],
-      nfts: []
-    },
-    vault: "7VzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWO",
-    transactions: [
-      {
-        id: "tx_1",
-        type: "heartbeat",
-        signature: "5J7zDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWP",
-        timestamp: new Date("2024-01-20"),
-        status: "success" as const
-      },
-      {
-        id: "tx_2", 
-        type: "deposit",
-        signature: "6K8eDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWQ",
-        timestamp: new Date("2024-01-18"),
-        status: "success" as const,
-        amount: 2.5,
-        asset: "SOL"
-      }
-    ]
-  };
-
-  const nextHeartbeatDeadline = new Date(
-    mockWill.lastHeartbeat.getTime() + mockWill.heartbeatPeriod * 24 * 60 * 60 * 1000
-  );
+  useEffect(() => {
+    if (!willPubkey) return;
+    fetchWill();
+  }, [willPubkey]);
 
   return (
     <MainLayout>
@@ -66,8 +45,21 @@ export default function WillDetail({ params }: Route.ComponentProps) {
               <h1 className="text-3xl font-bold">Detail Wasiat</h1>
               <p className="text-muted-foreground">ID: {willId}</p>
             </div>
-            <StatusBadge status={mockWill.status} />
+            <StatusBadge 
+              status={
+                !will ? "secondary" : will.status === 0 ? "secondary" : will.status === 1 ? "default" : will.status === 2 ? "outline" : will.status === 3 ? "default" : "destructive"
+              }
+              text={!will ? "Memuat" : will.status === 0 ? "Dibuat" : will.status === 1 ? "Aktif" : will.status === 2 ? "Dipicu" : will.status === 3 ? "Diklaim" : "Ditarik"}
+            />
           </div>
+
+          {/* Loading / Error */}
+          {isLoading && (
+            <div className="text-center text-sm text-muted-foreground mb-6">Memuat data wasiat...</div>
+          )}
+          {error && (
+            <div className="text-center text-sm text-red-600 mb-6">{error}</div>
+          )}
 
           {/* Will Info */}
           <div className="grid lg:grid-cols-2 gap-6 mb-8">
@@ -76,22 +68,32 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                 <CardTitle>📋 Informasi Wasiat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-semibold">Pewasiat</label>
-                  <CopyAddress address={mockWill.testator} />
-                </div>
-                <div>
-                  <label className="text-sm font-semibold">Penerima Manfaat</label>
-                  <CopyAddress address={mockWill.beneficiary} />
-                </div>
-                <div>
-                  <label className="text-sm font-semibold">Vault Address</label>
-                  <CopyAddress address={mockWill.vault} />
-                </div>
-                <div>
-                  <label className="text-sm font-semibold">Dibuat</label>
-                  <p className="text-sm">{mockWill.createdAt.toLocaleDateString('id-ID')}</p>
-                </div>
+                {will ? (
+                  <>
+                    <div>
+                      <label className="text-sm font-semibold">Pewasiat</label>
+                      <CopyAddress address={will.testator.toBase58()} />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Penerima Manfaat</label>
+                      <CopyAddress address={will.beneficiary.toBase58()} />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Vault Address</label>
+                      <CopyAddress address={will.vault.toBase58()} />
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Saldo Vault</label>
+                      <p className="text-sm font-medium">{formatSOL(will.vaultBalance)} SOL</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Dibuat</label>
+                      <p className="text-sm">{new Date(will.createdAt * 1000).toLocaleString('id-ID')}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Data wasiat belum tersedia.</p>
+                )}
               </CardContent>
             </Card>
 
@@ -100,97 +102,52 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                 <CardTitle>💓 Status Heartbeat</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <label className="text-sm font-semibold">Periode Heartbeat</label>
-                  <p className="text-sm">{mockWill.heartbeatPeriod} hari</p>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold">Heartbeat Terakhir</label>
-                  <p className="text-sm">{mockWill.lastHeartbeat.toLocaleDateString('id-ID')}</p>
-                </div>
-                <div>
-                  <label className="text-sm font-semibold">Waktu Tersisa</label>
-                  <CountdownTimer targetDate={nextHeartbeatDeadline} size="sm" />
-                </div>
+                {will ? (
+                  <>
+                    <div>
+                      <label className="text-sm font-semibold">Periode Heartbeat</label>
+                      <p className="text-sm">{Math.floor(will.heartbeatPeriod / (24*60*60))} hari</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Heartbeat Terakhir</label>
+                      <p className="text-sm">{new Date(will.lastHeartbeat * 1000).toLocaleString('id-ID')}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-semibold">Waktu Tersisa</label>
+                      <CountdownTimer targetTime={will.lastHeartbeat + will.heartbeatPeriod} size="sm" />
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">—</p>
+                )}
               </CardContent>
             </Card>
           </div>
 
-          {/* Assets */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>💰 Aset dalam Vault</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{mockWill.assets.sol}</div>
-                  <div className="text-sm text-muted-foreground">SOL</div>
-                </div>
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{mockWill.assets.tokens.length}</div>
-                  <div className="text-sm text-muted-foreground">SPL Tokens</div>
-                </div>
-                <div className="text-center p-4 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{mockWill.assets.nfts.length}</div>
-                  <div className="text-sm text-muted-foreground">NFTs</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Actions */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>⚡ Aksi</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
-                <Button className="w-full" disabled>
-                  💓 Send Heartbeat
-                </Button>
-                <Button variant="outline" className="w-full" disabled>
-                  💰 Manage Assets
-                </Button>
-                <Button variant="outline" className="w-full" disabled>
-                  📤 Withdraw Assets
-                </Button>
-              </div>
-              <p className="text-sm text-muted-foreground mt-4 text-center">
-                Actions akan aktif setelah wallet integration selesai
-              </p>
-            </CardContent>
-          </Card>
+          {will && (
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>⚡ Aksi</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {/* Deposit hanya saat status Created */}
+                  {will.status === 0 && (
+                    <DepositForm willAddress={will.address.toBase58()} />
+                  )}
+                  {/* Heartbeat */}
+                  <HeartbeatButton will={will} />
+                  {/* Withdraw untuk testator saat Created/Active */}
+                  <WithdrawForm will={will} />
+                  {/* Claim untuk beneficiary saat Triggered */}
+                  <ClaimButton will={will} />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-          {/* Transaction History */}
-          <Card>
-            <CardHeader>
-              <CardTitle>📄 Riwayat Transaksi</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {mockWill.transactions.map((tx) => (
-                  <div key={tx.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <div className="font-semibold capitalize">{tx.type}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {tx.timestamp.toLocaleDateString('id-ID')} {tx.timestamp.toLocaleTimeString('id-ID')}
-                      </div>
-                      {'amount' in tx && (
-                        <div className="text-sm">
-                          {tx.amount} {tx.asset}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <StatusBadge status={tx.status} />
-                      <CopyHash hash={tx.signature} label="Tx" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+          {/* Note: Riwayat transaksi belum diimplementasi */}
         </div>
       </div>
     </MainLayout>

@@ -12,7 +12,7 @@ interface WithdrawFormProps {
 }
 
 export function WithdrawForm({ will, onSuccess, className }: WithdrawFormProps) {
-  const { withdrawSOL, transaction } = useWill();
+  const { withdrawSOL, transaction } = useWill(undefined, undefined, will?.address);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleWithdraw = async () => {
@@ -73,7 +73,7 @@ export function WithdrawForm({ will, onSuccess, className }: WithdrawFormProps) 
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Penerima Manfaat:</span>
                 <span className="text-sm font-mono">
-                  {formatAddress(will.beneficiary)}
+                  {formatAddress(will.beneficiary.toBase58())}
                 </span>
               </div>
               

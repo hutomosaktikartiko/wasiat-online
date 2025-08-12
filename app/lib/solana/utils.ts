@@ -12,6 +12,7 @@ export async function getSOLBalance(
     return balance / LAMPORTS_PER_SOL;
   } catch (error) {
     console.error("Error getting SOL balance:", error);
+    // Jangan loop: tetap return 0 tanpa setState di pemanggil
     return 0;
   }
 }

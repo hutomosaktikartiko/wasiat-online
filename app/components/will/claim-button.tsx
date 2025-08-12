@@ -13,7 +13,7 @@ interface ClaimButtonProps {
 }
 
 export function ClaimButton({ will, onSuccess, className }: ClaimButtonProps) {
-  const { claimSOL, transaction } = useWill();
+  const { claimSOL, transaction } = useWill(undefined, undefined, will?.address);
   const { config } = useProgram();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -80,7 +80,7 @@ export function ClaimButton({ will, onSuccess, className }: ClaimButtonProps) {
               <div className="flex justify-between">
                 <span className="text-sm text-gray-600">Pewasiat:</span>
                 <span className="text-sm font-mono">
-                  {formatAddress(will.testator)}
+                  {formatAddress(will.testator.toBase58())}
                 </span>
               </div>
               
