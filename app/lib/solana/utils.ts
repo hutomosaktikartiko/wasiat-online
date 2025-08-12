@@ -9,7 +9,8 @@ export async function getSOLBalance(
 ): Promise<number> {
   try {
     const balance = await connection.getBalance(publicKey);
-    return balance / LAMPORTS_PER_SOL;
+    
+    return balance;
   } catch (error) {
     console.error("Error getting SOL balance:", error);
     // Jangan loop: tetap return 0 tanpa setState di pemanggil
