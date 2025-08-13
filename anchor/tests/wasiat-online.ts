@@ -65,11 +65,23 @@ describe("Wasiat Online Tests", () => {
   });
 
   it("1. Initialize - Successfully initializes the program", async () => {
-    const tokenFeeBps = 250;
-    const nftFeeLamports = new anchor.BN(10_000_000);
-    const minHeartbeatPeriod = 3600;
-    const maxHeartbeatPeriod = 7_776_000;
-    const minHeartbeatInterval = 1; // 1 second for testing
+    // Defaults with env overrides
+    const tokenFeeBps = parseInt(process.env.TOKEN_FEE_BPS ?? "250", 10); // 2.5%
+    const nftFeeLamports = new anchor.BN(
+      process.env.NFT_FEE_LAMPORTS ?? "1000000"
+    ); // 0.001 SOL default
+    const minHeartbeatPeriod = parseInt(
+      process.env.MIN_HEARTBEAT_PERIOD ?? String(60 * 24 * 30),
+      10
+    ); // 2 months
+    const maxHeartbeatPeriod = parseInt(
+      process.env.MAX_HEARTBEAT_PERIOD ?? String(3 * 365 * 24 * 60 * 60),
+      10
+    ); // 3 years
+    const minHeartbeatInterval = parseInt(
+      process.env.MIN_HEARTBEAT_INTERVAL ?? String(60),
+      10
+    ); // 1 minute
 
     try {
       const tx = await program.methods
