@@ -1,6 +1,6 @@
 # System Architecture
 
-Dokumentasi lengkap arsitektur sistem Wasiat Online yang menjelaskan komponen utama, alur kerja, dan interaksi antar sistem.
+Complete documentation of the Online Wills system architecture describing the main components, workflows, and interactions between systems.
 
 ## System Architecture Diagram
 
@@ -56,7 +56,7 @@ graph TB
 
 ## Architecture Overview
 
-Sistem terdiri dari 3 layer utama:
+The system consists of 3 main layers:
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
@@ -67,42 +67,42 @@ Sistem terdiri dari 3 layer utama:
                        └──────────────────┘
 ```
 
-- **Frontend**: Interface untuk pewasiat dan penerima manfaat
-- **Backend**: API layer + monitoring service untuk trigger otomatis
-- **Blockchain**: Core logic + asset storage yang terdesentralisasi
+- **Frontend**: Interface for testators and beneficiaries
+- **Backend**: API layer + monitoring service for automatic triggers
+- **Blockchain**: Core logic + decentralized asset storage
 
 ## Workflow Diagram
 
 ```mermaid
 flowchart TD
-    Start([👤 Pewasiat Mulai]) --> CreateWill[📝 Buat Kontrak Wasiat]
-    CreateWill --> SetBeneficiary[👥 Tentukan Penerima Manfaat]
-    SetBeneficiary --> SetHeartbeat[⏰ Set Timer Heartbeat<br/>ex: 90 hari]
-    SetHeartbeat --> DepositAssets[💰 Setor Aset ke Vault<br/>SOL/SPL/NFT]
+    Start([👤 Start Will]) --> CreateWill[📝 Create Will Contract]
+    CreateWill --> SetBeneficiary[👥 Specify Beneficiary]
+    SetBeneficiary --> SetHeartbeat[⏰ Set Heartbeat Timer<br/>e.g., 90 days]
+    SetHeartbeat --> DepositAssets[💰 Deposit Assets to Vault<br/>SOL/SPL/NFT]
 
-    DepositAssets --> ActiveWill{📋 Wasiat Aktif}
-    ActiveWill --> Heartbeat[💓 Kirim Heartbeat]
-    Heartbeat --> ResetTimer[🔄 Reset Timer ke 90 hari]
+    DepositAssets --> ActiveWill{📋 Active Will}
+    ActiveWill --> Heartbeat[💓 Send Heartbeat]
+    Heartbeat --> ResetTimer[🔄 Reset Timer to 90 days]
     ResetTimer --> ActiveWill
 
-    ActiveWill --> TimerExpired{⏳ Timer Habis?<br/>90 hari tanpa heartbeat}
-    TimerExpired -->|Tidak| ActiveWill
-    TimerExpired -->|Ya| KeeperTrigger[🤖 Keeper Mendeteksi<br/>& Trigger Wasiat]
+    ActiveWill --> TimerExpired{⏳ Timer Expired?<br/>90 days without heartbeat}
+    TimerExpired -->|No| ActiveWill
+    TimerExpired -->|Yes| KeeperTrigger[🤖 Keeper Detects<br/>& Triggers Wills]
 
     KeeperTrigger --> TriggeredState[🚨 Status: TRIGGERED]
-    TriggeredState --> BeneficiaryNotified[📢 Penerima Manfaat<br/>Dapat Mengklaim]
+    TriggeredState --> BeneficiaryNotified[📢 Beneficiaries<br/>Can Claim]
 
-    BeneficiaryNotified --> ClaimAssets[🎯 Klaim Aset]
-    ClaimAssets --> VerifyIdentity[✅ Verifikasi Identity<br/>Penerima Manfaat]
-    VerifyIdentity --> DeductFee[💸 Potong Biaya Layanan]
-    DeductFee --> TransferAssets[📤 Transfer Aset<br/>ke Penerima Manfaat]
-    TransferAssets --> Complete([✅ Selesai])
+    BeneficiaryNotified --> ClaimAssets[🎯 Claim Assets]
+    ClaimAssets --> VerifyIdentity[✅ Verify the Identity<br/>of the Beneficiary]
+    VerifyIdentity --> DeductFee[💸 Deduct Service Fee]
+    DeductFee --> TransferAssets[📤 ]
+    TransferAssets --> Complete([✅ Completed])
 
     %% Withdrawal path
-    ActiveWill --> Withdraw[💼 Pewasiat Tarik Aset]
-    Withdraw --> VerifyTestator[🔐 Verifikasi Pewasiat]
-    VerifyTestator --> ReturnAssets[📥 Kembalikan Aset]
-    ReturnAssets --> WillCancelled([❌ Wasiat Dibatalkan])
+    ActiveWill --> Withdraw[💼 Will Withdraw Assets]
+    Withdraw --> VerifyTestator[🔐 Verify Will]
+    VerifyTestator --> ReturnAssets[📥 Return Assets]
+    ReturnAssets --> WillCancelled([❌ Will Cancelled])
 
     style Start fill:#e1f5fe
     style Complete fill:#e8f5e8
@@ -115,47 +115,47 @@ flowchart TD
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Created: Buat Wasiat<br/>create_will()
+    [*] --> Created: Create a Will<br/>create_will()
 
-    Created --> Active: Setor Aset<br/>deposit_assets()
+    Created --> Active: Deposit Assets<br/>deposit_assets()
 
     Active --> Active: Heartbeat<br/>send_heartbeat()
 
-    Active --> Triggered: Timer Habis<br/>keeper_trigger()
+    Active --> Triggered: Timer Expires<br/>keeper_trigger()
 
-    Active --> Withdrawn: Pewasiat Tarik<br/>withdraw_assets()
+    Active --> Withdrawn: Testator Withdraws<br/>withdraw_assets()
 
-    Triggered --> Claimed: Penerima Manfaat Klaim<br/>claim_assets()
+    Triggered --> Claimed: Beneficiary Claims<br/>claim_assets()
 
-    Withdrawn --> [*]: Wasiat Berakhir
-    Claimed --> [*]: Wasiat Berakhir
+    Withdrawn --> [*]: Will Expires
+    Claimed --> [*]: Will Expires
 
     note right of Created
-        Wasiat telah dibuat
-        Belum ada aset
+        Will has been created
+        No assets yet
     end note
 
     note right of Active
-        Aset tersimpan di vault
-        Timer heartbeat aktif
-        Pewasiat dapat heartbeat
+        Assets are stored in the vault
+        Heartbeat timer is active
+        Testator receives a heartbeat
     end note
 
     note right of Triggered
-        Timer heartbeat habis
-        Penerima manfaat bisa klaim
-        Aset terkunci untuk pewasiat
+        Heartbeat timer expires
+        Beneficiary can claim
+        Assets are locked for the testator
     end note
 
     note right of Claimed
-        Aset sudah diklaim
-        Biaya layanan dipotong
-        Wasiat selesai
+        Assets have been Claimed
+        Service fee deducted
+        Will completed
     end note
 
     note right of Withdrawn
-        Pewasiat menarik aset
-        Wasiat dibatalkan
+        Testator withdraws assets
+        Will revoked
     end note
 ```
 
@@ -163,58 +163,58 @@ stateDiagram-v2
 
 ```mermaid
 sequenceDiagram
-    participant T as 👤 Pewasiat
+    participant T as 👤 Testator
     participant W as 🌐 Web dApp
     participant P as 📜 Smart Contract
     participant V as 🏦 Vault
     participant K as 🤖 Keeper
-    participant B as 👥 Penerima Manfaat
+    participant B as 👥 Beneficiary
     participant F as 💰 Fee Vault
 
-    Note over T,F: 1. Pembuatan Wasiat
-    T->>W: Buka aplikasi
-    T->>W: Input data wasiat<br/>(beneficiary, heartbeat period)
+    Note over T,F: 1. Creating a Will
+    T->>W: Open the application
+    T->>W: Enter will data (beneficiary, heartbeat period)
     W->>P: create_will()
-    P->>V: Buat PDA Vault
-    P-->>W: Will ID & Vault Address
-    W-->>T: Konfirmasi wasiat dibuat
+    P->>V: Create PDA Vault
+    P->>W: Will ID & Vault Address
+    W->>T: Confirm will creation
 
-    Note over T,F: 2. Pendanaan Aset
-    T->>W: Deposit aset (SOL/SPL/NFT)
+    Note over T,F: 2. Asset Funding
+    T->>W: Deposit assets (SOL/SPL/NFT)
     W->>P: deposit_assets()
-    P->>V: Transfer aset ke vault
-    P-->>W: Konfirmasi deposit
-    W-->>T: Aset tersimpan
+    P->>V: Transfer assets to vault
+    P-->>W: Confirm deposit
+    W-->>T: Deposited assets
 
-    Note over T,F: 3. Aktivitas Heartbeat
-    loop Setiap < 90 hari
-        T->>W: Klik tombol heartbeat
-        W->>P: send_heartbeat()
-        P->>P: Reset timer
-        P-->>W: Timer direset
-        W-->>T: Heartbeat berhasil
+    Note over T,F: 3. Heartbeat Activity
+    Loop Every < 90 days
+    T->>W: Click the heartbeat button
+    W->>P: send_heartbeat()
+    P->>P: Reset timer
+    P-->>W: Timer reset
+    W-->>T: Heartbeat successful
     end
 
-    Note over T,F: 4. Trigger Otomatis
-    K->>P: Cek semua wasiat
+    Note over T,F: 4. Automatic Trigger
+    K->>P: Check all wills
     K->>P: heartbeat_expired?
-    P-->>K: Ya, timer habis
+    P-->>K: Yes, timer expired
     K->>P: trigger_will()
     P->>P: Set status = TRIGGERED
-    P-->>K: Status diubah
+    P-->>K: Status changed
 
-    Note over T,F: 5. Klaim Aset
-    B->>W: Cek status wasiat
+    Note over T,F: 5. Claim Assets
+    B->>W: Check will status
     W->>P: get_will_status()
     P-->>W: Status: TRIGGERED
-    W-->>B: Dapat mengklaim aset
-    B->>W: Klik klaim aset
+    W-->>B: Claim assets
+    B->>W: Click claim assets
     W->>P: claim_assets()
-    P->>V: Ambil semua aset
-    P->>F: Transfer biaya layanan
-    V->>B: Transfer aset ke beneficiary
-    P-->>W: Klaim berhasil
-    W-->>B: Aset diterima
+    P->>V: Retrieve all assets
+    P->>F: Transfer service fee
+    V->>B: Transfer assets to beneficiary
+    P-->>W: Claim successful
+    W-->>B: Assets received
 ```
 
 ## Component Details

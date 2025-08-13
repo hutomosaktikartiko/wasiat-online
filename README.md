@@ -1,55 +1,56 @@
 # Wasiat Online — On‑chain Crypto Inheritance Vault
 
-_Disclaimer: Produk ini mengotomasi transfer warisan aset kripto dan bukan dokumen/layanan hukum._
+_Disclaimer: This product automates the transfer of crypto asset inheritance and is not a legal document/service._
 
-## Tentang Project Ini
+## About This Project
 
-**Menciptakan standar baru yang aman, transparan, dan terotomatisasi untuk pewarisan aset digital di blockchain, memastikan tidak ada lagi aset kripto yang hilang selamanya karena sebuah tragedi.**
+**Creating a new, secure, transparent, and automated standard for digital asset inheritance on the blockchain, ensuring no more crypto assets are lost forever due to tragedy.**
 
-## Keunggulan
+## Benefits
 
-- **Aman**: Pengguna memegang kendali penuh atas kunci pribadi (private key) mereka; aset diamankan oleh logika kontrak pintar (smart contract).
-- **Otomatis**: Proses transfer aset terjadi secara otomatis berdasarkan aturan yang telah ditetapkan, menghilangkan kebutuhan akan perantara yang mahal dan proses hukum yang panjang.
-- **Efisien & Terjangkau**: Dibangun di atas Solana, biaya transaksi untuk membuat dan mengelola wasiat menjadi sangat murah dan prosesnya terjadi hampir seketika.
+- **Secure**: Users retain full control of their private keys; assets are secured by smart contract logic.
+- **Automatic**: Asset transfers occur automatically based on predefined rules, eliminating the need for expensive intermediaries and lengthy legal processes.
+- **Efficient & Affordable**: Built on Solana, transaction costs for creating and managing wills are extremely low and the process is nearly instantaneous.
 
-## Pengguna
+## Users
 
-- **Pewasiat (The Testator)**: Pemilik aset yang akan menggunakan aplikasi kita untuk membuat wasiat, menetapkan aturan pemicu ("heartbeat"), dan menyetor aset mereka ke dalam brankas (vault) yang aman.
-- **Penerima Manfaat (The Beneficiary)**: Pihak yang ditunjuk oleh Pewasiat, yang akan menggunakan aplikasi kita untuk memverifikasi status wasiat dan mengklaim aset setelah kondisi pemicu terpenuhi.
+- **The Testator**: Asset owners who will use our app to create wills, set trigger rules ("heartbeats"), and deposit their assets into a secure vault.
 
-## Alur Kerja
+- **The Beneficiary**: The party appointed by the Will, who will use our application to verify the will status and claim assets once the trigger conditions are met.
 
-- **Pembuatan**: Pewasiat membuat sebuah "Kontrak Wasiat" melalui aplikasi kita, menunjuk satu Penerima Manfaat, dan menentukan durasi "timer heartbeat" (misalnya, 90 hari).
-- **Pendanaan**: Pewasiat mentransfer aset digital (SOL, token, atau NFT) ke dalam brankas on-chain yang terasosiasi dengan kontrak wasiatnya.
-- **Aktivitas ("Heartbeat")**: Pewasiat secara berkala menekan satu tombol di aplikasi untuk mengirim transaksi "heartbeat", yang membuktikan bahwa ia masih aktif dan mengatur ulang timer ke 90 hari.
-- **Pemicuan (Trigger)**: Jika Pewasiat tidak mengirim "heartbeat" dalam 90 hari, sebuah layanan otomatis (disebut "keeper") akan mendeteksi ini dan memanggil fungsi untuk mengubah status kontrak menjadi "Triggered".
-- **Klaim Aset**: Penerima Manfaat, setelah melihat status wasiat telah "Triggered", dapat menekan tombol "Klaim Aset". Kontrak pintar secara otomatis akan memverifikasi identitasnya dan mentransfer seluruh aset dari brankas ke dompet Penerima Manfaat.
+## Workflow
 
-## Komponen Utama
+- **Creation**: The testator creates a "Will Contract" through our app, designates a Beneficiary, and specifies a "heartbeat timer" duration (e.g., 90 days).
+- **Funding**: The testator transfers digital assets (SOL, tokens, or NFTs) into the on-chain vault associated with their will contract.
+- **Activity ("Heartbeat")**: The testator periodically presses a button in the app to send a "heartbeat" transaction, which proves they are still active and resets the timer to 90 days.
+- **Trigger**: If the testator does not send a "heartbeat" within 90 days, an automated service (called a "keeper") detects this and calls a function to change the contract status to "Triggered".
+- **Asset Claim**: The beneficiary, after seeing that the will status has been "Triggered", can press the "Claim Asset" button. The smart contract will automatically verify their identity and transfer all assets from the vault to the Beneficiary's wallet.
 
-- **Aplikasi Web (dApp)**: Antarmuka pengguna yang simpel dan intuitif untuk Pewasiat dan Penerima Manfaat.
-- **Program On-Chain (Smart Contract)**: Otak dari layanan yang ditulis dalam Rust dan di-deploy di Solana. Program ini akan mengelola semua logika, status wasiat, dan hak akses.
-- **Brankas Aset (PDA Vault)**: Akun khusus on-chain (Program Derived Address) untuk setiap wasiat, yang berfungsi sebagai brankas untuk menyimpan aset dengan aman.
-- **Layanan Keeper (Off-chain)**: Sebuah skrip otomatis yang berjalan di server untuk memonitor semua kontrak wasiat dan memanggil fungsi pemicu jika timer heartbeat telah berakhir.
+## Key Components
+
+- **Web Application (dApp)**: A simple and intuitive user interface for the Will and the Beneficiary.
+- **On-Chain Program (Smart Contract)**: The brain of the service, written in Rust and deployed on Solana. This program will manage all logic, will status, and access rights.
+- **Asset Vault (PDA Vault)**: A dedicated on-chain account (Program Derived Address) for each will, which serves as a vault for securely storing assets.
+- **Keeper Service (Off-chain)**: An automated script running on the server to monitor all will contracts and invoke a trigger function when a heartbeat timer expires.
 
 ## Protocol POC Requirements
 
-- Protokol harus menyediakan fungsi bagi seorang pengguna ("Pewasiat") untuk membuat sebuah Kontrak Wasiat on-chain.
-- Protokol harus mengizinkan Pewasiat untuk menunjuk satu alamat Solana lain sebagai "Penerima Manfaat".
-- Protokol harus mengizinkan Pewasiat untuk menyetor (deposit) berbagai jenis aset ke dalam brankas wasiat, termasuk SOL, SPL Token, dan NFT.
-- Protokol harus mengizinkan Pewasiat untuk menetapkan periode waktu "heartbeat" (misalnya 90 hari) sebagai kondisi pemicu (trigger).
-- Protokol harus menyediakan fungsi "heartbeat" yang dapat dipanggil oleh Pewasiat untuk membuktikan aktivitas dan mengatur ulang periode waktu pemicu.
-- Protokol harus memiliki status "Triggered" yang aktif jika periode heartbeat telah terlampaui.
-- Protokol harus mengizinkan Penerima Manfaat yang sah untuk mengklaim seluruh aset dari wasiat yang telah berstatus "Triggered".
-- Protokol harus mengenakan biaya layanan yang kecil (persentase akan ditentukan kemudian) pada saat aset berhasil diklaim.
-- Protokol harus memiliki brankas (vault) terpisah untuk menyimpan akumulasi biaya layanan yang terkumpul.
-- Protokol harus memastikan hanya Pewasiat yang dapat mengubah detail wasiat atau menarik kembali asetnya, selama wasiat belum berstatus "Triggered".
+- The protocol must provide functionality for a user ("Testamenter") to create an on-chain Will Contract.
+- The protocol must allow the Testator to designate another Solana address as a "Beneficiary."
+- The protocol must allow the Testator to deposit various types of assets into the testamentary vault, including SOL, SPL Tokens, and NFTs.
+- The protocol must allow the Testator to set a "heartbeat" time period (e.g., 90 days) as a trigger condition.
+- The protocol must provide a "heartbeat" function that the Testator can call to verify activity and reset the trigger time period.
+- The protocol must have a "Triggered" status that activates when the heartbeat period has elapsed.
+- The protocol must allow the authorized Beneficiary to claim all assets from a "Triggered" will.
+- The protocol must charge a small service fee (percentage to be determined later) upon successful asset claim.
+- The protocol must have a separate vault to store accumulated service fees.
+- The protocol must ensure that only the testator can change the will details or withdraw assets, as long as the will has not been "Triggered."
 
 ## Roadmap
 
 - **MVP**: Single beneficiary, heartbeat + trigger + claim.
-- **V2**: Permisionless trigger bounty, multi-beneficiary dengan presentase, reminder notifikasi.
-- **v3**: Guardian/multisig heartbeat, audit + program upgrade lock, fitur fee konfigurabel.
+- **V2**: Permissionless trigger bounty, multi-beneficiary with percentage, notification reminder.
+- **v3**: Guardian/multisig heartbeat, audit + program upgrade lock, configurable fee feature.
 
 ## Tech Stack
 
@@ -63,9 +64,9 @@ _Disclaimer: Produk ini mengotomasi transfer warisan aset kripto dan bukan dokum
 
 📚 **Detailed Documentation:**
 
-- [🏗️ System Architecture](docs/ARCHITECTURE.md) - Diagrams dan arsitektur sistem
-- [🗄️ Database Schema](docs/DATABASE_SCHEMA.md) - On-chain dan off-chain data structure
-- [🛣️ Development Roadmap](docs/ROADMAP.md) - Planning dan milestones
+- [🏗️ System Architecture](docs/ARCHITECTURE.md) - Diagrams and system architecture
+- [🗄️ Database Schema](docs/DATABASE_SCHEMA.md) - On-chain and off-chain data structures
+- [🛣️ Development Roadmap](docs/ROADMAP.md) - Planning and milestones
 
 ## Quick Start
 
