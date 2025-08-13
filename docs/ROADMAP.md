@@ -16,6 +16,7 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 - ✅ **SOL claim functionality** - Beneficiary dapat claim SOL setelah triggered
 - ✅ **Service fee collection** - Percentage-based fees untuk sustainability
 - ✅ **Emergency pause mechanism** - Admin dapat pause system jika diperlukan
+- ✅ **Admin Dashboard** - Edit config dan lihat analytics
 
 ### Technical Implementation
 
@@ -26,11 +27,11 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Deliverables
 
-- [ ] **Anchor program deployed to devnet** - SOL-only instructions
-- [ ] **Frontend dApp dengan basic UI** - Create, deposit, heartbeat, claim SOL
-- [ ] **Go backend dengan REST API** - Will monitoring & status tracking
-- [ ] **Keeper service running** - Automated will triggering
-- [ ] **Basic documentation** - User guides & API docs
+- [🔄] **Anchor program deployed to devnet** - SOL-only instructions
+- [✅] **Frontend dApp dengan basic UI** - Create, deposit, heartbeat, claim SOL
+- [🔄] **Go backend dengan REST API** - Will monitoring & status tracking
+- [✅] **Keeper service running** - Automated will triggering
+- [✅] **Basic documentation** - User guides & API docs
 
 ### Success Metrics
 
@@ -269,17 +270,6 @@ struct Will {
 ## Current Status
 
 🎯 **Currently in**: Phase 1 (SOL-Only MVP Development)  
-📅 **Last Updated**: August 2025  
-🚀 **Next Milestone**: Complete SOL-only MVP deployment to devnet
-
-### Immediate Next Steps
-
-1. ✅ **Complete core Anchor instructions** (SOL-only)
-2. ✅ **Implement withdraw_sol()** functionality
-3. 🔄 **Build basic React frontend** (SOL operations)
-4. 🔄 **Implement Go backend REST API**
-5. 🔄 **Deploy keeper service**
-6. 🔄 **Integration testing** end-to-end
-7. 🔄 **Deploy to devnet**
+📅 **Last Updated**: August 2025
 
 **For detailed technical implementation, see [DATABASE_SCHEMA.md](DATABASE_SCHEMA.md) and [ARCHITECTURE.md](ARCHITECTURE.md)**

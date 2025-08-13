@@ -90,5 +90,7 @@ pub fn handler(ctx: Context<WithdrawSol>) -> Result<()> {
     // update will status
     will.status = WillStatus::Withdrawn;
 
+    // TODO: Re-create Will: with this seeds mechanism, user cannot re-create new will with same beneficiary after withdraw
+
     Ok(())
 }
