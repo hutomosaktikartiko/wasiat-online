@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Keeper Service",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/backend/cmd/keeper",
+      "cwd": "${workspaceFolder}/backend",
+    //   "env": {
+    //     "SOLANA_RPC_URL": "https://api.devnet.solana.com",
+    //     "KEEPER_PRIVATE_KEY": "your_keeper_private_key_base58_here"
+    //   },
+      "args": [],
+      "showLog": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug Frontend",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/react-router",
+      "args": ["dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+    //   "env": {
+    //     "NODE_ENV": "development"
+    //   }
+    },
+    {
+      "name": "Debug Anchor Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/anchor/node_modules/.bin/anchor",
+      "args": ["test"],
+      "cwd": "${workspaceFolder}/anchor",
+      "console": "integratedTerminal"
+    }
+  ]
+}
