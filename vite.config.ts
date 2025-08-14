@@ -16,6 +16,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ["buffer"],
   },
+  build: {
+    outDir: "build/client",
+  },
   ssr: {
     noExternal: ["@solana/wallet-adapter-react", "@solana/wallet-adapter-react-ui"],
   },

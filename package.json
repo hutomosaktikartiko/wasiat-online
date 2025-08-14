@@ -6,6 +6,7 @@
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
+    "preview": "vite preview --outDir build/client",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-toast": "^1.2.14",
+    "@react-router/cloudflare": "^7.8.0",
     "@react-router/node": "^7.7.1",
     "@react-router/serve": "^7.7.1",
     "@solana/wallet-adapter-base": "^0.9.27",
@@ -39,7 +41,8 @@
     "react-hot-toast": "^2.5.2",
     "react-router": "^7.7.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "wrangler": "^4.30.0"
   },
   "devDependencies": {
     "@react-router/dev": "^7.7.1",
