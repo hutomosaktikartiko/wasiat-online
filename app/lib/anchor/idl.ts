@@ -1,5 +1,4 @@
-import idl from "../../../anchor/target/idl/wasiat_online.json";
-import type { WasiatOnline } from "../../../anchor/target/types/wasiat_online";
+import idl from "./idls/wasiat_online.json";
 
+export type WasiatOnline = typeof idl;
 export const IDL = idl as WasiatOnline;
-export type { WasiatOnline };

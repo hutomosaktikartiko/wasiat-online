@@ -1,16 +1,12 @@
 import { clusterApiUrl } from "@solana/web3.js";
 
-// Program ID untuk Wasiat Online
+// Program ID for Wasiat Online
 export const PROGRAM_ID = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw";
 
 // Network configuration
 const getNetworkConfig = () => {
-  // Default berdasarkan mode
-  if (import.meta.env.MODE === "production") {
-    return { network: "mainnet-beta", endpoint: clusterApiUrl("mainnet-beta") };
-  }
 
-  // Jika ada custom RPC endpoint
+  // If there is a custom RPC endpoint
   const customRpcEndpoint = import.meta.env.RPC_ENDPOINT;
   if (customRpcEndpoint) {
     if (customRpcEndpoint.includes("devnet")) {
@@ -23,11 +19,16 @@ const getNetworkConfig = () => {
       return { network: "testnet", endpoint: customRpcEndpoint };
     }
 
-    // Default untuk custom endpoint
+    // Default for custom endpoint
     return { network: "custom", endpoint: customRpcEndpoint };
   }
+
+  // Default based on mode
+  if (import.meta.env.MODE === "production") {
+    return { network: "mainnet-beta", endpoint: clusterApiUrl("mainnet-beta") };
+  }
   
-  // Default ke test network untuk development
+  // Default to test network for development
   return { network: "testnet", endpoint: "http://localhost:8899" };
 };
 
