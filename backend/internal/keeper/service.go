@@ -18,6 +18,7 @@ import (
 type SolanaClient interface {
 	GetProgramAccounts(ctx context.Context) ([]*rpc.KeyedAccount, error)
 	TriggerWill(ctx context.Context, willPubkey solana.PublicKey) (string, error)
+	GetSolanaTime(ctx context.Context) (int64, error)
 }
 
 type Service struct {
@@ -63,11 +64,21 @@ func (s *Service) ScanAndTriggerWills() error {
 			continue
 		}
 
-		currentTime := time.Now().Unix()
+		// Get Solana clock for accurate time comparison
+		solanaTime, err := s.client.GetSolanaTime(ctx)
+		if err != nil {
+			log.Printf("Failed to get Solana time: %v", err)
+			errorCount++
+			continue
+		}
 		expiryTime := will.LastHeartbeat + int64(will.HeartbeatPeriod)
-		gracePeriod := int64(300) // 5 minutes
+		gracePeriod := int64(300) // 5 minutes (same as smart contract TRIGGER_GRACE_PERIOD)
 
-		if currentTime >= expiryTime+gracePeriod {
+		log.Printf("Will %s: solanaTime=%d, lastHeartbeat=%d, period=%d, expiry=%d, withGrace=%d",
+			account.Pubkey, solanaTime, will.LastHeartbeat, will.HeartbeatPeriod, expiryTime, expiryTime+gracePeriod)
+
+		// Check if expired
+		if solanaTime >= expiryTime+gracePeriod {
 			log.Printf("Will %s is expired, triggering...", account.Pubkey)
 
 			sig, err := s.client.TriggerWill(ctx, account.Pubkey)

@@ -68,30 +68,40 @@ func (c *Client) TriggerWill(ctx context.Context, willPubkey solana.PublicKey) (
 		return "", fmt.Errorf("failed to derive config PDA: %v", err)
 	}
 
-	instruction := solana.NewInstruction(
-		c.programID,
-		solana.AccountMetaSlice{
-			solana.NewAccountMeta(c.keeper.PublicKey(), true, true),
-			solana.NewAccountMeta(willPubkey, false, true),
-			solana.NewAccountMeta(configPDA, false, false),
+	// Create instruction data with correct discriminator from IDL
+	instructionData := []byte{50, 69, 144, 208, 215, 69, 29, 173}
+
+	recent, err := c.rpcClient.GetLatestBlockhash(ctx, rpc.CommitmentFinalized)
+	if err != nil {
+		return "", fmt.Errorf("failed to get latest blockhash: %v", err)
+	}
+
+	// Create transaction with explicit signers
+	tx := &solana.Transaction{
+		Message: solana.Message{
+			Header: solana.MessageHeader{
+				NumRequiredSignatures:       1,
+				NumReadonlySignedAccounts:   0,
+				NumReadonlyUnsignedAccounts: 1,
+			},
+			AccountKeys: []solana.PublicKey{
+				c.keeper.PublicKey(), // signer
+				willPubkey,           // writable
+				configPDA,            // readonly
+				c.programID,          // program
+			},
+			RecentBlockhash: recent.Value.Blockhash,
+			Instructions: []solana.CompiledInstruction{
+				{
+					ProgramIDIndex: 3,
+					Accounts:       []uint16{0, 1, 2},
+					Data:           instructionData,
+				},
+			},
 		},
-		[]byte{5}, // trigger_will instruction discriminator
-	)
-
-	recent, err := c.rpcClient.GetRecentBlockhash(ctx, rpc.CommitmentFinalized)
-	if err != nil {
-		return "", fmt.Errorf("failed to get recent blockhash: %v", err)
 	}
 
-	tx, err := solana.NewTransaction(
-		[]solana.Instruction{instruction},
-		recent.Value.Blockhash,
-		solana.TransactionPayer(c.keeper.PublicKey()),
-	)
-	if err != nil {
-		return "", fmt.Errorf("failed to create transaction: %v", err)
-	}
-
+	// Sign transaction
 	_, err = tx.Sign(func(key solana.PublicKey) *solana.PrivateKey {
 		if key.Equals(c.keeper.PublicKey()) {
 			return &c.keeper
@@ -115,4 +125,12 @@ func (c *Client) TriggerWill(ctx context.Context, willPubkey solana.PublicKey) (
 	}
 
 	return sig.String(), nil
+}
+
+func (c *Client) GetAccountInfo(ctx context.Context, pubkey solana.PublicKey) (*rpc.GetAccountInfoResult, error) {
+	return c.rpcClient.GetAccountInfo(ctx, pubkey)
+}
+
+func (c *Client) GetSolanaTime(ctx context.Context) (int64, error) {
+	return GetSolanaTime(ctx, c.rpcClient)
 }
