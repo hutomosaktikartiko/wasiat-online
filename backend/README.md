@@ -4,11 +4,11 @@ Backend service that functions as a keeper to monitor and trigger will who have 
 
 ## Features
 
-- ✅ Scan all Will Accounts every 6 hours
-- ✅ Trigger Will that has expired automatically
-- ✅ Logging all activities to SQLite Database
-- ✅ Clean Architecture with Separation of Concenses
-- ✅ Docker Support for Deployment
+- Scan all Will Accounts every 6 hours
+- Trigger Will that has expired automatically
+- Logging all activities to SQLite Database
+- Clean Architecture with Separation of Concenses
+- Docker Support for Deployment
 
 ## Project Structure
 

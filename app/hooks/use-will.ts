@@ -8,7 +8,6 @@ import { useWallet } from "./use-wallet";
 import { useTransaction } from "./use-transaction";
 import { WillStatus } from "../types/will";
 import type { 
-  Will, 
   WillWithStatus, 
   CreateWillParams, 
   WillOperationResult 

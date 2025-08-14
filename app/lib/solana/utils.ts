@@ -1,4 +1,5 @@
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { confirmTransaction } from "../../hooks/use-transaction";
 
 /**
  * Get SOL balance for a public key
@@ -18,39 +19,6 @@ export async function getSOLBalance(
   }
 }
 
-/**
- * Wait for transaction confirmation
- */
-export async function confirmTransaction(
-  connection: Connection,
-  signature: string,
-  timeout = 60000
-): Promise<boolean> {
-  try {
-    const startTime = Date.now();
-    
-    while (Date.now() - startTime < timeout) {
-      const result = await connection.getSignatureStatus(signature);
-      
-      if (result.value) {
-        if (result.value.err) {
-          throw new Error(`Transaction failed: ${result.value.err}`);
-        }
-        if (result.value.confirmationStatus === "confirmed" || result.value.confirmationStatus === "finalized") {
-          return true;
-        }
-      }
-      
-      // Wait 1 second before checking again
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-    
-    throw new Error("Transaction confirmation timeout");
-  } catch (error) {
-    console.error("Error confirming transaction:", error);
-    return false;
-  }
-}
 
 /**
  * Airdrop SOL for testing (devnet only)

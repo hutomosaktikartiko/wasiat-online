@@ -1,13 +1,13 @@
 # Frontend Design & Architecture
 
-Dokumentasi lengkap rancangan frontend untuk aplikasi Wasiat Online - crypto inheritance dApp built with React Router v7.
+Complete frontend design documentation for the Online Will application - a crypto inheritance dApp built with React Router v7.
 
 ## 📋 Overview
 
-Frontend dApp yang memungkinkan users untuk:
+A frontend dApp that allows users to:
 
-- **Testator (Pewasiat)**: Membuat will, deposit SOL, send heartbeat, withdraw SOL
-- **Beneficiary (Penerima Manfaat)**: Check will status, claim SOL setelah triggered
+- **Testator**: Create a will, deposit SOL, send a heartbeat, withdraw SOL
+- **Beneficiary**: Check will status, claim SOL after it is triggered
 
 ## 🏗️ System Architecture
 
@@ -41,7 +41,7 @@ graph TB
 
 ```
 app/
-├── components/          # Reusable UI components
+├── components/         # Reusable UI components
 │   ├── ui/             # Basic UI components (buttons, inputs, etc.)
 │   │   ├── button.tsx
 │   │   ├── input.tsx
@@ -129,14 +129,14 @@ app/
 
 ### Selected: **shadcn/ui + Tailwind CSS**
 
-**Alasan:**
+**Reason:**
 
-- ✅ Copy-paste components - Full ownership
-- ✅ Highly customizable dengan Tailwind
-- ✅ Accessible (built on Radix UI)
-- ✅ Modern React patterns
-- ✅ Small bundle size
-- ✅ Perfect untuk crypto dApps
+- Copy-paste components - Full ownership
+- Highly customizable dengan Tailwind
+- Accessible (built on Radix UI)
+- Modern React patterns
+- Small bundle size
+- Perfect untuk crypto dApps
 
 ### Dependencies:
 
@@ -263,15 +263,22 @@ const useWallet = () => {
   // Connection, balance, account info
 };
 
-// Program interactions
-const useProgram = () => {
-  // IDL loading, RPC calls, account fetching
-};
-
 // Will-specific operations
 const useWill = (testator?: PublicKey) => {
-  // CRUD operations untuk will
+  // CRUD operations for will
   // fetchWills, createWill, depositSOL, etc.
+};
+
+// Wills Multiple operations
+const useWill = (testator?: PublicKey) => {
+  // CRUD operations for wills
+  // fetchWills, getWillsByStatus, getWillsNeedingAttention
+};
+
+// Will Search operations
+const useWill = (testator?: PublicKey) => {
+  // Get spesific will by address
+  // searchWill
 };
 
 // Transaction handling
@@ -307,10 +314,10 @@ const endpoint = clusterApiUrl(network);
 
 ### Security Considerations:
 
-1. **Transaction Signing**: Semua operasi membutuhkan user approval
-2. **PDA Verification**: Validate semua derived addresses
-3. **Amount Validation**: Client-side validation sebelum transaction
-4. **Error Handling**: Comprehensive error messages untuk user
+1. **Transaction Signing**: All operations require user approval
+2. **PDA Verification**: Validate all derived addresses
+3. **Amount Validation**: Client-side validation before the transaction
+4. **Error Handling**: Comprehensive error messages for the user
 
 ## 📝 Type Definitions
 
@@ -376,25 +383,25 @@ export interface WillCardProps {
 ### 🌟 **Landing Page Journey**:
 
 1. **Hero Section** → Value proposition & primary CTAs
-2. **Features Section** → Key benefits (Aman, Otomatis, Efisien)
+2. **Features Section** → Key benefits (Safe, Automatic, Efficient)
 3. **How It Works** → Step-by-step explanation
 4. **Call to Action** → Connect wallet & get started
 
-### 👤 **Testator Journey** (Pewasiat):
+### 👤 **Testator Journey** (Testator):
 
-1. **Landing** (`/`) → Learn about Wasiat Online
+1. **Landing** (`/`) → Learn about Wills Online
 2. **Connect Wallet** → Authentication via wallet adapter
-3. **Dashboard** (`/dashboard/testator`) → Overview wills yang sudah dibuat
-4. **Create Will** (`/will/create`) → Form buat will baru
+3. **Dashboard** (`/dashboard/testator`) → Overview of created wills
+4. **Create Will** (`/will/create`) → Form to create a new will
 5. **Will Details** (`/will/[id]`) → Manage will (deposit, heartbeat, withdraw)
 
-### 👥 **Beneficiary Journey** (Penerima Manfaat):
+### 👥 **Beneficiary Journey** (Beneficiary):
 
 1. **Landing** (`/`) → Understand the inheritance process
 2. **Connect Wallet** → Authentication via wallet adapter
-3. **Check Status** (`/beneficiary/check`) → Input will address atau scan QR
-4. **Will Status** (`/will/[id]`) → Lihat detail will
-5. **Claim Assets** (`/beneficiary/claim`) → Klaim jika sudah triggered
+3. **Check Status** (`/beneficiary/check`) → Input will address or scan QR
+4. **Will Status** (`/will/[id]`) → View will details
+5. **Claim Assets** (`/beneficiary/claim`) → Claim if it has been triggered
 
 ## 🌟 Landing Page Design
 
@@ -402,171 +409,21 @@ export interface WillCardProps {
 
 ```typescript
 interface HeroSectionProps {
-  title: "Wasiat Online — Crypto Inheritance Vault";
-  subtitle: "Standar baru yang aman, transparan, dan terotomatisasi untuk pewarisan aset digital di blockchain";
-  ctaPrimary: "Mulai Buat Wasiat";
-  ctaSecondary: "Pelajari Lebih Lanjut";
+  title: "Online Wills — Crypto Inheritance Vault";
+  subtitle: "A new, secure, transparent, and automated standard for digital asset inheritance on the blockchain";
+  ctaPrimary: "Start Creating a Will";
+  ctaSecondary: "Learn More";
   backgroundImage?: string;
 }
 ```
 
 **Key Elements:**
 
-- 🎯 **Value Proposition** yang jelas
+- 🎯 Clear **Value Proposition**
 - 🔒 **Trust indicators** (security, transparency)
-- 📱 **Primary CTA** untuk create will
-- 📚 **Secondary CTA** untuk learn more
+- 📱 **Primary CTA** for create will
+- 📚 **Secondary CTA** to learn more
 - 🎨 **Hero image/animation** showing inheritance flow
-
-### Features Section
-
-```typescript
-const features = [
-  {
-    icon: "🔒",
-    title: "Aman",
-    description:
-      "Pengguna memegang kendali penuh atas private key, aset diamankan oleh smart contract",
-    details: ["Private key control", "Smart contract security", "Audited code"],
-  },
-  {
-    icon: "🤖",
-    title: "Otomatis",
-    description:
-      "Transfer aset terjadi otomatis berdasarkan aturan, tanpa perantara mahal",
-    details: ["Automated triggers", "No intermediaries", "Instant execution"],
-  },
-  {
-    icon: "⚡",
-    title: "Efisien & Terjangkau",
-    description:
-      "Dibangun di Solana dengan biaya transaksi murah dan proses hampir seketika",
-    details: ["Low fees", "Fast transactions", "Solana powered"],
-  },
-];
-```
-
-### How It Works Section
-
-```typescript
-const steps = [
-  {
-    step: 1,
-    title: "Buat Wasiat",
-    description: "Tentukan penerima manfaat dan periode heartbeat",
-    icon: "📝",
-    action: "create_will",
-  },
-  {
-    step: 2,
-    title: "Setor Aset",
-    description: "Transfer SOL, SPL Token, atau NFT ke vault aman",
-    icon: "💰",
-    action: "deposit_assets",
-  },
-  {
-    step: 3,
-    title: "Kirim Heartbeat",
-    description: "Konfirmasi aktivitas secara berkala untuk reset timer",
-    icon: "💓",
-    action: "send_heartbeat",
-  },
-  {
-    step: 4,
-    title: "Automatic Trigger",
-    description: "Sistem otomatis mengaktifkan wasiat jika heartbeat berhenti",
-    icon: "🤖",
-    action: "auto_trigger",
-  },
-  {
-    step: 5,
-    title: "Klaim Aset",
-    description: "Penerima manfaat dapat mengklaim aset dengan mudah",
-    icon: "🎯",
-    action: "claim_assets",
-  },
-];
-```
-
-### CTA Section
-
-```typescript
-interface CTASectionProps {
-  title: "Mulai Amankan Warisan Digital Anda";
-  description: "Bergabunglah dengan ratusan pengguna yang telah mempercayai Wasiat Online";
-  primaryCTA: "Buat Wasiat Sekarang";
-  secondaryCTA: "Lihat Demo";
-  stats: {
-    totalWills: "500+";
-    totalValue: "$1M+";
-    successRate: "99.9%";
-  };
-}
-```
-
-### Social Proof Section
-
-```typescript
-const testimonials = [
-  {
-    name: "Ahmad Reza",
-    role: "Crypto Investor",
-    content:
-      "Wasiat Online memberikan ketenangan pikiran. Saya tahu aset crypto saya aman untuk keluarga.",
-    avatar: "/avatars/user1.jpg",
-  },
-  {
-    name: "Sarah Chen",
-    role: "DeFi Enthusiast",
-    content:
-      "Proses yang sangat mudah dan transparan. Interface yang user-friendly!",
-    avatar: "/avatars/user2.jpg",
-  },
-];
-```
-
-### Navigation & Header
-
-```typescript
-interface HeaderProps {
-  logo: string;
-  navigation: [
-    { label: "Beranda"; href: "/" },
-    { label: "Cara Kerja"; href: "/about" },
-    { label: "Fitur"; href: "/features" },
-    { label: "Dashboard"; href: "/dashboard" }
-  ];
-  wallet: {
-    connected: boolean;
-    address?: string;
-    onConnect: () => void;
-    onDisconnect: () => void;
-  };
-}
-```
-
-### Footer
-
-```typescript
-interface FooterProps {
-  sections: [
-    {
-      title: "Produk";
-      links: ["Buat Wasiat", "Dashboard", "Cara Kerja"];
-    },
-    {
-      title: "Bantuan";
-      links: ["FAQ", "Dokumentasi", "Kontak"];
-    },
-    {
-      title: "Legal";
-      links: ["Terms of Service", "Privacy Policy", "Disclaimer"];
-    }
-  ];
-  social: ["Twitter", "Discord", "GitHub"];
-  copyright: "© 2025 Wasiat Online. All rights reserved.";
-}
-```
 
 ## 🎨 Design System
 
@@ -624,50 +481,6 @@ const typography = {
 };
 ```
 
-## 🚀 Implementation Phases
-
-### **Phase 1: Core Infrastructure**
-
-1. ✅ Setup Wallet Provider & Program Client
-2. ✅ Basic routing dengan React Router v7
-3. ✅ Core UI components (Button, Input, Card)
-4. ✅ Layout structure & navigation
-5. ✅ Landing page dengan Hero, Features, How It Works
-6. ✅ Responsive header & footer
-
-### **Phase 2: Testator Features**
-
-1. ✅ Create Will functionality
-2. ✅ Deposit SOL form & transaction
-3. ✅ Send Heartbeat button
-4. ✅ Withdraw SOL functionality
-5. ✅ Will dashboard & list
-
-### **Phase 3: Beneficiary Features**
-
-1. ✅ Check will status page
-2. ✅ Claim SOL functionality
-3. ✅ Beneficiary dashboard
-
-### **Phase 4: Enhancements**
-
-1. ✅ Transaction history & status tracking
-2. ✅ Better UX/UI polish
-3. ✅ Comprehensive error handling
-4. ✅ Loading states & skeletons
-5. ✅ Mobile responsiveness
-
-## 🎨 UI/UX Design Principles
-
-1. **Simple & Clean**: Fokus pada functionality, bukan hiasan
-2. **Mobile-First**: Responsive design untuk semua device
-3. **Clear CTAs**: Button dan action yang jelas untuk crypto operations
-4. **Status Indicators**: Visual feedback untuk semua transaction states
-5. **Error Handling**: User-friendly error messages untuk blockchain errors
-6. **Loading States**: Skeleton screens dan progress indicators
-7. **Trust Building**: Professional design untuk financial application
-8. **Accessibility**: WCAG compliant untuk inclusive design
-
 ## 📱 Responsive Design Strategy
 
 ### Breakpoints:
@@ -698,13 +511,6 @@ xl: '1280px',  /* Desktops */
 4. **Transaction Simulation**: Preview transactions sebelum signing
 5. **Error Sanitization**: Tidak expose sensitive data di error messages
 
-### User Education:
-
-1. **Transaction Confirmations**: Clear explanation sebelum signing
-2. **Fee Disclosure**: Transparent fee breakdown
-3. **Status Updates**: Real-time transaction status
-4. **Security Tips**: Educated users tentang wallet security
-
 ## 📊 Performance Optimization
 
 ### Bundle Optimization:
@@ -720,23 +526,3 @@ xl: '1280px',  /* Desktops */
 2. **Virtual Scrolling**: Untuk large transaction lists
 3. **Debounced Inputs**: Prevent excessive API calls
 4. **Connection Pooling**: Efficient RPC connections
-
-## 🧪 Testing Strategy
-
-### Unit Testing:
-
-- Custom hooks testing dengan React Testing Library
-- Component testing untuk critical flows
-- Utility functions testing
-
-### Integration Testing:
-
-- Wallet connection flows
-- Transaction submission & confirmation
-- Error handling scenarios
-
-### E2E Testing:
-
-- Complete user journeys (create will → deposit → heartbeat → claim)
-- Cross-browser compatibility
-- Mobile responsiveness

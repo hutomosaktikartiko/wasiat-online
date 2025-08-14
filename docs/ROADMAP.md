@@ -1,29 +1,29 @@
 # Development Roadmap
 
-Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheritance crypto yang mature.
+A complete roadmap for the development of Will Online from MVP to a mature crypto inheritance platform.
 
 ## Phase 1: MVP (Minimum Viable Product) - SOL Only
 
-**Target**: Q3 2025  
-**Goal**: Core functionality dengan single beneficiary
+**Target**: Q3 2025
+**Goal**: Core functionality with a single beneficiary
 
 ### Features
 
-- ✅ **Single beneficiary per will**
-- ✅ **Basic heartbeat mechanism** (configurable period, 90 days default)
-- ✅ **Simple trigger system** via keeper service
-- ✅ **SOL deposits & withdrawals** - Testator dapat deposit dan withdraw SOL
-- ✅ **SOL claim functionality** - Beneficiary dapat claim SOL setelah triggered
-- ✅ **Service fee collection** - Percentage-based fees untuk sustainability
-- ✅ **Emergency pause mechanism** - Admin dapat pause system jika diperlukan
-- ✅ **Admin Dashboard** - Edit config dan lihat analytics
+- **Single beneficiary per will**
+- **Basic heartbeat mechanism** (configurable period, 90 days default)
+- **Simple trigger system** via keeper service
+- **SOL deposits & withdrawals** - Testers can deposit and withdraw SOL
+- **SOL claim functionality** - Beneficiaries can claim SOL after being triggered
+- **Service fee collection** - Percentage-based fees for sustainability
+- **Emergency pause mechanism** - Admins can pause the system if needed
+- **Admin Dashboard** - Edit configuration and view analytics
 
 ### Technical Implementation
 
-- **Smart Contract**: Anchor program dengan basic will structure
-- **Frontend**: Simple React dApp dengan wallet connection
-- **Backend**: Go API server dengan SQLite
-- **Keeper**: Basic cron job untuk monitoring
+- **Smart Contract**: Anchor program with basic will structure
+- **Frontend**: Simple React dApp with wallet connection
+- **Backend**: Go API server with SQLite
+- **Keeper**: Basic cron job for monitoring
 
 ### Deliverables
 
@@ -35,41 +35,41 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Success Metrics
 
-- ✅ Program dapat deploy tanpa error ke devnet
-- ✅ Users dapat create wills dengan SOL deposits
-- ✅ Heartbeat mechanism berfungsi dengan baik
-- ✅ Keeper service dapat trigger expired wills
-- ✅ Beneficiaries dapat claim SOL dengan fee deduction
-- ✅ Testators dapat withdraw SOL sebelum triggered
-- ✅ Zero critical bugs dalam core functionality
+- The program can be deployed without errors to the devnet.
+- Users can create wills with SOL deposits.
+- The heartbeat mechanism is functioning properly.
+- Keeper service can trigger expired wills.
+- Beneficiaries can claim SOL with a fee deduction.
+- Testers can withdraw SOL before it is triggered.
+- Zero critical bugs in core functionality.
 
 ## Phase 2: Multi-Asset Support
 
-**Target**: Q4 2025  
-**Goal**: Expand to SPL Tokens dan NFTs dengan enhanced features
+**Target**: Q4 2025
+**Goal**: Expand to SPL Tokens and NFTs with enhanced features
 
 ### New Asset Support
 
-- 🪙 **SPL Token support**: Deposit, withdraw, dan claim SPL tokens
-- 🖼️ **NFT support**: Deposit, withdraw, dan claim NFTs
+- 🪙 **SPL Token support**: Deposit, withdraw and claim SPL tokens
+- 🖼️ **NFT support**: Deposit, withdraw, and claim NFTs
 - 💰 **Enhanced fee structure**: Different fee models per asset type
-- 📊 **Multi-asset dashboard**: Better UI untuk managing different assets
+- 📊 **Multi-asset dashboard**: Better UI for managing different assets
 
 ### Enhanced Features
 
-- 🔄 **Permissionless trigger bounty**: Anyone dapat trigger expired wills dengan reward
-- 🎯 **Multi-beneficiary support**: Split inheritance ke multiple wallets dengan persentase
-- 📧 **Notification system**: Email reminders untuk heartbeat
-- 📱 **Mobile-responsive UI**: Better UX untuk mobile users
-- 🔒 **Enhanced security**: Additional validations dan protections
+- 🔄 **Permissionless trigger bounty**: Anyone can trigger expired wills with a reward
+- 🎯 **Multi-beneficiary support**: Split inheritance to multiple wallets with a percentage
+- 📧 **Notification system**: Email reminders for heartbeat
+- 📱 **Mobile-responsive UI**: Better UX for mobile users
+- 🔒 **Enhanced security**: Additional validations and protections
 
 ### Technical Enhancements
 
-- **Smart Contract**: Expand program structure untuk multi-asset support
+- **Smart Contract**: Expand program structure for multi-asset support
 - **Backend**: Email service integration
-- **Frontend**: Enhanced UI/UX untuk asset management
-- **Database**: Additional tables untuk asset tracking & notifications
-- **Monitoring**: Better observability dan alerting
+- **Frontend**: Enhanced UI/UX for asset management
+- **Database**: Additional tables for asset tracking & notifications
+- **Monitoring**: Better observability and alerting
 
 ### New Components
 
@@ -95,17 +95,17 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Features
 
-- 👥 **Guardian/multisig heartbeat**: Require multiple signatures untuk heartbeat
+- 👥 **Guardian/multisig heartbeat**: Require multiple signatures for heartbeat
 - 🔒 **Smart contract audit**: Professional security audit
-- ⏸️ **Program upgrade lock**: Immutable contracts untuk trust
+- ⏸️ **Program upgrade lock**: Immutable contracts for trusts
 - ⚙️ **Configurable fees**: Dynamic fee structure
-- 🏛️ **Governance token**: Decentralized governance untuk protocol
+- 🏛️ **Governance token**: Decentralized governance for the protocol
 
 ### Security Enhancements
 
-- **Audit**: Comprehensive security audit oleh firma terpercaya
-- **Immutability**: Lock program upgrades untuk production
-- **Multisig**: Enhanced security untuk high-value wills
+- **Audit**: Comprehensive security audit by a trusted firm
+- **Immutability**: Lock program upgrades for production
+- **Multisig**: Enhanced security for high-value wills
 - **Emergency**: Advanced emergency procedures
 
 ### Enterprise Features
@@ -133,9 +133,9 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Features
 
-- 🌐 **Cross-chain support**: Expand ke Ethereum, Polygon
-- 🏪 **Marketplace**: Secondary market untuk inherited assets
-- 🤝 **Partner integrations**: Integration dengan DeFi protocols
+- 🌐 **Cross-chain support**: Expand to Ethereum, Polygon
+- 🏪 **Marketplace**: Secondary market for inherited assets
+- 🤝 **Partner integrations**: Integration with DeFi protocols
 - 📚 **Educational platform**: Crypto inheritance education
 - 🌍 **Global expansion**: Multi-language support
 
@@ -151,9 +151,9 @@ Roadmap lengkap untuk pengembangan Wasiat Online dari MVP hingga platform inheri
 
 ### Ecosystem Development
 
-- **Developer SDK**: Tools untuk third-party integrations
+- **Developer SDK**: Tools for third-party integrations
 - **API Documentation**: Comprehensive API docs
-- **Partner Program**: Revenue sharing dengan partners
+- **Partner Program**: Revenue sharing with partners
 - **Community**: Developer community building
 
 ## Technical Milestones
