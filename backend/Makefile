@@ -1,7 +1,7 @@
-.PHONY: build run clean test
+.PHONY: build run clean test install
 
 build:
-	go build -o bin/keeper ./cmd/keeper
+	CGO_ENABLED=1 go build -o bin/keeper ./cmd/keeper
 
 run:
 	go run ./cmd/keeper
@@ -12,8 +12,6 @@ clean:
 test:
 	go test ./...
 
-docker-build:
-	docker build -t wasiat-keeper .
-
-docker-run:
-	docker run --env-file .env wasiat-keeper
+install:
+	sudo cp bin/keeper /usr/local/bin/
+	echo "Keeper installed to /usr/local/bin/keeper"
