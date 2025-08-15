@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { Navigation, mainNavItems, MobileNavigation } from "../ui/navigation";

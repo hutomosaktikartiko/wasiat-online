@@ -1,4 +1,4 @@
-import { Connection, clusterApiUrl } from "@solana/web3.js";
+import { Connection } from "@solana/web3.js";
 import { NETWORK, RPC_ENDPOINT } from "../utils/constants";
 
 /**

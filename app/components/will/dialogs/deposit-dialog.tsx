@@ -1,4 +1,3 @@
-import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../ui/dialog";
 import { DepositForm } from "../deposit-form";
 import type { WillWithStatus } from "../../../types/will";

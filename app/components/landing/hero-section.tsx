@@ -1,8 +1,11 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { useNavigate } from "react-router";
 
 export function HeroSection() {
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
       <div className="container max-w-5xl">
@@ -30,10 +33,10 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             {/* Go to create will page */}
-            <Button onClick={() => window.location.href = "/will/create"} size="lg" className="text-lg px-8 py-6">
+            <Button onClick={() => navigate("/will/create") } size="lg" className="text-lg px-8 py-6">
               🎯 Mulai Buat Wasiat
             </Button>
-            <Button onClick={() => window.location.href = "/about"} variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Button onClick={() => navigate("/about") } variant="outline" size="lg" className="text-lg px-8 py-6">
               📚 Pelajari Cara Kerja
             </Button>
           </div>

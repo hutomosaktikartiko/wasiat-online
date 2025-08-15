@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Card } from "../ui/card";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { useWallet } from "../../hooks/use-wallet";
 import { useWill } from "../../hooks/use-will";
 import { useProgram } from "../../providers/program-provider";
 import { 
-  DEFAULT_HEARTBEAT_PERIOD, 
-  MIN_HEARTBEAT_PERIOD, 
-  MAX_HEARTBEAT_PERIOD 
+  DEFAULT_HEARTBEAT_PERIOD,
 } from "../../lib/utils/constants";
 
 interface CreateWillFormProps {

@@ -1,9 +1,5 @@
-import React from "react";
-import { PublicKey } from "@solana/web3.js";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { CountdownTimer } from "../ui/countdown-timer";
 import { StatusBadge } from "../ui/status-badge";
 import { CopyButton } from "../ui/copy-button";
 import { WillStatus } from "../../types/will";

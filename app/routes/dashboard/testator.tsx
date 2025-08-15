@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
-import { Badge } from "../../components/ui/badge";
 import { ClientOnlyWallet } from "../../components/wallet/client-only-wallet";
 import { WillList } from "../../components/will/will-list";
 import { useWallet } from "../../hooks/use-wallet";

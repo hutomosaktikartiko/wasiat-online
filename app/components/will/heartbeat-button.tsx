@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { CountdownTimer } from "../ui/countdown-timer";

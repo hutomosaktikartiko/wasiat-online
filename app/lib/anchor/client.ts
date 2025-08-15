@@ -4,7 +4,6 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import type { WalletContextState } from "@solana/wallet-adapter-react";
 import { IDL } from "./idl";
 import type { WasiatOnline } from "./idl";
-import { PROGRAM_ID } from "../utils/constants";
 
 /**
  * Create Anchor Program instance

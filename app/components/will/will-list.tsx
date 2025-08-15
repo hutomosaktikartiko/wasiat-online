@@ -1,9 +1,7 @@
-import React, { useState } from "react";
-import { PublicKey } from "@solana/web3.js";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Badge } from "../ui/badge";
 import { EmptyState } from "../ui/empty-state";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { WillCard } from "./will-card";

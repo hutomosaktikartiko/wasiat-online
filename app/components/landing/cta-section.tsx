@@ -1,8 +1,10 @@
-import React from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { useNavigate } from "react-router";
 
 export function CTASection() {
+  const navigate = useNavigate();
+
   const stats = [
     { label: "Active Wills", value: "500+", icon: "📋" },
     { label: "Total Value", value: "$1M+", icon: "💎" },
@@ -23,7 +25,7 @@ export function CTASection() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="text-lg px-8 py-6">
+            <Button onClick={() => navigate("/will/create")} size="lg" className="text-lg px-8 py-6">
               🚀 Buat Wasiat Sekarang
             </Button>
             <Button variant="outline" size="lg" className="text-lg px-8 py-6">

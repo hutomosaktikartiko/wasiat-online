@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui/card";
 
 const features = [

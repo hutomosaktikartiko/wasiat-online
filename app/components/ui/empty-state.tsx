@@ -1,6 +1,6 @@
-import React from "react";
 import { Button } from "./button";
 import { cn } from "../../lib/utils";
+import { useNavigate } from "react-router";
 
 interface EmptyStateProps {
   icon?: string;
@@ -40,6 +40,8 @@ export function EmptyState({
 
 // Pre-built empty states
 export function EmptyWills() {
+  const navigate = useNavigate();
+  
   return (
     <EmptyState
       icon="📋"
@@ -47,7 +49,7 @@ export function EmptyWills() {
       description="Anda belum membuat wasiat apapun. Mulai dengan membuat wasiat pertama Anda untuk mengamankan warisan digital."
       action={{
         label: "Buat Wasiat Pertama",
-        onClick: () => window.location.href = "/will/create"
+        onClick: () => navigate("/will/create")
       }}
     />
   );
