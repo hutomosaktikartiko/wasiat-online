@@ -2,7 +2,7 @@
   "license": "ISC",
   "scripts": {
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
-    "lint": "prettier */*.js \"*/**/*{.js,.ts}\" --check"
+    "dev-deploy": "anchor deploy --program-keypair ~/.config/solana/program-keys/wasiat_online-keypair.json && anchor run deploy"
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.0",

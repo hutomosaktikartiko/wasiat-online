@@ -5,9 +5,8 @@ export const PROGRAM_ID = "6rs8fcHe8R5xFM56LyaEHGnxjt5QQcrVZWsMbDphQpe4";
 
 // Network configuration
 const getNetworkConfig = () => {
-
   // If there is a custom RPC endpoint
-  const customRpcEndpoint = import.meta.env.RPC_ENDPOINT;
+  const customRpcEndpoint = import.meta.env.VITE_RPC_ENDPOINT;
   if (customRpcEndpoint) {
     if (customRpcEndpoint.includes("devnet")) {
       return { network: "devnet", endpoint: customRpcEndpoint };

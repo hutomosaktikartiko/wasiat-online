@@ -5,6 +5,7 @@ A Solana program built with Anchor Framework for managing digital wills and auto
 ## 📋 Overview
 
 This program provides comprehensive functionality for:
+
 - **Digital Will Creation**: Testators can create will contracts with beneficiaries and heartbeat periods
 - **Asset Deposits**: Supports SOL, SPL Tokens, and NFTs
 - **Heartbeat System**: Verifies testator activity with configurable timers
@@ -149,15 +150,15 @@ solana config get
 
 ### Core Functions
 
-| Instruction | Description | Access Control |
-|-------------|-------------|----------------|
-| `initialize` | Initialize program and config | Admin only |
-| `create_will` | Create new will | Testator |
-| `send_heartbeat` | Reset heartbeat timer | Testator |
-| `trigger_will` | Trigger expired will | Keeper/Anyone |
-| `claim_*` | Claim assets (SOL/SPL/NFT) | Beneficiary |
-| `withdraw_*` | Withdraw assets before trigger | Testator |
-| `update_config` | Update program configuration | Admin only |
+| Instruction      | Description                    | Access Control |
+| ---------------- | ------------------------------ | -------------- |
+| `initialize`     | Initialize program and config  | Admin only     |
+| `create_will`    | Create new will                | Testator       |
+| `send_heartbeat` | Reset heartbeat timer          | Testator       |
+| `trigger_will`   | Trigger expired will           | Keeper/Anyone  |
+| `claim_*`        | Claim assets (SOL/SPL/NFT)     | Beneficiary    |
+| `withdraw_*`     | Withdraw assets before trigger | Testator       |
+| `update_config`  | Update program configuration   | Admin only     |
 
 ### Asset Support
 
@@ -262,12 +263,39 @@ anchor build --release
 ### Deploy to Devnet
 
 ```bash
-# Deploy program
+# Deploy program only
 anchor deploy --program-keypair ~/.config/solana/program-keys/wasiat_online-keypair.json
+
+# Initialize program after deployment
+anchor run deploy
+
+# Deploy and initialize in one command (recommended)
+pnpm run dev-deploy
 
 # Verify deployment
 solana program show 6rs8fcHe8R5xFM56LyaEHGnxjt5QQcrVZWsMbDphQpe4
 ```
+
+### Program Initialization
+
+After deploying the program, you need to initialize it with configuration:
+
+```bash
+# Initialize program with default config
+anchor run deploy
+```
+
+The initialization script will:
+
+- Create global config PDA
+- Create fee vault PDA
+- Set default parameters (2.5% token fee, 0.001 SOL NFT fee)
+- Use wallet from Anchor.toml as authority
+
+**Important PDAs created:**
+
+- Config PDA: `G8gnTaaHJ73NcpgUB9FmtuGc7dhASBGBUynNuYBPBBgs`
+- Fee Vault PDA: `DZdbVLT1s55DuUQXGcQwjy9Jnm9NMkdm7Rg8x6mWQoK9`
 
 ### Deploy to Mainnet
 
@@ -297,6 +325,9 @@ solana logs <PROGRAM_ID>
 ### Useful Commands
 
 ```bash
+# Deploy and initialize program (development)
+pnpm run dev-deploy
+
 # Format code
 pnpm run lint:fix
 
@@ -323,6 +354,41 @@ RUST_LOG=debug anchor test
 solana logs <PROGRAM_ID> --follow
 ```
 
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Build Errors:**
+
+```bash
+# Clean and rebuild
+anchor clean
+anchor build
+```
+
+**Test Failures:**
+
+```bash
+# Check Solana version
+solana --version
+
+# Check Anchor version
+anchor --version
+
+# Run with verbose
+anchor test --verbose
+```
+
+**Deployment Issues:**
+
+```bash
+# Check cluster status
+solana cluster-version
+
+# Verify keypair
+solana-keygen verify <KEYPAIR_PATH>
+```
+
 ## 📚 Documentation
 
 ### Related Docs
@@ -338,34 +404,3 @@ solana logs <PROGRAM_ID> --follow
 - **Solana Program**: [Program IDL](./target/idl/wasiat_online.json)
 - **Client SDK**: [@coral-xyz/anchor](https://coral-xyz.github.io/anchor/)
 - **Solana Web3**: [@solana/web3.js](https://solana-labs.github.io/solana-web3.js/)
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Build Errors:**
-```bash
-# Clean and rebuild
-anchor clean
-anchor build
-```
-
-**Test Failures:**
-```bash
-# Check Solana version
-solana --version
-
-# Check Anchor version
-anchor --version
-
-# Run with verbose
-anchor test --verbose
-```
-
-**Deployment Issues:**
-```bash
-# Check cluster status
-solana cluster-version
-
-# Verify keypair
-solana-keygen verify <KEYPAIR_PATH>
