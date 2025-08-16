@@ -9,7 +9,7 @@ import (
 	"github.com/gagliardetto/solana-go/rpc"
 )
 
-const PROGRAM_ID = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw"
+const PROGRAM_ID = "6rs8fcHe8R5xFM56LyaEHGnxjt5QQcrVZWsMbDphQpe4"
 
 type Client struct {
 	rpcClient *rpc.Client

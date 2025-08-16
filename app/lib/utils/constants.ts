@@ -1,7 +1,7 @@
 import { clusterApiUrl } from "@solana/web3.js";
 
 // Program ID for Wasiat Online
-export const PROGRAM_ID = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw";
+export const PROGRAM_ID = "6rs8fcHe8R5xFM56LyaEHGnxjt5QQcrVZWsMbDphQpe4";
 
 // Network configuration
 const getNetworkConfig = () => {

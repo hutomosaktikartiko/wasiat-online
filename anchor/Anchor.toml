@@ -6,15 +6,15 @@ package_manager = "pnpm"
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-wasiat_online = "A4Gbd666j7Bha4d6w231iamWYBmSYuxA7KKe42VY4Prw"
+[programs.devnet]
+wasiat_online = "6rs8fcHe8R5xFM56LyaEHGnxjt5QQcrVZWsMbDphQpe4"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = "/Users/hutomo/.config/solana/localnet/1.json"
+cluster = "devnet"
+wallet = "/Users/hutomo/.config/solana/devnet/1.json"
 
 [scripts]
 test = "pnpm exec ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
