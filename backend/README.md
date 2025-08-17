@@ -51,6 +51,27 @@ make build
 ./bin/keeper
 ```
 
+## Quick Update (VPS)
+
+For updating deployed service with new changes:
+
+```bash
+# Navigate to project directory
+cd ~/wasiat-online/backend
+
+# Pull latest changes
+git pull
+
+# Rebuild application
+make build
+
+# Restart service
+sudo systemctl restart wasiat-keeper
+
+# Verify deployment
+sudo systemctl status wasiat-keeper
+```
+
 ## Monitoring
 
 Query Sqlite Database for Monitoring:
@@ -222,6 +243,9 @@ sudo systemctl restart wasiat-keeper
 
 # Verify deployment
 sudo systemctl status wasiat-keeper
+
+# Check logs if needed
+sudo journalctl -u wasiat-keeper -f
 ```
 
 ### Database Management
