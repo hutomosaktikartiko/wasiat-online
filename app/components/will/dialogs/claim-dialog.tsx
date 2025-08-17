@@ -26,7 +26,7 @@ export function ClaimDialog({ open, onOpenChange, will, onConfirm }: ClaimDialog
       onOpenChange(false);
       if (res.signature) {
         notify.showSuccess(
-          "Klaim berhasil", 
+          "Claim successful", 
           <>
             <a href={getExplorerUrl(res.signature, "tx")} target="_blank" rel="noreferrer" className="underline">
               {res.signature}
@@ -34,7 +34,7 @@ export function ClaimDialog({ open, onOpenChange, will, onConfirm }: ClaimDialog
           </>
         );
       } else {
-        notify.showSuccess("Klaim berhasil", "Transaksi berhasil dikonfirmasi.");
+        notify.showSuccess("Claim successful", "Transaction confirmed successfully.");
       }
     }
   };
@@ -43,11 +43,11 @@ export function ClaimDialog({ open, onOpenChange, will, onConfirm }: ClaimDialog
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Konfirmasi Klaim Aset</DialogTitle>
+          <DialogTitle>Confirm Asset Claim</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Wasiat telah dipicu. Klaim seluruh aset ke wallet Anda.
+            Will has been triggered. Claim all assets to your wallet.
           </p>
           <div className="text-sm">
             Total di Vault: <strong>{formatSOL(will.vaultBalance)} SOL</strong>
@@ -56,10 +56,10 @@ export function ClaimDialog({ open, onOpenChange, will, onConfirm }: ClaimDialog
             {loading ? (
               <>
                 <LoadingSpinner size="sm" className="mr-2" />
-                Mengklaim...
+                Claiming...
               </>
             ) : (
-              "Klaim Sekarang"
+              "Claim Now"
             )}
           </Button>
         </div>

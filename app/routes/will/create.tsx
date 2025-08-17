@@ -1,9 +1,6 @@
 import type { Route } from "./+types/create";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Label } from "../../components/ui/label";
 import { useNavigate } from "react-router";
 import { CreateWillForm } from "../../components/will/create-will-form";
 
@@ -32,16 +29,16 @@ export default function CreateWill() {
         <div className="container max-w-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-4">📝 Buat Wasiat Baru</h1>
+            <h1 className="text-3xl font-bold mb-4">📝 Create New Will</h1>
             <p className="text-muted-foreground">
-              Buat wasiat digital untuk mengamankan masa depan aset crypto Anda
+              Create digital will to secure the future of your crypto assets
             </p>
           </div>
 
           {/* Form */}
           <Card>
             <CardHeader>
-              <CardTitle>Informasi Wasiat</CardTitle>
+              <CardTitle>Will Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <CreateWillForm 
@@ -55,7 +52,7 @@ export default function CreateWill() {
           <div className="mt-8">
             <Card>
               <CardHeader>
-                <CardTitle>Langkah Selanjutnya</CardTitle>
+                <CardTitle>Next Steps</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -63,19 +60,19 @@ export default function CreateWill() {
                     <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold">
                       1
                     </div>
-                    <span>Buat wasiat dengan informasi beneficiary</span>
+                    <span>Create will with beneficiary information</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-bold">
                       2
                     </div>
-                    <span>Deposit SOL ke vault</span>
+                    <span>Deposit SOL to vault</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-bold">
                       3
                     </div>
-                    <span>Kirim heartbeat secara berkala</span>
+                    <span>Send heartbeat periodically</span>
                   </div>
                 </div>
               </CardContent>

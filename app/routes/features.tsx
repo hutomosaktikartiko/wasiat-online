@@ -13,38 +13,38 @@ export function meta({}: Route.MetaArgs) {
 const currentFeatures = [
   {
     icon: "🔒",
-    title: "Aman & Non-Custodial",
-    description: "Private key tetap di tangan Anda, smart contract mengamankan aset",
+    title: "Secure & Non-Custodial",
+    description: "Private keys remain in your hands, smart contracts secure assets",
     status: "available"
   },
   {
     icon: "🤖",
-    title: "Otomatis & Transparan",
-    description: "Trigger otomatis tanpa perantara, semua terjadi on-chain",
+    title: "Automatic & Transparent",
+    description: "Automatic trigger without intermediaries, everything happens on-chain",
     status: "available"
   },
   {
     icon: "⚡",
-    title: "Cepat & Murah",
-    description: "Dibangun di Solana, biaya transaksi < $0.01",
+    title: "Fast & Cheap",
+    description: "Built on Solana, transaction costs < $0.01",
     status: "available"
   },
   {
     icon: "💎",
     title: "Multi-Asset Support",
-    description: "Mendukung SOL, SPL Token, dan NFT dalam satu wasiat",
+    description: "Supports SOL, SPL Tokens, and NFTs in one will",
     status: "beta"
   },
   {
     icon: "💓",
     title: "Heartbeat System",
-    description: "Sistem pembuktian aktivitas yang fleksibel dan mudah",
+    description: "Flexible and easy activity proof system",
     status: "available"
   },
   {
     icon: "📱",
     title: "Mobile Friendly",
-    description: "Interface responsif yang bekerja di semua perangkat",
+    description: "Responsive interface that works on all devices",
     status: "available"
   }
 ];
@@ -53,37 +53,37 @@ const upcomingFeatures = [
   {
     icon: "👥",
     title: "Multi-Beneficiary",
-    description: "Bagikan warisan ke beberapa penerima dengan persentase custom",
+    description: "Share inheritance to multiple beneficiaries with custom percentages",
     status: "planned"
   },
   {
     icon: "🛡️",
     title: "Guardian System",
-    description: "Multi-signature heartbeat untuk keamanan tambahan",
+    description: "Multi-signature heartbeat for additional security",
     status: "planned"
   },
   {
     icon: "📧",
     title: "Notification System",
-    description: "Email reminder untuk heartbeat dan status updates",
+    description: "Email reminders for heartbeat and status updates",
     status: "planned"
   },
   {
     icon: "🏛️",
     title: "Governance Token",
-    description: "Partisipasi komunitas dalam pengembangan platform",
+    description: "Community participation in platform development",
     status: "planned"
   },
   {
     icon: "🌐",
     title: "Cross-Chain Support",
-    description: "Ekspansi ke Ethereum, Polygon, dan blockchain lainnya",
+    description: "Expansion to Ethereum, Polygon, and other blockchains",
     status: "planned"
   },
   {
     icon: "📊",
     title: "Analytics Dashboard",
-    description: "Insights mendalam tentang portfolio dan statistik warisan",
+    description: "Deep insights about portfolio and inheritance statistics",
     status: "planned"
   }
 ];
@@ -99,9 +99,9 @@ const getStatusColor = (status: string) => {
 
 const getStatusText = (status: string) => {
   switch (status) {
-    case "available": return "Tersedia";
+    case "available": return "Available";
     case "beta": return "Beta";
-    case "planned": return "Direncanakan";
+    case "planned": return "Planned";
     default: return "Unknown";
   }
 };
@@ -114,17 +114,17 @@ export default function Features() {
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Fitur Wasiat Online
+              Wasiat Online Features
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Platform inheritance crypto yang lengkap dengan fitur-fitur canggih 
-              untuk mengamankan masa depan aset digital Anda.
+              Complete crypto inheritance platform with advanced features 
+              to secure the future of your digital assets.
             </p>
           </div>
 
           {/* Current Features */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8">🚀 Fitur Saat Ini</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">🚀 Current Features</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentFeatures.map((feature, index) => (
                 <Card key={index} className="relative">
@@ -147,7 +147,7 @@ export default function Features() {
 
           {/* Upcoming Features */}
           <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8">🔮 Fitur Mendatang</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">🔮 Upcoming Features</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {upcomingFeatures.map((feature, index) => (
                 <Card key={index} className="relative opacity-75">
@@ -172,12 +172,12 @@ export default function Features() {
           <div className="text-center">
             <Card className="p-8 bg-primary/5">
               <CardHeader>
-                <CardTitle className="text-2xl">📋 Lihat Roadmap Lengkap</CardTitle>
+                <CardTitle className="text-2xl">📋 View Complete Roadmap</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-6">
-                  Ingin tahu lebih detail tentang pengembangan Wasiat Online? 
-                  Lihat roadmap lengkap kami dengan timeline dan milestone yang jelas.
+                  Want to know more details about Wasiat Online development? 
+                  Check out our complete roadmap with clear timeline and milestones.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a 
@@ -186,7 +186,7 @@ export default function Features() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
                   >
-                    📊 Lihat Roadmap
+                    📊 View Roadmap
                   </a>
                   <a 
                     href="https://github.com/hutomosaktikartiko/wasiat-online" 

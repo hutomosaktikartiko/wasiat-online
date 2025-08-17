@@ -14,17 +14,17 @@ export function Footer() {
               <span className="font-bold">Wasiat Online</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Standar baru yang aman, transparan, dan terotomatisasi untuk pewarisan aset digital di blockchain.
+              New secure, transparent, and automated standard for digital asset inheritance on blockchain.
             </p>
           </div>
 
           {/* Produk */}
           <div>
-            <h4 className="font-semibold mb-3">Produk</h4>
+            <h4 className="font-semibold mb-3">Product</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/will/create" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Buat Wasiat
+                  Create Will
                 </Link>
               </li>
               <li>
@@ -34,7 +34,7 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Cara Kerja
+                  How It Works
                 </Link>
               </li>
             </ul>
@@ -42,7 +42,7 @@ export function Footer() {
 
           {/* Bantuan */}
           <div>
-            <h4 className="font-semibold mb-3">Bantuan</h4>
+            <h4 className="font-semibold mb-3">Help</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -51,12 +51,12 @@ export function Footer() {
               </li>
               <li>
                 <Link to="/docs" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Dokumentasi
+                  Documentation
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Kontak
+                  Contact
                 </Link>
               </li>
             </ul>

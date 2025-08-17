@@ -45,15 +45,15 @@ export function WillCard({
   const getStatusText = (status: WillStatus) => {
     switch (status) {
       case WillStatus.Created:
-        return "Dibuat";
+        return "Created";
       case WillStatus.Active:
-        return "Aktif";
+        return "Active";
       case WillStatus.Triggered:
-        return "Dipicu";
+        return "Triggered";
       case WillStatus.Claimed:
-        return "Diklaim";
+        return "Claimed";
       case WillStatus.Withdrawn:
-        return "Ditarik";
+        return "Withdrawn";
       default:
         return "Unknown";
     }
@@ -75,7 +75,7 @@ export function WillCard({
           )}
           {will.canWithdraw && (
             <Button size="sm" variant="outline" onClick={onWithdraw}>
-              📤 Tarik
+              📤 Withdraw
             </Button>
           )}
         </div>
@@ -87,7 +87,7 @@ export function WillCard({
         <div className="flex gap-2">
           {will.canClaim && (
             <Button size="sm" onClick={onClaim}>
-              🎯 Klaim Aset
+              🎯 Claim Assets
             </Button>
           )}
         </div>
@@ -103,27 +103,27 @@ export function WillCard({
       <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
         <div className="space-y-1 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-semibold">Wasiat</h3>
+            <h3 className="font-semibold">Will</h3>
             <StatusBadge 
               status={getStatusColor(will.status)} 
               text={getStatusText(will.status)} 
             />
           </div>
           <p className="text-sm text-gray-500">
-            Dibuat: {formatDate(will.createdAt)}
+            Created: {formatDate(will.createdAt)}
           </p>
         </div>
         
         <div className="text-left sm:text-right w-full sm:w-auto">
           <p className="text-lg font-bold">{formatSOL(will.vaultBalance)} SOL</p>
-          <p className="text-xs text-gray-500">Saldo Vault</p>
+          <p className="text-xs text-gray-500">Vault Balance</p>
         </div>
       </div>
 
       {/* Participants */}
       <div className="space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-          <span className="text-sm text-gray-600">Pewasiat:</span>
+          <span className="text-sm text-gray-600">Testator:</span>
           <div className="flex items-center gap-1">
             <span className="text-sm font-mono break-all">
               {formatAddress(will.testator.toBase58())}
@@ -133,7 +133,7 @@ export function WillCard({
         </div>
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-          <span className="text-sm text-gray-600">Penerima:</span>
+          <span className="text-sm text-gray-600">Beneficiary:</span>
           <div className="flex items-center gap-1">
             <span className="text-sm font-mono break-all">
               {formatAddress(will.beneficiary.toBase58())}
@@ -150,7 +150,7 @@ export function WillCard({
         </div>
         
         <Button size="sm" variant="ghost" onClick={onViewDetails} className="w-full sm:w-auto">
-          Detail →
+          Details →
         </Button>
       </div>
     </Card>

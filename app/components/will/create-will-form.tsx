@@ -37,23 +37,23 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
 
     // Validate beneficiary address
     if (!beneficiaryAddress.trim()) {
-      newErrors.beneficiary = "Alamat penerima manfaat wajib diisi";
+      newErrors.beneficiary = "Beneficiary address is required";
     } else {
       try {
         const pubkey = new PublicKey(beneficiaryAddress);
         if (wallet.publicKey && pubkey.equals(wallet.publicKey)) {
-          newErrors.beneficiary = "Penerima manfaat tidak boleh sama dengan pewasiat";
+          newErrors.beneficiary = "Beneficiary cannot be the same as testator";
         }
       } catch {
-        newErrors.beneficiary = "Format alamat tidak valid";
+        newErrors.beneficiary = "Invalid address format";
       }
     }
 
     // Validate heartbeat period
     if (heartbeatDays < minDays) {
-      newErrors.heartbeat = `Periode heartbeat minimal ${minDays} hari`;
+      newErrors.heartbeat = `Minimum heartbeat period is ${minDays} days`;
     } else if (heartbeatDays > maxDays) {
-      newErrors.heartbeat = `Periode heartbeat maksimal ${maxDays} hari`;
+      newErrors.heartbeat = `Maximum heartbeat period is ${maxDays} days`;
     }
 
     setErrors(newErrors);
@@ -90,10 +90,10 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
     <div className="space-y-6">
       {/* Beneficiary */}
       <div className="space-y-2">
-        <Label htmlFor="beneficiary">Alamat Penerima Manfaat *</Label>
+        <Label htmlFor="beneficiary">Beneficiary Address *</Label>
         <Input
           id="beneficiary"
-          placeholder="Masukkan alamat Solana penerima manfaat"
+          placeholder="Enter Solana address of beneficiary"
           value={beneficiaryAddress}
           onChange={(e) => setBeneficiaryAddress(e.target.value)}
           className={errors.beneficiary ? "border-red-500" : ""}
@@ -102,13 +102,13 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
           <p className="text-red-500 text-sm">{errors.beneficiary}</p>
         )}
         <p className="text-sm text-muted-foreground">
-          Alamat Solana yang akan menerima aset setelah wasiat dipicu
+          Solana address that will receive assets after will is triggered
         </p>
       </div>
 
       {/* Heartbeat Period */}
       <div className="space-y-2">
-        <Label htmlFor="heartbeat">Periode Heartbeat (hari) *</Label>
+        <Label htmlFor="heartbeat">Heartbeat Period (days) *</Label>
         <Input
           id="heartbeat"
           type="number"
@@ -123,18 +123,18 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
           <p className="text-red-500 text-sm">{errors.heartbeat}</p>
         )}
         <p className="text-sm text-muted-foreground">
-          Jika Anda tidak mengirim heartbeat dalam periode ini, wasiat akan dipicu
+          If you don't send heartbeat within this period, the will be triggered
         </p>
       </div>
 
       {/* Info Box */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h4 className="font-semibold text-blue-900 mb-2">ℹ️ Informasi Penting</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">ℹ️ Important Information</h4>
         <ul className="text-sm text-blue-800 space-y-1">
-          <li>• Setelah wasiat dibuat, Anda bisa deposit aset ke vault</li>
-          <li>• Kirim heartbeat secara berkala untuk mencegah trigger otomatis</li>
-          <li>• Anda bisa withdraw aset kapan saja sebelum wasiat dipicu</li>
-          <li>• Fee kecil akan dipotong saat beneficiary claim aset</li>
+          <li>• After will is created, you can deposit assets to vault</li>
+          <li>• Send heartbeat periodically to prevent automatic trigger</li>
+          <li>• You can withdraw assets anytime before will is triggered</li>
+          <li>• Small fee will be deducted when beneficiary claims assets</li>
         </ul>
       </div>
 
@@ -148,10 +148,10 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
           {transaction.isLoading ? (
             <>
               <LoadingSpinner size="sm" className="mr-2" />
-              Membuat Wasiat...
+              Creating Will...
             </>
           ) : (
-            "🚀 Buat Wasiat"
+            "🚀 Create Will"
           )}
         </Button>
         {onCancel && (
@@ -161,7 +161,7 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
             className="flex-1"
             disabled={transaction.isLoading}
           >
-            ↩️ Kembali ke Dashboard
+            ↩️ Back to Dashboard
           </Button>
         )}
       </div>
@@ -170,7 +170,7 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
       {transaction.signature && (
         <div className="bg-green-50 p-3 rounded-lg">
           <p className="text-sm text-green-800">
-            ✅ Wasiat berhasil dibuat!
+            ✅ Will created successfully!
           </p>
           <p className="text-xs text-green-600 mt-1 break-all">
             Signature: {transaction.signature}

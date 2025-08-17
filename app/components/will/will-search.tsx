@@ -49,18 +49,18 @@ export function WillSearch({
       {/* Search Input */}
       <Card>
         <CardHeader>
-          <CardTitle>🔍 Cek Status Wasiat</CardTitle>
+          <CardTitle>🔍 Check Will Status</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-end gap-4">
               <div className="flex-1">
                 <Label htmlFor="will-search" className="sr-only">
-                  Alamat Wasiat
+                  Will Address
                 </Label>
                 <Input 
                   id="will-search"
-                  placeholder="Masukkan alamat wasiat (Public Key)..."
+                  placeholder="Enter will address (Public Key)..."
                   value={searchAddress}
                   onChange={(e) => setSearchAddress(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -69,7 +69,7 @@ export function WillSearch({
                 />
                 {!isValidAddress && (
                   <p className="text-sm text-red-600 mt-1 break-all">
-                    Format alamat Solana tidak valid
+                    Invalid Solana address format
                   </p>
                 )}
               </div>
@@ -83,10 +83,10 @@ export function WillSearch({
                   {isLoading ? (
                     <>
                       <LoadingSpinner size="sm" className="mr-2" />
-                      Mencari...
+                      Searching...
                     </>
                   ) : (
-                    "🔍 Cari Wasiat"
+                    "🔍 Search Will"
                   )}
                 </Button>
                 
@@ -103,8 +103,8 @@ export function WillSearch({
             </div>
             
             <p className="text-sm text-muted-foreground">
-              Alamat wasiat biasanya diberikan oleh pewasiat atau tersimpan dalam dokumen warisan.
-              Format: Public Key Solana (44 karakter base58).
+              Will address is usually provided by testator or stored in inheritance documents.
+              Format: Solana Public Key (44 base58 characters).
             </p>
           </div>
         </CardContent>
@@ -117,7 +117,7 @@ export function WillSearch({
             <div className="flex items-center gap-2">
               <span className="text-red-600 text-lg">❌</span>
               <div>
-                <p className="text-red-800 font-medium">Wasiat Tidak Ditemukan</p>
+                <p className="text-red-800 font-medium">Will Not Found</p>
                 <p className="text-red-600 text-sm">{error}</p>
               </div>
             </div>
@@ -132,9 +132,9 @@ export function WillSearch({
               <div className="flex items-center gap-2">
                 <span className="text-green-600 text-lg">✅</span>
                 <div>
-                  <p className="text-green-800 font-medium">Wasiat Ditemukan!</p>
+                  <p className="text-green-800 font-medium">Will Found!</p>
                   <p className="text-green-600 text-sm">
-                    Wasiat berhasil ditemukan dan detail ditampilkan di bawah.
+                    Will successfully found and details are displayed below.
                   </p>
                 </div>
               </div>
@@ -158,25 +158,25 @@ export function WillSearch({
       {showTips && !found && !error && !isLoading && (
         <Card className="bg-blue-50 border-blue-200">
           <CardHeader>
-            <CardTitle className="text-blue-900 text-lg">💡 Tips Pencarian</CardTitle>
+            <CardTitle className="text-blue-900 text-lg">💡 Search Tips</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 text-sm text-blue-800 min-w-0">
               <div className="flex items-start gap-2 min-w-0">
                 <span className="shrink-0">•</span>
-                <span className="flex-1 min-w-0 break-all">Alamat wasiat adalah Public Key dari akan wasiat (bukan vault)</span>
+                <span className="flex-1 min-w-0 break-all">Will address is the Public Key of the will account (not vault)</span>
               </div>
               <div className="flex items-start gap-2 min-w-0">
                 <span className="shrink-0">•</span>
-                <span className="flex-1 min-w-0 break-all">Format alamat: 44 karakter base58 (contoh: 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM)</span>
+                <span className="flex-1 min-w-0 break-all">Address format: 44 base58 characters (example: 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM)</span>
               </div>
               <div className="flex items-start gap-2 min-w-0">
                 <span className="shrink-0">•</span>
-                <span className="flex-1 min-w-0 break-all">Jika tidak memiliki alamat, hubungi pewasiat atau cek dokumen warisan</span>
+                <span className="flex-1 min-w-0 break-all">If you don't have the address, contact testator or check inheritance documents</span>
               </div>
               <div className="flex items-start gap-2 min-w-0">
                 <span className="shrink-0">•</span>
-                <span className="flex-1 min-w-0 break-all">Pastikan alamat yang dimasukkan adalah alamat wasiat, bukan alamat wallet</span>
+                <span className="flex-1 min-w-0 break-all">Make sure the entered address is will address, not wallet address</span>
               </div>
             </div>
           </CardContent>

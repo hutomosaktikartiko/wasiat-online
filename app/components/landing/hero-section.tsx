@@ -25,19 +25,19 @@ export function HeroSection() {
           
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            Menciptakan standar baru yang <strong>aman, transparan, dan terotomatisasi</strong> untuk 
-            pewarisan aset digital di blockchain. Pastikan tidak ada lagi aset kripto yang hilang selamanya 
-            karena sebuah tragedi.
+            Creating a new <strong>secure, transparent, and automated</strong> standard for 
+            digital asset inheritance on blockchain. Ensuring no more crypto assets are lost forever 
+            due to tragedy.
           </p>
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             {/* Go to create will page */}
             <Button onClick={() => navigate("/will/create") } size="lg" className="text-lg px-8 py-6">
-              🎯 Mulai Buat Wasiat
+              🎯 Start Creating Will
             </Button>
             <Button onClick={() => navigate("/about") } variant="outline" size="lg" className="text-lg px-8 py-6">
-              📚 Pelajari Cara Kerja
+              📚 Learn How It Works
             </Button>
           </div>
           

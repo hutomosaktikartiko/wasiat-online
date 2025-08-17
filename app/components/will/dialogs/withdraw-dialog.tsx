@@ -26,7 +26,7 @@ export function WithdrawDialog({ open, onOpenChange, will, onConfirm }: Withdraw
       onOpenChange(false);
       if (res.signature) {
         notify.showSuccess(
-          "Penarikan berhasil",
+          "Withdrawal successful",
           <>
             <a href={getExplorerUrl(res.signature, "tx")} target="_blank" rel="noreferrer" className="underline">
               {res.signature}
@@ -34,7 +34,7 @@ export function WithdrawDialog({ open, onOpenChange, will, onConfirm }: Withdraw
           </>
         );
       } else {
-        notify.showSuccess("Penarikan berhasil", "Transaksi berhasil dikonfirmasi.");
+        notify.showSuccess("Withdrawal successful", "Transaction confirmed successfully.");
       }
     }
   };
@@ -43,11 +43,11 @@ export function WithdrawDialog({ open, onOpenChange, will, onConfirm }: Withdraw
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Konfirmasi Penarikan Aset</DialogTitle>
+          <DialogTitle>Confirm Asset Withdrawal</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Anda akan menarik semua aset dari vault dan membatalkan wasiat.
+            You will withdraw all assets from vault and cancel the will.
           </p>
           <div className="text-sm">
             Total di Vault: <strong>{formatSOL(will.vaultBalance)} SOL</strong>
@@ -56,10 +56,10 @@ export function WithdrawDialog({ open, onOpenChange, will, onConfirm }: Withdraw
             {loading ? (
               <>
                 <LoadingSpinner size="sm" className="mr-2" />
-                Menarik...
+                Withdrawing...
               </>
             ) : (
-              "Tarik Sekarang"
+              "Withdraw Now"
             )}
           </Button>
         </div>

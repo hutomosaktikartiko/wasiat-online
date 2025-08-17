@@ -116,15 +116,15 @@ export function WillList({
   const getStatusText = (status: WillStatus) => {
     switch (status) {
       case WillStatus.Created:
-        return "Dibuat";
+        return "Created";
       case WillStatus.Active:
-        return "Aktif";
+        return "Active";
       case WillStatus.Triggered:
-        return "Dipicu";
+        return "Triggered";
       case WillStatus.Claimed:
-        return "Diklaim";
+        return "Claimed";
       case WillStatus.Withdrawn:
-        return "Ditarik";
+        return "Withdrawn";
       default:
         return "Unknown";
     }
@@ -169,13 +169,13 @@ export function WillList({
           <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-primary">{stats.total}</div>
-              <div className="text-sm text-muted-foreground">Total Wasiat</div>
+              <div className="text-sm text-muted-foreground">Total Wills</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-green-600">{stats.active}</div>
-              <div className="text-sm text-muted-foreground">Aktif</div>
+              <div className="text-sm text-muted-foreground">Active</div>
             </CardContent>
           </Card>
           <Card>
@@ -187,7 +187,7 @@ export function WillList({
           <Card>
             <CardContent className="p-4">
               <div className="text-2xl font-bold text-orange-600">{stats.needsAttention}</div>
-              <div className="text-sm text-muted-foreground">Perlu Perhatian</div>
+              <div className="text-sm text-muted-foreground">Needs Attention</div>
             </CardContent>
           </Card>
         </div>
@@ -201,14 +201,14 @@ export function WillList({
               <CardTitle>{title}</CardTitle>
               <p className="text-sm text-muted-foreground">
                 {wills.length === 0 
-                  ? "Belum ada wasiat yang dibuat"
-                  : `${sortedWills.length} dari ${wills.length} wasiat ditampilkan`
+                  ? "No wills created yet"
+                  : `${sortedWills.length} of ${wills.length} wills shown`
                 }
               </p>
             </div>
             {onCreateWill && (
               <Button onClick={onCreateWill}>
-                ➕ Buat Wasiat Baru
+                ➕ Create New Will
               </Button>
             )}
           </div>
@@ -218,10 +218,10 @@ export function WillList({
           {wills.length === 0 ? (
             <EmptyState
               icon="📋"
-              title="Belum Ada Wasiat"
-              description="Buat wasiat pertama Anda untuk mulai mengamankan warisan digital"
+              title="No Wills Yet"
+              description="Create your first will to start securing your digital inheritance"
               action={onCreateWill ? {
-                label: "Buat Wasiat Sekarang",
+                label: "Create Will Now",
                 onClick: onCreateWill,
               } : undefined}
             />
@@ -232,7 +232,7 @@ export function WillList({
                 {/* Search */}
                 <div className="w-full">
                   <Input
-                    placeholder="Cari berdasarkan alamat..."
+                    placeholder="Search by address..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -243,12 +243,12 @@ export function WillList({
                   {/* Status Filter */}
                   <div className="flex gap-1 flex-wrap">
                     {[
-                      { key: "all", label: "Semua" },
-                      { key: "created", label: "Dibuat" },
-                      { key: "active", label: "Aktif" },
-                      { key: "triggered", label: "Dipicu" },
-                      { key: "claimed", label: "Diklaim" },
-                      { key: "withdrawn", label: "Ditarik" },
+                      { key: "all", label: "All" },
+                      { key: "created", label: "Created" },
+                      { key: "active", label: "Active" },
+                      { key: "triggered", label: "Triggered" },
+                      { key: "claimed", label: "Claimed" },
+                      { key: "withdrawn", label: "Withdrawn" },
                     ].map(({ key, label }) => (
                       <Button
                         key={key}
@@ -268,10 +268,10 @@ export function WillList({
                     onChange={(e) => setSort(e.target.value as SortType)}
                     className="px-3 py-2 border rounded-md text-sm min-w-0 sm:min-w-[140px]"
                   >
-                    <option value="newest">Terbaru</option>
-                    <option value="oldest">Terlama</option>
-                    <option value="balance-high">Saldo Tertinggi</option>
-                    <option value="balance-low">Saldo Terendah</option>
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                    <option value="balance-high">Highest Balance</option>
+                    <option value="balance-low">Lowest Balance</option>
                   </select>
                 </div>
               </div>
@@ -280,7 +280,7 @@ export function WillList({
               {sortedWills.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <div className="text-4xl mb-4">🔍</div>
-                  <p>Tidak ada wasiat yang sesuai dengan filter</p>
+                  <p>No wills match the current filters</p>
                 </div>
               ) : (
                 <div className="grid gap-4">

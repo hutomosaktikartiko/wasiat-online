@@ -28,8 +28,7 @@ export default function BeneficiaryDashboard() {
     stats, 
     isLoading, 
     error,
-    hasBeneficiaryWills,
-    getWillsNeedingAttention 
+    hasBeneficiaryWills
   } = willsData;
 
   const handleWillAction = (will: WillWithStatus, action: string) => {
@@ -65,9 +64,9 @@ export default function BeneficiaryDashboard() {
         <div className="container max-w-7xl">
           {/* Header */}
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold">Dashboard Penerima Manfaat</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Beneficiary Dashboard</h1>
             <p className="text-muted-foreground">
-              Cek status wasiat dan klaim warisan yang ditujukan untuk Anda
+              Check will status and claim inheritance intended for you
             </p>
           </div>
 
@@ -89,25 +88,25 @@ export default function BeneficiaryDashboard() {
                       <Card>
                         <CardContent className="p-4">
                           <div className="text-2xl font-bold text-primary">{beneficiaryStats.total}</div>
-                          <div className="text-sm text-muted-foreground">Wasiat untuk Anda</div>
+                          <div className="text-sm text-muted-foreground">Wills for You</div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardContent className="p-4">
                           <div className="text-2xl font-bold text-orange-600">{beneficiaryStats.triggered}</div>
-                          <div className="text-sm text-muted-foreground">Dipicu</div>
+                          <div className="text-sm text-muted-foreground">Triggered</div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardContent className="p-4">
                           <div className="text-2xl font-bold text-green-600">{beneficiaryStats.claimable}</div>
-                          <div className="text-sm text-muted-foreground">Bisa Diklaim</div>
+                          <div className="text-sm text-muted-foreground">Claimable</div>
                         </CardContent>
                       </Card>
                       <Card>
                         <CardContent className="p-4">
                           <div className="text-2xl font-bold text-blue-600">{formatSOL(beneficiaryStats.claimableValue)}</div>
-                          <div className="text-sm text-muted-foreground">SOL Tersedia</div>
+                          <div className="text-sm text-muted-foreground">SOL Available</div>
                         </CardContent>
                       </Card>
                     </div>
@@ -119,7 +118,7 @@ export default function BeneficiaryDashboard() {
                       error={error}
                       onWillAction={handleWillAction}
                       showStats={false} // Stats sudah ditampilkan di atas
-                      title="Wasiat Sebagai Penerima Manfaat"
+                      title="Wills as Beneficiary"
                     />
 
                     {/* Claim Alert */}
@@ -128,13 +127,13 @@ export default function BeneficiaryDashboard() {
                         <Card className="bg-green-50 border-green-200">
                           <CardHeader>
                             <CardTitle className="text-green-900 flex items-center gap-2">
-                              🎯 Ada Aset yang Bisa Diklaim!
+                              🎯 Assets Available to Claim!
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
                             <p className="text-green-800 text-sm mb-4">
-                              Anda memiliki {beneficiaryStats.claimable} wasiat dengan total {formatSOL(beneficiaryStats.claimableValue)} SOL 
-                              yang siap diklaim. Klik tombol "Klaim Aset" pada wasiat yang berstatus "Dipicu".
+                              You have {beneficiaryStats.claimable} wills with total {formatSOL(beneficiaryStats.claimableValue)} SOL 
+                              ready to claim. Click "Claim Assets" button on wills with "Triggered" status.
                             </p>
                             <div className="flex flex-col sm:flex-row gap-2">
                               {beneficiaryWills
@@ -147,7 +146,7 @@ export default function BeneficiaryDashboard() {
                                     className="w-full sm:w-auto"
                                     onClick={() => handleWillAction(will, "claim")}
                                   >
-                                    Klaim {formatSOL(will.vaultBalance)} SOL
+                                    Claim {formatSOL(will.vaultBalance)} SOL
                                   </Button>
                                 ))
                               }
@@ -163,9 +162,9 @@ export default function BeneficiaryDashboard() {
               <Card>
                 <CardContent className="text-center py-12">
                   <div className="text-4xl mb-4">🔒</div>
-                  <h3 className="text-xl font-semibold mb-2">Wallet Belum Terhubung</h3>
+                  <h3 className="text-xl font-semibold mb-2">Wallet Not Connected</h3>
                   <p className="text-muted-foreground">
-                    Hubungkan wallet Anda untuk melihat wasiat yang ditujukan untuk Anda
+                    Connect your wallet to view wills intended for you
                   </p>
                 </CardContent>
               </Card>
@@ -176,25 +175,25 @@ export default function BeneficiaryDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mt-6 md:mt-8">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">📋 Status Wasiat</CardTitle>
+                <CardTitle className="text-lg">📋 Will Status</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-blue-500"></span>
-                    <span><strong>Aktif:</strong> Pewasiat masih mengirim heartbeat</span>
+                    <span><strong>Active:</strong> Testator still sending heartbeat</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-orange-500"></span>
-                    <span><strong>Triggered:</strong> Siap diklaim oleh beneficiary</span>
+                    <span><strong>Triggered:</strong> Ready to be claimed by beneficiary</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-purple-500"></span>
-                    <span><strong>Claimed:</strong> Sudah diklaim</span>
+                    <span><strong>Claimed:</strong> Already claimed</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-gray-500"></span>
-                    <span><strong>Withdrawn:</strong> Ditarik kembali pewasiat</span>
+                    <span><strong>Withdrawn:</strong> Withdrawn back by testator</span>
                   </div>
                 </div>
               </CardContent>
@@ -202,23 +201,23 @@ export default function BeneficiaryDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">❓ Bantuan</CardTitle>
+                <CardTitle className="text-lg">❓ Help</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div>
-                    <strong>Tidak punya alamat wasiat?</strong>
-                    <p className="text-muted-foreground">Hubungi pewasiat atau cek dokumen warisan</p>
+                    <strong>Don't have will address?</strong>
+                    <p className="text-muted-foreground">Contact testator or check inheritance documents</p>
                   </div>
                   <div>
-                    <strong>Cara mengklaim aset?</strong>
-                    <p className="text-muted-foreground">Connect wallet dan klik tombol claim setelah wasiat triggered</p>
+                    <strong>How to claim assets?</strong>
+                    <p className="text-muted-foreground">Connect wallet and click claim button after will is triggered</p>
                   </div>
                   <div>
-                    <strong>Butuh bantuan?</strong>
+                    <strong>Need help?</strong>
                     <p className="text-muted-foreground">
                       <a href="/support" className="text-primary hover:underline">
-                        Hubungi support
+                        Contact support
                       </a>
                     </p>
                   </div>

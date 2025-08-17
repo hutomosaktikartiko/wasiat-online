@@ -17,19 +17,19 @@ export function CTASection() {
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Mulai Amankan Warisan Digital Anda
+            Start Securing Your Digital Inheritance
           </h2>
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Bergabunglah dengan ratusan pengguna yang telah mempercayai Wasiat Online 
-            untuk mengamankan masa depan aset crypto mereka
+            Join hundreds of users who trust Wasiat Online 
+            to secure the future of their crypto assets
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button onClick={() => navigate("/will/create")} size="lg" className="text-lg px-8 py-6">
-              🚀 Buat Wasiat Sekarang
+              🚀 Create Will Now
             </Button>
             <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-              💬 Hubungi Tim
+              💬 Contact Team
             </Button>
           </div>
         </div>
@@ -53,7 +53,7 @@ export function CTASection() {
         
         {/* Trust badges */}
         <div className="mt-12 text-center">
-          <p className="text-sm text-muted-foreground mb-4">Dipercaya oleh</p>
+          <p className="text-sm text-muted-foreground mb-4">Trusted by</p>
           <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
             <div className="text-sm font-semibold">🏛️ DeFi Protocols</div>
             <div className="text-sm font-semibold">👥 Crypto Communities</div>

@@ -18,7 +18,7 @@ export function DepositDialog({ open, onOpenChange, will, onSuccess }: DepositDi
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Tambah Aset (Deposit SOL)</DialogTitle>
+          <DialogTitle>Add Assets (Deposit SOL)</DialogTitle>
         </DialogHeader>
         <DepositForm
           willAddress={will.address.toBase58()}
@@ -27,7 +27,7 @@ export function DepositDialog({ open, onOpenChange, will, onSuccess }: DepositDi
             onSuccess?.();
               if (sig) {
                 notify.showSuccess(
-                  "Deposit berhasil",
+                  "Deposit successful",
                   <>
                     <a
                       href={getExplorerUrl(sig, "tx")}
@@ -40,7 +40,7 @@ export function DepositDialog({ open, onOpenChange, will, onSuccess }: DepositDi
                   </>
                 );
               } else {
-                notify.showSuccess("Deposit berhasil", "Transaksi berhasil dikonfirmasi.");
+                notify.showSuccess("Deposit successful", "Transaction confirmed successfully.");
               }
           }}
         />

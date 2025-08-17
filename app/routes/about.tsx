@@ -12,57 +12,57 @@ export function meta({}: Route.MetaArgs) {
 const steps = [
   {
     step: 1,
-    title: "Buat Wasiat",
-    description: "Tentukan penerima manfaat dan periode heartbeat (misal: 90 hari)",
+    title: "Create Will",
+    description: "Set beneficiary and heartbeat period (e.g., 90 days)",
     icon: "📝",
     details: [
-      "Masukkan alamat Solana penerima manfaat",
-      "Tentukan periode heartbeat yang sesuai",
-      "Smart contract otomatis membuat vault terpisah"
+      "Enter Solana address of beneficiary",
+      "Set appropriate heartbeat period",
+      "Smart contract automatically creates separate vault"
     ]
   },
   {
     step: 2, 
-    title: "Setor Aset",
-    description: "Transfer SOL, SPL Token, atau NFT ke vault yang aman",
+    title: "Deposit Assets",
+    description: "Transfer SOL, SPL Tokens, or NFTs to secure vault",
     icon: "💰",
     details: [
-      "Aset disimpan di Program Derived Address (PDA)",
-      "Hanya smart contract yang bisa mengakses",
-      "Testator dapat withdraw kapan saja sebelum triggered"
+      "Assets stored in Program Derived Address (PDA)",
+      "Only smart contract can access",
+      "Testator can withdraw anytime before triggered"
     ]
   },
   {
     step: 3,
-    title: "Kirim Heartbeat",
-    description: "Konfirmasi aktivitas secara berkala untuk reset timer",
+    title: "Send Heartbeat",
+    description: "Periodically confirm activity to reset timer",
     icon: "💓",
     details: [
-      "Klik tombol heartbeat di dashboard",
-      "Timer direset ke periode awal (90 hari)",
-      "Dapat dilakukan kapan saja selama wasiat aktif"
+      "Click heartbeat button in dashboard",
+      "Timer resets to initial period (90 days)",
+      "Can be done anytime while will is active"
     ]
   },
   {
     step: 4,
-    title: "Trigger Otomatis",
-    description: "Sistem otomatis mengaktifkan wasiat jika heartbeat berhenti",
+    title: "Auto Trigger",
+    description: "System automatically activates will if heartbeat stops",
     icon: "🤖",
     details: [
-      "Keeper service monitoring semua wasiat 24/7",
-      "Otomatis trigger jika timer habis",
-      "Status wasiat berubah menjadi 'Triggered'"
+      "Keeper service monitors all wills 24/7",
+      "Automatically triggers when timer expires",
+      "Will status changes to 'Triggered'"
     ]
   },
   {
     step: 5,
-    title: "Klaim Aset",
-    description: "Penerima manfaat dapat mengklaim aset dengan mudah",
+    title: "Claim Assets",
+    description: "Beneficiary can easily claim assets",
     icon: "🎯",
     details: [
-      "Beneficiary connect wallet dan verifikasi identitas",
-      "Smart contract transfer semua aset",
-      "Fee kecil dipotong untuk sustainability platform"
+      "Beneficiary connects wallet and verifies identity",
+      "Smart contract transfers all assets",
+      "Small fee deducted for platform sustainability"
     ]
   }
 ];
@@ -75,11 +75,11 @@ export default function About() {
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Bagaimana Cara Kerja Wasiat Online?
+              How Does Wasiat Online Work?
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Proses sederhana dalam 5 langkah untuk mengamankan warisan crypto Anda 
-              menggunakan teknologi blockchain yang aman dan transparan.
+              Simple 5-step process to secure your crypto inheritance 
+              using safe and transparent blockchain technology.
             </p>
           </div>
 
@@ -120,36 +120,36 @@ export default function About() {
           <div className="mt-20">
             <Card className="p-8 bg-primary/5">
               <CardHeader>
-                <CardTitle className="text-center text-2xl">🔒 Keamanan & Transparansi</CardTitle>
+                <CardTitle className="text-center text-2xl">🔒 Security & Transparency</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-semibold mb-2">🔐 Non-Custodial</h4>
                     <p className="text-sm text-muted-foreground">
-                      Anda memiliki kendali penuh atas private key. Wasiat Online tidak pernah 
-                      mengakses atau menyimpan private key Anda.
+                      You have full control over your private keys. Wasiat Online never 
+                      accesses or stores your private keys.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">🏛️ Smart Contract</h4>
                     <p className="text-sm text-muted-foreground">
-                      Semua logika disimpan dalam smart contract yang telah diaudit dan 
-                      transparan di blockchain Solana.
+                      All logic is stored in audited and transparent smart contracts 
+                      on the Solana blockchain.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">⚡ Solana Network</h4>
                     <p className="text-sm text-muted-foreground">
-                      Dibangun di Solana untuk transaksi cepat dan biaya rendah, 
-                      dengan keamanan tingkat enterprise.
+                      Built on Solana for fast transactions and low costs, 
+                      with enterprise-grade security.
                     </p>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">📊 Open Source</h4>
                     <p className="text-sm text-muted-foreground">
-                      Kode sumber terbuka dan dapat diverifikasi oleh siapa saja. 
-                      Transparansi penuh untuk kepercayaan maksimal.
+                      Open source code that can be verified by anyone. 
+                      Full transparency for maximum trust.
                     </p>
                   </div>
                 </div>

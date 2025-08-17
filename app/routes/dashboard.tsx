@@ -85,7 +85,7 @@ export default function Dashboard() {
           <div className="mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
             <p className="text-muted-foreground">
-              Kelola wasiat dan monitor status wallet Anda
+              Manage your wills and monitor your wallet status
             </p>
           </div>
 
@@ -94,7 +94,7 @@ export default function Dashboard() {
             <div className="lg:col-span-1 space-y-4 lg:space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Status Wallet</CardTitle>
+                  <CardTitle>Wallet Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ClientOnlyWallet>
@@ -102,18 +102,18 @@ export default function Dashboard() {
                       <div className="space-y-4">
                         <div className="text-center">
                           <div className="text-4xl mb-2">✅</div>
-                          <p className="font-medium text-green-600">Wallet Terhubung</p>
+                          <p className="font-medium text-green-600">Wallet Connected</p>
                         </div>
                         
                         <div className="space-y-2">
                           <div className="flex justify-between">
-                            <span className="text-sm text-gray-600">Alamat:</span>
+                            <span className="text-sm text-gray-600">Address:</span>
                             <span className="text-sm font-mono">
                               {formatAddress(wallet.publicKey?.toBase58() || "")}
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-sm text-gray-600">Saldo:</span>
+                            <span className="text-sm text-gray-600">Balance:</span>
                             <span className="text-sm font-bold">
                               {wallet.isLoading ? (
                                 <LoadingSpinner size="sm" />
@@ -126,14 +126,14 @@ export default function Dashboard() {
 
                         {hasWills && (
                           <div className="pt-4 border-t space-y-2">
-                            <h4 className="font-medium">Ringkasan Wasiat</h4>
+                            <h4 className="font-medium">Will Summary</h4>
                             <div className="space-y-1">
                               <div className="flex justify-between text-sm">
-                                <span>Total Wasiat:</span>
+                                <span>Total Wills:</span>
                                 <Badge variant="outline">{stats.totalWills}</Badge>
                               </div>
                               <div className="flex justify-between text-sm">
-                                <span>Aktif:</span>
+                                <span>Active:</span>
                                 <Badge variant="default">{stats.activeWills}</Badge>
                               </div>
                               <div className="flex justify-between text-sm">
@@ -147,8 +147,8 @@ export default function Dashboard() {
                     ) : (
                       <div className="text-center py-8 text-muted-foreground">
                         <div className="text-4xl mb-4">🔒</div>
-                        <p>Wallet belum terhubung</p>
-                        <p className="text-sm">Hubungkan wallet untuk melihat wasiat Anda</p>
+                        <p>Wallet not connected</p>
+                        <p className="text-sm">Connect your wallet to view your wills</p>
                       </div>
                     )}
                   </ClientOnlyWallet>
@@ -159,7 +159,7 @@ export default function Dashboard() {
               {wallet.isConnected && (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Aksi Cepat</CardTitle>
+                    <CardTitle>Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <Button 
@@ -167,21 +167,21 @@ export default function Dashboard() {
                       variant="outline"
                       onClick={handleCreateWill}
                     >
-                      ➕ Buat Wasiat Baru
+                      ➕ Create New Will
                     </Button>
                     <Button 
                       className="w-full justify-start" 
                       variant="outline"
                       onClick={() => navigate("/dashboard/testator")}
                     >
-                      📊 Dashboard Pewasiat
+                      📊 Testator Dashboard
                     </Button>
                     <Button 
                       className="w-full justify-start" 
                       variant="outline"
                       onClick={() => navigate("/dashboard/beneficiary")}
                     >
-                      🎯 Dashboard Penerima
+                      🎯 Beneficiary Dashboard
                     </Button>
                   </CardContent>
                 </Card>
@@ -199,18 +199,18 @@ export default function Dashboard() {
                     onCreateWill={handleCreateWill}
                     onWillAction={handleWillAction}
                     showStats={false} // Stats sudah ditampilkan di sidebar
-                    title="Semua Wasiat Anda"
+                    title="All Your Wills"
                   />
                 ) : (
                   <Card>
                     <CardHeader>
-                      <CardTitle>Wasiat Anda</CardTitle>
+                      <CardTitle>Your Wills</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-center py-8 text-muted-foreground">
                         <div className="text-4xl mb-4">📋</div>
-                        <p>Hubungkan wallet untuk melihat wasiat</p>
-                        <p className="text-sm">Anda perlu menghubungkan wallet terlebih dahulu</p>
+                        <p>Connect wallet to view wills</p>
+                        <p className="text-sm">You need to connect your wallet first</p>
                       </div>
                     </CardContent>
                   </Card>

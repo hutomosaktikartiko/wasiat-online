@@ -67,15 +67,15 @@ export default function TestatorDashboard() {
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start mb-6 sm:mb-8">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold">Dashboard Pewasiat</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold">Testator Dashboard</h1>
               <p className="text-muted-foreground">
-                Kelola wasiat dan monitor status inheritance Anda
+                Manage your wills and monitor inheritance status
               </p>
             </div>
             <ClientOnlyWallet>
               {wallet.isConnected && (
                 <Button className="mt-4 sm:mt-0" onClick={handleCreateWill}>
-                  ➕ Buat Wasiat Baru
+                  ➕ Create New Will
                 </Button>
               )}
             </ClientOnlyWallet>
@@ -89,13 +89,13 @@ export default function TestatorDashboard() {
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-2xl font-bold text-primary">{testatorStats.total}</div>
-                      <div className="text-sm text-muted-foreground">Total Wasiat</div>
+                      <div className="text-sm text-muted-foreground">Total Wills</div>
                     </CardContent>
                   </Card>
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-2xl font-bold text-green-600">{testatorStats.active}</div>
-                      <div className="text-sm text-muted-foreground">Aktif</div>
+                      <div className="text-sm text-muted-foreground">Active</div>
                     </CardContent>
                   </Card>
                   <Card>
@@ -107,7 +107,7 @@ export default function TestatorDashboard() {
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-2xl font-bold text-orange-600">{testatorStats.needingAttention}</div>
-                      <div className="text-sm text-muted-foreground">Perlu Perhatian</div>
+                      <div className="text-sm text-muted-foreground">Needs Attention</div>
                     </CardContent>
                   </Card>
                 </div>
@@ -120,16 +120,16 @@ export default function TestatorDashboard() {
                   onCreateWill={handleCreateWill}
                   onWillAction={handleWillAction}
                   showStats={false} // Stats sudah ditampilkan di atas
-                  title="Wasiat Sebagai Pewasiat"
+                  title="Wills as Testator"
                 />
               </>
             ) : (
               <Card>
                 <CardContent className="text-center py-12">
                   <div className="text-4xl mb-4">🔒</div>
-                  <h3 className="text-xl font-semibold mb-2">Wallet Belum Terhubung</h3>
+                  <h3 className="text-xl font-semibold mb-2">Wallet Not Connected</h3>
                   <p className="text-muted-foreground">
-                    Hubungkan wallet Anda untuk melihat dan mengelola wasiat sebagai pewasiat
+                    Connect your wallet to view and manage wills as testator
                   </p>
                 </CardContent>
               </Card>

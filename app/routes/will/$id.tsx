@@ -55,20 +55,20 @@ export default function WillDetail({ params }: Route.ComponentProps) {
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start mb-8">
             <div>
-              <h1 className="text-3xl font-bold">Detail Wasiat</h1>
+              <h1 className="text-3xl font-bold">Will Details</h1>
               <p className="text-muted-foreground">ID: {willId}</p>
             </div>
             <StatusBadge 
               status={
                 !will ? "secondary" : will.status === 0 ? "secondary" : will.status === 1 ? "default" : will.status === 2 ? "outline" : will.status === 3 ? "default" : "destructive"
               }
-              text={!will ? "Memuat" : will.status === 0 ? "Dibuat" : will.status === 1 ? "Aktif" : will.status === 2 ? "Dipicu" : will.status === 3 ? "Diklaim" : "Ditarik"}
+              text={!will ? "Loading" : will.status === 0 ? "Created" : will.status === 1 ? "Active" : will.status === 2 ? "Triggered" : will.status === 3 ? "Claimed" : "Withdrawn"}
             />
           </div>
 
           {/* Loading / Error */}
           {isLoading && (
-            <div className="text-center text-sm text-muted-foreground mb-6">Memuat data wasiat...</div>
+            <div className="text-center text-sm text-muted-foreground mb-6">Loading will data...</div>
           )}
           {error && (
             <div className="text-center text-sm text-red-600 mb-6">{error}</div>
@@ -78,17 +78,17 @@ export default function WillDetail({ params }: Route.ComponentProps) {
           <div className="grid lg:grid-cols-2 gap-6 mb-8">
             <Card>
               <CardHeader>
-                <CardTitle>📋 Informasi Wasiat</CardTitle>
+                <CardTitle>📋 Will Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {will ? (
                   <>
                     <div>
-                      <label className="text-sm font-semibold">Pewasiat</label>
+                      <label className="text-sm font-semibold">Testator</label>
                       <CopyAddress address={will.testator.toBase58()} />
                     </div>
                     <div>
-                      <label className="text-sm font-semibold">Penerima Manfaat</label>
+                      <label className="text-sm font-semibold">Beneficiary</label>
                       <CopyAddress address={will.beneficiary.toBase58()} />
                     </div>
                     <div>
@@ -96,37 +96,37 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                       <CopyAddress address={will.vault.toBase58()} />
                     </div>
                     <div>
-                      <label className="text-sm font-semibold">Saldo Vault</label>
+                      <label className="text-sm font-semibold">Vault Balance</label>
                       <p className="text-sm font-medium">{formatSOL(will.vaultBalance)} SOL</p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold">Dibuat</label>
+                      <label className="text-sm font-semibold">Created</label>
                       <p className="text-sm">{new Date(will.createdAt * 1000).toLocaleString('id-ID')}</p>
                     </div>
                   </>
                 ) : (
-                  <p className="text-sm text-muted-foreground">Data wasiat belum tersedia.</p>
+                  <p className="text-sm text-muted-foreground">Will data not available yet.</p>
                 )}
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>💓 Status Heartbeat</CardTitle>
+                <CardTitle>💓 Heartbeat Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {will ? (
                   <>
                     <div>
-                      <label className="text-sm font-semibold">Periode Heartbeat</label>
-                      <p className="text-sm">{Math.floor(will.heartbeatPeriod / (24*60*60))} hari</p>
+                      <label className="text-sm font-semibold">Heartbeat Period</label>
+                      <p className="text-sm">{Math.floor(will.heartbeatPeriod / (24*60*60))} days</p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold">Heartbeat Terakhir</label>
+                      <label className="text-sm font-semibold">Last Heartbeat</label>
                       <p className="text-sm">{formatDate(will.lastHeartbeat)}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-semibold">Waktu Tersisa</label>
+                      <label className="text-sm font-semibold">Time Remaining</label>
                       <CountdownTimer targetTime={will.lastHeartbeat + will.heartbeatPeriod} size="sm" />
                     </div>
                   </>
@@ -144,7 +144,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
             <div className="mt-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl">⚡ Aksi</CardTitle>
+                  <CardTitle className="text-xl">⚡ Actions</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
@@ -158,7 +158,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                           disabled={!(will.status === WillStatus.Created || will.status === WillStatus.Active)}
                         >
                           <div className="text-2xl mb-2">💰</div>
-                          <div>Tambah Aset</div>
+                          <div>Add Assets</div>
                         </Button>
                         <DepositDialog
                           open={depositOpen}
@@ -178,7 +178,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                           disabled={!will.canHeartbeat}
                         >
                           <div className="text-2xl mb-2">💓</div>
-                          <div>Kirim Heartbeat</div>
+                          <div>Send Heartbeat</div>
                         </Button>
                         <HeartbeatDialog
                           open={heartbeatOpen}
@@ -199,7 +199,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                           disabled={!will.canWithdraw}
                         >
                           <div className="text-2xl mb-2">💸</div>
-                          <div>Tarik Aset</div>
+                          <div>Withdraw Assets</div>
                         </Button>
                         <WithdrawDialog
                           open={withdrawOpen}
@@ -220,7 +220,7 @@ export default function WillDetail({ params }: Route.ComponentProps) {
                           disabled={!will.canClaim}
                         >
                         <div className="text-2xl mb-2">🎯</div>
-                        <div>Klaim Aset</div>
+                        <div>Claim Assets</div>
                         </Button>
                         <ClaimDialog
                           open={claimOpen}

@@ -27,7 +27,7 @@ export function HeartbeatDialog({ open, onOpenChange, will, onConfirm }: Heartbe
       onOpenChange(false);
       if (res.signature) {
         notify.showSuccess(
-          "Heartbeat berhasil", 
+          "Heartbeat successful", 
           <>
             <a href={getExplorerUrl(res.signature, "tx")} target="_blank" rel="noreferrer" className="underline">
               {res.signature}
@@ -35,7 +35,7 @@ export function HeartbeatDialog({ open, onOpenChange, will, onConfirm }: Heartbe
           </>
         );
       } else {
-        notify.showSuccess("Heartbeat berhasil", "Transaksi berhasil dikonfirmasi.");
+        notify.showSuccess("Heartbeat successful", "Transaction confirmed successfully.");
       }
     }
   };
@@ -44,20 +44,20 @@ export function HeartbeatDialog({ open, onOpenChange, will, onConfirm }: Heartbe
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Konfirmasi Kirim Heartbeat</DialogTitle>
+          <DialogTitle>Confirm Send Heartbeat</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Kirim heartbeat untuk mereset timer dan menjaga wasiat tetap aktif.
+            Send heartbeat to reset timer and keep will active.
           </p>
           <Button onClick={handleConfirm} disabled={loading} className="w-full">
             {loading ? (
               <>
                 <LoadingSpinner size="sm" className="mr-2" />
-                Mengirim...
+                Sending...
               </>
             ) : (
-              "Kirim Heartbeat"
+              "Send Heartbeat"
             )}
           </Button>
         </div>

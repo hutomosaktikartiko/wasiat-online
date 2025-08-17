@@ -4,19 +4,19 @@ const testimonials = [
   {
     name: "Ahmad Reza",
     role: "Crypto Investor & DeFi Enthusiast",
-    content: "Wasiat Online memberikan ketenangan pikiran yang luar biasa. Sekarang saya tahu aset crypto saya aman untuk keluarga, tanpa perlu khawatir tentang private key yang hilang.",
+    content: "Wasiat Online provides incredible peace of mind. Now I know my crypto assets are safe for my family, without worrying about lost private keys.",
     avatar: "👨‍💼"
   },
   {
     name: "Sarah Chen", 
     role: "NFT Collector & Web3 Builder",
-    content: "Interface yang sangat user-friendly dan proses yang transparan! Saya bisa dengan mudah mengatur inheritance untuk koleksi NFT saya. Tim support juga sangat responsif.",
+    content: "Very user-friendly interface and transparent process! I can easily set up inheritance for my NFT collection. The support team is also very responsive.",
     avatar: "👩‍🎨"
   },
   {
     name: "Michael Torres",
     role: "Solana Developer",
-    content: "Sebagai developer, saya sangat menghargai kode yang clean dan smart contract yang well-audited. Wasiat Online built with best practices dan security yang top-notch.",
+    content: "As a developer, I really appreciate the clean code and well-audited smart contracts. Wasiat Online is built with best practices and top-notch security.",
     avatar: "👨‍💻"
   }
 ];
@@ -27,10 +27,10 @@ export function TestimonialsSection() {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Apa Kata Pengguna Kami?
+            What Our Users Say?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Ribuan pengguna telah mempercayai Wasiat Online untuk mengamankan masa depan aset crypto mereka
+            Thousands of users have trusted Wasiat Online to secure the future of their crypto assets
           </p>
         </div>
         
@@ -71,7 +71,7 @@ export function TestimonialsSection() {
             ))}
           </div>
           <p className="text-muted-foreground">
-            <strong>4.9/5</strong> rating berdasarkan <strong>150+</strong> reviews
+            <strong>4.9/5</strong> rating based on <strong>150+</strong> reviews
           </p>
         </div>
       </div>

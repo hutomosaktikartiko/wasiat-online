@@ -3,32 +3,32 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../ui
 const features = [
   {
     icon: "🔒",
-    title: "Aman",
-    description: "Pengguna memegang kendali penuh atas private key, aset diamankan oleh smart contract",
+    title: "Secure",
+    description: "Users retain full control of private keys, assets secured by smart contract logic",
     details: [
-      "Private key tetap di tangan Anda",
-      "Smart contract telah diaudit",
+      "Private keys remain in your hands",
+      "Audited smart contracts",
       "Non-custodial solution"
     ]
   },
   {
     icon: "🤖",
-    title: "Otomatis", 
-    description: "Transfer aset terjadi otomatis berdasarkan aturan, tanpa perantara mahal",
+    title: "Automatic", 
+    description: "Asset transfers occur automatically based on rules, without expensive intermediaries",
     details: [
-      "Trigger otomatis via keeper service",
-      "Tidak perlu notaris atau lawyer",
-      "Eksekusi instan saat kondisi terpenuhi"
+      "Automatic trigger via keeper service",
+      "No need for notary or lawyer",
+      "Instant execution when conditions are met"
     ]
   },
   {
     icon: "⚡",
-    title: "Efisien & Terjangkau",
-    description: "Dibangun di Solana dengan biaya transaksi murah dan proses hampir seketika",
+    title: "Efficient & Affordable",
+    description: "Built on Solana with low transaction costs and near-instant processing",
     details: [
-      "Biaya transaksi < $0.01",
-      "Konfirmasi dalam detik",
-      "Skalabilitas tinggi"
+      "Transaction costs < $0.01",
+      "Confirmation in seconds",
+      "High scalability"
     ]
   }
 ];
@@ -39,10 +39,10 @@ export function FeaturesSection() {
       <div className="container">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Mengapa Wasiat Online?
+            Why Wasiat Online?
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Solusi inheritance crypto yang menggabungkan keamanan blockchain dengan kemudahan penggunaan
+            Crypto inheritance solution that combines blockchain security with ease of use
           </p>
         </div>
         
