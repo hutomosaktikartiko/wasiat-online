@@ -12,9 +12,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-          <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">W</span>
-          </div>
+          <img src="/logo.png" alt="Wasiat Online" className="h-8 w-8" />
           <span className="font-bold text-xl hidden sm:block">Wasiat Online</span>
           <span className="font-bold text-lg sm:hidden">Wasiat</span>
         </Link>

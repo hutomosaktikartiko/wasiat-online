@@ -6,8 +6,19 @@ import { CreateWillForm } from "../../components/will/create-will-form";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Buat Wasiat — Wasiat Online" },
-    { name: "description", content: "Buat wasiat digital untuk mengamankan warisan crypto Anda" },
+    { title: "Create Will — Wasiat Online" },
+    { name: "description", content: "Create digital will to secure your crypto inheritance" },
+    
+    // Open Graph
+    { property: "og:title", content: "Create Your Crypto Will — Wasiat Online" },
+    { property: "og:description", content: "Start securing your crypto inheritance today. Create your digital will in minutes." },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: "/logo.png" },
+    
+    // Twitter Card
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Create Your Crypto Will" },
+    { name: "twitter:description", content: "Secure your crypto inheritance in minutes with Wasiat Online." },
   ];
 }
 

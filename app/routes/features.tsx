@@ -5,8 +5,19 @@ import { Badge } from "../components/ui/badge";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Fitur — Wasiat Online" },
-    { name: "description", content: "Jelajahi semua fitur Wasiat Online untuk mengamankan warisan digital Anda" },
+    { title: "Features — Wasiat Online" },
+    { name: "description", content: "Explore all Wasiat Online features to secure your digital inheritance" },
+    
+    // Open Graph
+    { property: "og:title", content: "Wasiat Online Features — Crypto Inheritance Platform" },
+    { property: "og:description", content: "Secure, automatic, and affordable crypto inheritance with Solana blockchain technology." },
+    { property: "og:type", content: "article" },
+    { property: "og:image", content: "/logo.png" },
+    
+    // Twitter Card
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Wasiat Online Features" },
+    { name: "twitter:description", content: "Secure, automatic, and affordable crypto inheritance platform." },
   ];
 }
 

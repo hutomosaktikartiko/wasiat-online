@@ -13,8 +13,8 @@ import type { WillWithStatus } from "../../types/will";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Dashboard Pewasiat — Wasiat Online" },
-    { name: "description", content: "Kelola wasiat dan monitor aset inheritance Anda" },
+    { title: "Testator Dashboard — Wasiat Online" },
+    { name: "description", content: "Manage your wills and monitor inheritance assets" },
   ];
 }
 

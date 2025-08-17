@@ -20,7 +20,7 @@ import { useWallet } from "~/hooks/use-wallet";
 export function meta({ params }: Route.MetaArgs) {
   return [
     { title: `Will ${params.id} — Wasiat Online` },
-    { name: "description", content: "Detail wasiat dan manajemen aset" },
+    { name: "description", content: "Will details and asset management" },
   ];
 }
 

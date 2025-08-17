@@ -14,8 +14,8 @@ import type { WillWithStatus } from "../../types/will";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Dashboard Beneficiary — Wasiat Online" },
-    { name: "description", content: "Cek status wasiat dan klaim warisan yang ditujukan untuk Anda" },
+    { title: "Beneficiary Dashboard — Wasiat Online" },
+    { name: "description", content: "Check will status and claim inheritance intended for you" },
   ];
 }
 

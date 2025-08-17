@@ -8,9 +8,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="h-6 w-6 rounded bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xs">W</span>
-              </div>
+              <img src="/logo.png" alt="Wasiat Online" className="h-6 w-6" />
               <span className="font-bold">Wasiat Online</span>
             </div>
             <p className="text-sm text-muted-foreground">

@@ -4,8 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Cara Kerja — Wasiat Online" },
-    { name: "description", content: "Pelajari bagaimana Wasiat Online bekerja untuk mengamankan warisan digital Anda" },
+    { title: "How It Works — Wasiat Online" },
+    { name: "description", content: "Learn how Wasiat Online works to secure your digital inheritance" },
+    
+    // Open Graph
+    { property: "og:title", content: "How Wasiat Online Works — Crypto Inheritance" },
+    { property: "og:description", content: "Simple 5-step process to secure your crypto inheritance using blockchain technology." },
+    { property: "og:type", content: "article" },
+    { property: "og:image", content: "/logo.png" },
+    
+    // Twitter Card
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "How Wasiat Online Works" },
+    { name: "twitter:description", content: "Learn the 5-step process to secure your crypto inheritance." },
   ];
 }
 
