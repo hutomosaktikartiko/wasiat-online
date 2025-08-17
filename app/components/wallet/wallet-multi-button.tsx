@@ -64,7 +64,6 @@ export function WalletMultiButton({ className, variant = "default", size = "defa
     if (connected && publicKey) {
       return (
         <>
-          <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
           {formatAddress(publicKey.toString(), 4)}
           <div className="w-4 h-4 ml-2 text-muted-foreground">🔌</div>
         </>

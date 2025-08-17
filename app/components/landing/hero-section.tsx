@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router";
 
 export function HeroSection() {
@@ -10,11 +9,6 @@ export function HeroSection() {
     <section className="py-20 px-4 bg-gradient-to-b from-primary/5 to-background">
       <div className="container max-w-5xl">
         <div className="text-center">
-          {/* Badge */}
-          <Badge variant="secondary" className="mb-6 text-sm font-medium">
-            🚀 Beta version - Built on Solana
-          </Badge>
-          
           {/* Main Heading */}
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
             Wasiat Online —{" "}

@@ -13,6 +13,7 @@ import { WalletProvider } from "./providers/wallet-provider";
 import { ProgramProvider } from "./providers/program-provider";
 import { NotificationProvider } from "./providers/notification-provider";
 import { ClientOnlyWallet } from "./components/wallet/client-only-wallet";
+import { DevnetWarning } from "./components/devnet-warning";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -48,6 +49,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <NotificationProvider>
+      <DevnetWarning />
       <ClientOnlyWallet>
         <WalletProvider>
           <ProgramProvider>

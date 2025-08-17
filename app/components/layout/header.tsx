@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { Navigation, mainNavItems, MobileNavigation } from "../ui/navigation";
 import { WalletMultiButton } from "../wallet/wallet-multi-button";
+import { DevnetBadge } from "../ui/devnet-banner";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -11,11 +12,13 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-          <img src="/logo.png" alt="Wasiat Online" className="h-8 w-8" />
-          <span className="font-bold text-xl hidden sm:block">Wasiat Online</span>
-          <span className="font-bold text-lg sm:hidden">Wasiat</span>
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
+            <img src="/logo.png" alt="Wasiat Online" className="h-8 w-8" />
+            <span className="font-bold text-xl hidden sm:block">Wasiat Online</span>
+          </Link>
+          <DevnetBadge />
+        </div>
 
         {/* Desktop Navigation - Hidden on Mobile */}
         <div className="hidden lg:block">
