@@ -31,22 +31,22 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
     const num = parseFloat(value);
     
     if (isNaN(num) || num <= 0) {
-      setError("Jumlah harus lebih besar dari 0");
+      setError("Amount must be greater than 0");
       return false;
     }
     
     if (num < MIN_SOL_AMOUNT) {
-      setError(`Deposit minimal ${MIN_SOL_AMOUNT} SOL`);
+      setError(`Minimum deposit ${MIN_SOL_AMOUNT} SOL`);
       return false;
     }
     
     if (num > MAX_SOL_AMOUNT) {
-      setError(`Deposit maksimal ${MAX_SOL_AMOUNT} SOL`);
+      setError(`Maximum deposit ${MAX_SOL_AMOUNT} SOL`);
       return false;
     }
     
     if (num > wallet.balance - 0.01) { // Reserve for transaction fees
-      setError("Saldo tidak mencukupi (sisakan untuk biaya transaksi)");
+      setError("Insufficient balance (reserve for transaction fees)");
       return false;
     }
     
@@ -89,7 +89,7 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
         <div>
           <h2 className="text-2xl font-bold text-center mb-2">Deposit SOL</h2>
           <p className="text-gray-600 text-center text-sm">
-            Setor SOL ke vault wasiat Anda
+            Deposit SOL to your will vault
           </p>
         </div>
 
@@ -97,13 +97,13 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
         {will && (
           <div className="bg-blue-50 p-4 rounded-lg">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-blue-800">Saldo Vault Saat Ini:</span>
+              <span className="text-sm text-blue-800">Current Vault Balance:</span>
               <span className="font-bold text-blue-900">
                 {formatSOL(will.vaultBalance)} SOL
               </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm text-blue-800">Saldo Wallet:</span>
+              <span className="text-sm text-blue-800">Wallet Balance:</span>
               <span className="font-bold text-blue-900">
                 {formatSOL(wallet.balance)} SOL
               </span>
@@ -115,7 +115,7 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
           {/* Amount Input */}
           <div className="space-y-2">
             <Label htmlFor="amount">
-              Jumlah SOL <span className="text-red-500">*</span>
+              SOL Amount <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
               <Input
@@ -149,15 +149,15 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
           {amount && !error && (
             <div className="bg-gray-50 p-3 rounded-lg">
               <div className="flex justify-between text-sm">
-                <span>Jumlah Deposit:</span>
+                <span>Deposit Amount:</span>
                 <span className="font-medium">{amount} SOL</span>
               </div>
               <div className="flex justify-between text-sm mt-1">
-                <span>Estimasi Biaya Transaksi:</span>
+                <span>Estimated Transaction Fee:</span>
                 <span className="font-medium">~0.001 SOL</span>
               </div>
               <div className="flex justify-between text-sm mt-1 pt-2 border-t border-gray-200">
-                <span>Saldo Setelah Deposit:</span>
+                <span>Balance After Deposit:</span>
                 <span className="font-medium">
                   {formatSOL(wallet.balance - parseFloat(amount) - 0.001)} SOL
                 </span>
@@ -175,7 +175,7 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
                 className="flex-1"
                 disabled={transaction.isLoading}
               >
-                Batal
+                Cancel
               </Button>
             )}
             <Button
@@ -191,7 +191,7 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
               {transaction.isLoading ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  Memproses...
+                  Processing...
                 </>
               ) : (
                 "Deposit SOL"
@@ -202,12 +202,12 @@ export function DepositForm({ willAddress, onSuccess, onCancel }: DepositFormPro
 
         {/* Deposit Guidelines */}
         <div className="text-xs text-gray-500 space-y-1">
-          <p>📝 Catatan:</p>
+          <p>📝 Notes:</p>
           <ul className="list-disc list-inside space-y-1 ml-2">
-            <li>Deposit minimal: {MIN_SOL_AMOUNT} SOL</li>
-            <li>Deposit maksimal: {MAX_SOL_AMOUNT} SOL</li>
-            <li>Biaya transaksi ~0.001 SOL akan dipotong dari wallet</li>
-            <li>Setelah deposit, status wasiat akan berubah menjadi "Aktif"</li>
+            <li>Minimum deposit: {MIN_SOL_AMOUNT} SOL</li>
+            <li>Maximum deposit: {MAX_SOL_AMOUNT} SOL</li>
+            <li>Transaction fee ~0.001 SOL will be deducted from wallet</li>
+            <li>After deposit, will status will change to "Active"</li>
           </ul>
         </div>
       </div>

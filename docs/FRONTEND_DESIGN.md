@@ -57,12 +57,15 @@ app/
 │   │   └── wallet-status.tsx
 │   ├── will/           # Will-specific components
 │   │   ├── will-card.tsx
+│   │   ├── will-list.tsx
+│   │   ├── will-search.tsx
 │   │   ├── create-will-form.tsx
 │   │   ├── deposit-form.tsx
-│   │   ├── heartbeat-button.tsx
-│   │   ├── claim-button.tsx
-│   │   ├── withdraw-form.tsx
-│   │   └── sol-amount-input.tsx
+│   │   └── dialogs/     # Action dialogs
+│   │       ├── deposit-dialog.tsx
+│   │       ├── heartbeat-dialog.tsx
+│   │       ├── withdraw-dialog.tsx
+│   │       └── claim-dialog.tsx
 │   ├── transaction/    # Transaction components
 │   │   ├── tx-status.tsx
 │   │   ├── tx-history.tsx
@@ -194,29 +197,39 @@ graph TD
 
     E --> F[Dashboard Pages]
     E --> G[Will Pages]
-    E --> H[Beneficiary Pages]
+    E --> H[Landing Pages]
 
     F --> I[TestatorDashboard]
-    F --> J[WillList]
-    F --> K[WillCard]
+    F --> J[BeneficiaryDashboard]
+    F --> K[WillList]
+    F --> L[WillCard]
+    F --> M[WillSearch]
 
-    G --> L[CreateWillPage]
-    G --> M[WillDetailsPage]
-    G --> N[ManageWillPage]
-
-    L --> O[CreateWillForm]
-    M --> P[WillInfo]
-    M --> Q[DepositForm]
-    M --> R[HeartbeatButton]
-    M --> S[WithdrawForm]
-
-    H --> T[BeneficiaryDashboard]
-    H --> U[ClaimButton]
-    H --> V[WillStatusCard]
+    G --> N[CreateWillPage]
+    G --> O[WillDetailsPage]
+    
+    N --> P[CreateWillForm]
+    O --> Q[WillInfo]
+    O --> R[TxHistory]
+    O --> S[ActionDialogs]
+    
+    S --> T[DepositDialog]
+    S --> U[HeartbeatDialog]
+    S --> V[WithdrawDialog]
+    S --> W[ClaimDialog]
+    
+    T --> X[DepositForm]
+    
+    H --> Y[HeroSection]
+    H --> Z[FeaturesSection]
+    H --> AA[HowItWorksSection]
+    H --> BB[CTASection]
+    H --> CC[TestimonialsSection]
 
     style A fill:#e1f5fe
     style I fill:#f3e5f5
-    style T fill:#e8f5e8
+    style J fill:#e8f5e8
+    style S fill:#fff3e0
 ```
 
 ## 🗃️ State Management Strategy
@@ -260,25 +273,25 @@ interface TransactionState {
 ```typescript
 // Wallet management
 const useWallet = () => {
-  // Connection, balance, account info
+  // Connection, balance, account info, user role detection
 };
 
-// Will-specific operations
-const useWill = (testator?: PublicKey) => {
-  // CRUD operations for will
-  // fetchWills, createWill, depositSOL, etc.
+// Single will operations
+const useWill = (testator?: PublicKey, beneficiary?: PublicKey, willAddress?: PublicKey) => {
+  // Single will CRUD operations
+  // createWill, fetchWill, depositSOL, sendHeartbeat, withdrawSOL, claimSOL
 };
 
-// Wills Multiple operations
-const useWill = (testator?: PublicKey) => {
-  // CRUD operations for wills
-  // fetchWills, getWillsByStatus, getWillsNeedingAttention
+// Multiple wills operations
+const useWills = () => {
+  // Multiple wills operations
+  // fetchWills, getWillsByStatus, testatorWills, beneficiaryWills, stats
 };
 
-// Will Search operations
-const useWill = (testator?: PublicKey) => {
-  // Get spesific will by address
-  // searchWill
+// Will search operations
+const useWillSearch = () => {
+  // Search specific will by address
+  // searchWill, isValidSolanaAddress, clearSearch
 };
 
 // Transaction handling
@@ -326,6 +339,7 @@ const endpoint = clusterApiUrl(network);
 ```typescript
 // types/will.ts
 export interface Will {
+  address: PublicKey;
   testator: PublicKey;
   beneficiary: PublicKey;
   vault: PublicKey;
@@ -336,6 +350,14 @@ export interface Will {
   triggerAt: number | null;
   bump: number;
   vaultBump: number;
+}
+
+export interface WillWithStatus extends Will {
+  vaultBalance: number;
+  isExpired: boolean;
+  canHeartbeat: boolean;
+  canWithdraw: boolean;
+  canClaim: boolean;
 }
 
 export enum WillStatus {
@@ -370,11 +392,21 @@ export interface TransactionStatus {
 
 // types/ui.ts
 export interface WillCardProps {
-  will: Will;
-  onHeartbeat?: () => void;
+  will: WillWithStatus;
+  userRole: "testator" | "beneficiary" | "viewer";
   onDeposit?: () => void;
+  onHeartbeat?: () => void;
   onWithdraw?: () => void;
   onClaim?: () => void;
+  onViewDetails?: () => void;
+}
+
+export interface DialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  will: WillWithStatus;
+  onSuccess?: () => void;
+  onConfirm?: () => Promise<{ success: boolean; signature?: string | null }>;
 }
 ```
 

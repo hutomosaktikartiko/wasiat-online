@@ -112,7 +112,7 @@ export function TxHistory({ willAddress }: { willAddress: PublicKey }) {
       })
       .catch((e) => {
         if (!mounted) return;
-        setError(e instanceof Error ? e.message : "Gagal memuat transaksi");
+        setError(e instanceof Error ? e.message : "Failed to load transactions");
       })
       .finally(() => {
         if (!mounted) return;
@@ -126,7 +126,7 @@ export function TxHistory({ willAddress }: { willAddress: PublicKey }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>📄 Riwayat Transaksi</CardTitle>
+        <CardTitle>📄 Transaction History</CardTitle>
       </CardHeader>
       <CardContent>
         {loading ? (
@@ -138,7 +138,7 @@ export function TxHistory({ willAddress }: { willAddress: PublicKey }) {
         ) : error ? (
           <div className="text-sm text-red-600">{error}</div>
         ) : !items || items.length === 0 ? (
-          <div className="text-sm text-muted-foreground">Belum ada transaksi.</div>
+          <div className="text-sm text-muted-foreground">No transactions yet.</div>
         ) : (
           <div className="space-y-4">
             {items.map((tx) => (
@@ -146,7 +146,7 @@ export function TxHistory({ willAddress }: { willAddress: PublicKey }) {
                 <div>
                   <div className="font-semibold">{formatType(tx.type)}</div>
                   <div className="text-sm text-muted-foreground">
-                    {tx.blockTime ? new Date(tx.blockTime * 1000).toLocaleString("id-ID") : "—"}
+                    {tx.blockTime ? new Date(tx.blockTime * 1000).toLocaleString("en-US") : "—"}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -157,7 +157,7 @@ export function TxHistory({ willAddress }: { willAddress: PublicKey }) {
                     rel="noreferrer"
                     className="text-xs underline"
                   >
-                    Lihat
+                    View
                   </a>
                   <CopyHash hash={tx.signature} label="Tx" />
                 </div>
