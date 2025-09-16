@@ -54,6 +54,10 @@ pub enum AppError {
     #[msg("Testator does not own this NFT.")]
     NftNotOwned,
 
+    /// Deposit errors
+    #[msg("Exceeded the maximum limit of 100 assets")]
+    MaxAssetsExceeded,
+
     /// Trigger errors
     #[msg("Will has not expired ye. Cannot trigger.")]
     WillNotExpired,

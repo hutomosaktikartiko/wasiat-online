@@ -21,6 +21,7 @@ pub struct DepositSplToken<'info> {
             will.beneficiary.as_ref()
         ],
         bump = will.bump,
+        constraint = will.status == WillStatus::Created || will.status == WillStatus::Active @ AppError::InvalidWillStatus,
         constraint = will.testator == testator.key() @ AppError::Unauthorized,
     )]
     pub will: Account<'info, Will>,
@@ -46,12 +47,24 @@ pub struct DepositSplToken<'info> {
     )]
     pub vault_token_account: Account<'info, TokenAccount>,
 
-    /// Vault pda (authority for vault_token_account)
+    /// CHECK: PDA vault as authority
     #[account(
         seeds = [VAULT_SEED.as_bytes(), will.key().as_ref()],
-        bump = will.vault_bump,
+        bump,
     )]
-    pub vault: SystemAccount<'info>,
+    pub vault: Account<'info, Vault>,
+
+    /// Vault registry
+    #[account(
+        mut,
+        seeds = [
+            VAULT_REGISTRY_SEED.as_bytes(),
+            vault.key().as_ref()
+        ],
+        bump,
+        constraint = vault_registry.vault.key() == vault.key() @ AppError::Unauthorized
+    )]
+    pub vault_registry:  Account<'info, VaultRegistry>,
 
     pub token_program: Program<'info, Token>,
     pub associated_token_program: Program<'info, AssociatedToken>,
@@ -63,12 +76,6 @@ impl<'info> DepositSplToken<'info> {
         // validate amount
         require!(amount > 0, AppError::InvalidAmount);
 
-        // validate will status
-        require!(
-            matches!(self.will.status, WillStatus::Created | WillStatus::Active),
-            AppError::InvalidWillStatus,
-        );
-
         Ok(())
     }
 }
@@ -77,7 +84,7 @@ pub fn handler(ctx: Context<DepositSplToken>, amount: u64) -> Result<()> {
     // validate inputs
     ctx.accounts.validate(amount)?;
 
-    // transfer spl tokn from testator to vault
+    // transfer spl token from testator to vault
     let token_transfer_accounts = TokenTransfer {
         from: ctx.accounts.testator_token_account.to_account_info(),
         to: ctx.accounts.vault_token_account.to_account_info(),
@@ -90,6 +97,13 @@ pub fn handler(ctx: Context<DepositSplToken>, amount: u64) -> Result<()> {
     );
 
     token_transfer(token_transfer_ctx, amount)?;
+
+    let vault_registry = &mut ctx.accounts.vault_registry;
+
+    // add mint to vault registry's assets if don't have it
+    if !vault_registry.assets.contains(&ctx.accounts.mint.key()) {
+        vault_registry.assets.push(ctx.accounts.mint.key());
+    }
 
     // update will status if first deposit
     let will = &mut ctx.accounts.will;

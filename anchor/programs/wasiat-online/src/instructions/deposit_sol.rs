@@ -21,13 +21,13 @@ pub struct DepositSol<'info> {
     )]
     pub will: Account<'info, Will>,
 
-    /// Vault pda for saving SOL
+    /// Vault pda sol
     #[account(
         mut,
         seeds = [VAULT_SEED.as_bytes(), will.key().as_ref()],
-        bump = will.vault_bump,
+        bump,
     )]
-    pub vault: SystemAccount<'info>,
+    pub vault: Account<'info, Vault>,
 
     pub system_program: Program<'info, System>,
 }

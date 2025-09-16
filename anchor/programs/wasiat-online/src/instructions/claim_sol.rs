@@ -16,13 +16,13 @@ pub struct ClaimSol<'info> {
     )]
     pub will: Account<'info, Will>,
 
-    /// Sol vault pda
+    /// vault pda sol
     #[account(
         mut,
         seeds = [VAULT_SEED.as_bytes(), will.key().as_ref()],
-        bump = will.vault_bump,
+        bump,
     )]
-    pub vault: SystemAccount<'info>,
+    pub vault: Account<'info, Vault>,
 
     /// Config for fee configuration
     #[account(
@@ -44,9 +44,8 @@ pub struct ClaimSol<'info> {
 }
 
 impl<'info> ClaimSol<'info> {
-    pub fn validate(&self) -> Result<()> {
+    pub fn validate(&self, vault_balance: u64) -> Result<()> {
         // validate sol vault balance
-        let vault_balance = self.vault.lamports();
         require!(vault_balance > 0, AppError::NoAssetsToClaim);
 
         // validate enough balance for fees + transfer
@@ -61,11 +60,12 @@ impl<'info> ClaimSol<'info> {
 }
 
 pub fn handler(ctx: Context<ClaimSol>) -> Result<()> {
+    let vault_balance = ctx.accounts.vault.to_account_info().lamports();
+
     // validation inputs
-    ctx.accounts.validate()?;
+    ctx.accounts.validate(vault_balance)?;
 
     let will = &mut ctx.accounts.will;
-    let vault_balance = ctx.accounts.vault.lamports();
 
     // calculate service fee
     let token_fee_bps = ctx.accounts.config.token_fee_bps;
@@ -80,7 +80,8 @@ pub fn handler(ctx: Context<ClaimSol>) -> Result<()> {
 
     // pda signer seeds for vault
     let will_key = will.key();
-    let vault_seeds = &[VAULT_SEED.as_bytes(), will_key.as_ref(), &[will.vault_bump]];
+    let vault = &ctx.accounts.vault;
+    let vault_seeds = &[VAULT_SEED.as_bytes(), will_key.as_ref(), &[vault.bump]];
     let vault_signer_seeds = &[&vault_seeds[..]];
 
     // transfer service fee to fee vault

@@ -22,9 +22,9 @@ pub struct WithdrawSol<'info> {
     #[account(
         mut,
         seeds = [VAULT_SEED.as_bytes(), will.key().as_ref()],
-        bump = will.vault_bump,
+        bump,
     )]
-    pub vault: SystemAccount<'info>,
+    pub vault: Account<'info, Vault>,
 
     /// Config for validation
     #[account(
@@ -38,9 +38,8 @@ pub struct WithdrawSol<'info> {
 }
 
 impl<'info> WithdrawSol<'info> {
-    pub fn validate(&self) -> Result<()> {
+    pub fn validate(&self, vault_balance: u64) -> Result<()> {
         // validate vault has sol
-        let vault_balance = self.vault.lamports();
         require!(vault_balance > 0, AppError::NoAssetsToWithdraw);
 
         // validate balance for rent exemption
@@ -59,14 +58,17 @@ impl<'info> WithdrawSol<'info> {
 }
 
 pub fn handler(ctx: Context<WithdrawSol>) -> Result<()> {
+    let vault_balance = ctx.accounts.vault.to_account_info().lamports();
+
     // validations
-    ctx.accounts.validate()?;
+    ctx.accounts.validate(vault_balance)?;
 
     let will = &mut ctx.accounts.will;
 
     // prepare pda signer seeds for vault
     let will_key = will.key();
-    let vault_seeds = &[VAULT_SEED.as_bytes(), will_key.as_ref(), &[will.vault_bump]];
+    let vault = &ctx.accounts.vault;
+    let vault_seeds = &[VAULT_SEED.as_bytes(), will_key.as_ref(), &[vault.bump]];
     let vault_signer_seeds = &[&vault_seeds[..]];
 
     // transfer sol from vault to testator
@@ -80,8 +82,6 @@ pub fn handler(ctx: Context<WithdrawSol>) -> Result<()> {
         withdraw_transfer_account,
         vault_signer_seeds,
     );
-
-    let vault_balance = ctx.accounts.vault.lamports();
     let min_rent = Rent::get()?.minimum_balance(0);
     let withdrawable_amount = vault_balance.saturating_sub(min_rent);
 

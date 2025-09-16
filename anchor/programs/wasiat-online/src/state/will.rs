@@ -6,7 +6,8 @@ pub struct Will {
     // identifiers
     pub testator: Pubkey,
     pub beneficiary: Pubkey,
-    pub vault: Pubkey, // pda for assets
+    pub vault: Pubkey, // pda for sol
+    pub vault_registry: Pubkey, // pda for other assets (e.g nft and spl tokens)
 
     // configurations
     pub heartbeat_period: u32, // seconds
@@ -19,10 +20,9 @@ pub struct Will {
 
     // metadata
     pub bump: u8,       // pda bump
-    pub vault_bump: u8, // vault pda bump
 
     // reserved for future upgrades
-    pub reserved: [u8; 64], // reserved space
+    pub reserved: [u8; 72], // reserved space
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace)]

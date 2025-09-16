@@ -19,7 +19,7 @@ pub struct CreateWill<'info> {
     #[account(
         init,
         payer = testator,
-        space = 8 + Will::INIT_SPACE,
+        space = DISCRIMATOR_SIZE as usize + Will::INIT_SPACE,
         seeds = [
             WILL_SEED.as_bytes(),
             testator.key().as_ref(),
@@ -29,13 +29,28 @@ pub struct CreateWill<'info> {
     )]
     pub will: Account<'info, Will>,
 
-    /// Vault pda for assets
+    /// Vault for sol
     #[account(
-        mut,
+        init,
+        payer = testator,
+        space = DISCRIMATOR_SIZE as usize + Vault::INIT_SPACE,
         seeds = [VAULT_SEED.as_bytes(), will.key().as_ref()],
         bump,
     )]
-    pub vault: SystemAccount<'info>,
+    pub vault: Account<'info, Vault>,
+
+    /// Vault for other assets
+    #[account(
+        init,
+        payer = testator,
+        space = DISCRIMATOR_SIZE as usize + VaultRegistry::INIT_SPACE,
+        seeds = [
+            VAULT_REGISTRY_SEED.as_bytes(),
+            will.key().as_ref(),
+        ],
+        bump,
+    )]
+    pub vault_registry: Account<'info, VaultRegistry>,
 
     pub system_program: Program<'info, System>,
 }
@@ -68,14 +83,25 @@ pub fn handler(ctx: Context<CreateWill>, beneficiary: Pubkey, heartbeat_period: 
     will.testator = ctx.accounts.testator.key();
     will.beneficiary = beneficiary;
     will.vault = ctx.accounts.vault.key();
+    will.vault_registry = ctx.accounts.vault_registry.key();
     will.heartbeat_period = heartbeat_period;
     will.status = WillStatus::Created;
     will.created_at = clock.unix_timestamp;
     will.last_heartbeat = clock.unix_timestamp;
     will.trigger_at = None;
     will.bump = ctx.bumps.will;
-    will.vault_bump = ctx.bumps.vault;
-    will.reserved = [0; 64];
+    will.reserved = [0; 72];
+
+    // set vault
+    let vault = &mut ctx.accounts.vault;
+    vault.will = ctx.accounts.will.key();
+    vault.bump = ctx.bumps.vault;
+
+    // set vault registry
+    let vault_registry = &mut ctx.accounts.vault_registry;
+    vault_registry.vault = ctx.accounts.vault.key();
+    vault_registry.assets = Vec::new();
+    vault_registry.bump = ctx.bumps.vault_registry;
 
     Ok(())
 }

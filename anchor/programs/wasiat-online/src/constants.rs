@@ -9,6 +9,8 @@ pub const WILL_SEED: &str = "will";
 pub const VAULT_SEED: &str = "vault";
 #[constant]
 pub const FEE_VAULT_SEED: &str = "fee_vault";
+#[constant]
+pub const VAULT_REGISTRY_SEED: &str = "vault_registry";
 
 /// Date - for parse seconds
 #[constant]
@@ -35,3 +37,7 @@ pub const NFT_SERVICE_FEE_LAMPORTS: u64 = 1_000_000;
 /// NFT
 #[constant]
 pub const NFT_AMOUNT: u32 = 1;
+
+// Spaces
+#[constant]
+pub const DISCRIMATOR_SIZE: u8 = 8;
