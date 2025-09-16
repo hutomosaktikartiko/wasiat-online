@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 // Will Status Enum - matches smart contract
 export enum WillStatus {
   Created = 0,
-  Active = 1, 
+  Active = 1,
   Triggered = 2,
   Claimed = 3,
   Withdrawn = 4,

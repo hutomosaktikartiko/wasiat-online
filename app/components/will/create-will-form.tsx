@@ -7,9 +7,7 @@ import { LoadingSpinner } from "../ui/loading-spinner";
 import { useWallet } from "../../hooks/use-wallet";
 import { useWill } from "../../hooks/use-will";
 import { useProgram } from "../../providers/program-provider";
-import { 
-  DEFAULT_HEARTBEAT_PERIOD,
-} from "../../lib/utils/constants";
+import { DEFAULT_HEARTBEAT_PERIOD } from "../../lib/utils/constants";
 
 interface CreateWillFormProps {
   onSuccess?: (willAddress: PublicKey) => void;
@@ -19,18 +17,27 @@ interface CreateWillFormProps {
 export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
   const wallet = useWallet();
   const { config, program, readOnlyProgram } = useProgram();
-  const { createWill, transaction } = useWill(wallet.publicKey || undefined, undefined);
-  
+  const { createWill, transaction } = useWill(
+    wallet.publicKey || undefined,
+    undefined
+  );
+
   const [beneficiaryAddress, setBeneficiaryAddress] = useState("");
-  const [heartbeatPeriod, setHeartbeatPeriod] = useState(DEFAULT_HEARTBEAT_PERIOD);
+  const [heartbeatPeriod, setHeartbeatPeriod] = useState(
+    DEFAULT_HEARTBEAT_PERIOD
+  );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Convert seconds to days for display
   const heartbeatDays = Math.floor(heartbeatPeriod / (24 * 60 * 60));
-  
+
   // Get min/max from config or use defaults
-  const minDays = config ? Math.floor(config.minHeartbeatPeriod / (24 * 60 * 60)) : 7;
-  const maxDays = config ? Math.floor(config.maxHeartbeatPeriod / (24 * 60 * 60)) : 365;
+  const minDays = config
+    ? Math.floor(config.minHeartbeatPeriod / (24 * 60 * 60))
+    : 7;
+  const maxDays = config
+    ? Math.floor(config.maxHeartbeatPeriod / (24 * 60 * 60))
+    : 365;
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -116,7 +123,9 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
           min={minDays}
           max={maxDays}
           value={heartbeatDays}
-          onChange={(e) => handleHeartbeatDaysChange(parseInt(e.target.value) || 0)}
+          onChange={(e) =>
+            handleHeartbeatDaysChange(parseInt(e.target.value) || 0)
+          }
           className={errors.heartbeat ? "border-red-500" : ""}
         />
         {errors.heartbeat && (
@@ -129,7 +138,9 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
 
       {/* Info Box */}
       <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h4 className="font-semibold text-blue-900 mb-2">ℹ️ Important Information</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">
+          ℹ️ Important Information
+        </h4>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• After will is created, you can deposit assets to vault</li>
           <li>• Send heartbeat periodically to prevent automatic trigger</li>
@@ -140,7 +151,7 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
 
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <Button 
+        <Button
           onClick={handleSubmit}
           className="flex-1"
           disabled={!wallet.isConnected || transaction.isLoading}
@@ -155,9 +166,9 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
           )}
         </Button>
         {onCancel && (
-          <Button 
-            onClick={onCancel} 
-            variant="outline" 
+          <Button
+            onClick={onCancel}
+            variant="outline"
             className="flex-1"
             disabled={transaction.isLoading}
           >
@@ -180,9 +191,7 @@ export function CreateWillForm({ onSuccess, onCancel }: CreateWillFormProps) {
 
       {transaction.error && (
         <div className="bg-red-50 p-3 rounded-lg">
-          <p className="text-sm text-red-800">
-            ❌ {transaction.error}
-          </p>
+          <p className="text-sm text-red-800">❌ {transaction.error}</p>
         </div>
       )}
     </div>

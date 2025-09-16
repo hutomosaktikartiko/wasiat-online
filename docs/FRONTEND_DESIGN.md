@@ -369,12 +369,6 @@ export enum WillStatus {
 }
 
 // types/solana.ts
-export interface TransactionResult {
-  signature: string;
-  success: boolean;
-  error?: string;
-}
-
 export interface PDAAccounts {
   will: PublicKey;
   vault: PublicKey;
