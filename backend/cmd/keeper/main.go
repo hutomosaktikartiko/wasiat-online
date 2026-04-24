@@ -20,10 +20,7 @@ func main() {
 	log.Println("Starting Wasiat Online Keeper Service...")
 
 	// Load environment variables
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
+	_ = godotenv.Load()
 
 	// Initialize database
 	db, err := storage.InitDB()
