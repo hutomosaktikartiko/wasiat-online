@@ -3,11 +3,14 @@ package storage
 import (
 	"database/sql"
 
+	"os"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func InitDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./keeper.db")
+	dbPath := os.Getenv("DATABASE_PATH")
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +50,7 @@ func createTables(db *sql.DB) error {
 func LogKeeperAction(db *sql.DB, action, willPubkey, details string, success bool, errorMsg string, executionTime int64) error {
 	query := `INSERT INTO keeper_logs (action, will_pubkey, details, success, error_message, execution_time_ms) 
 			  VALUES (?, ?, ?, ?, ?, ?)`
-	
+
 	_, err := db.Exec(query, action, willPubkey, details, success, errorMsg, executionTime)
 	return err
 }

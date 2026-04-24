@@ -7,6 +7,7 @@ import (
 	"syscall"
 	"time"
 
+	"wasiat-online-backend/internal/api"
 	"wasiat-online-backend/internal/keeper"
 	"wasiat-online-backend/internal/solana"
 	"wasiat-online-backend/internal/storage"
@@ -39,6 +40,10 @@ func main() {
 
 	// Initialize keeper service
 	keeperService := keeper.New(db, client)
+
+	// Start API server
+	apiServer := api.NewServer(db)
+	go apiServer.Start()
 
 	// Initialize cron job
 	c := cron.New()
