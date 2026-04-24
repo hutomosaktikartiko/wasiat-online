@@ -1,0 +1,39 @@
+name: Build & Deploy Backend
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/wasiat-online-be:latest
+
+      - name: Trigger infra repo deploy
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.INFRA_REPO_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/hutomosaktikartiko/vps-infra/dispatches \
+            -d '{"event_type": "deploy-wasiat-online"}'
