@@ -20,8 +20,8 @@ backend/
 │   ├── solana/client.go         # Blockchain client
 │   └── storage/database.go      # Database layer
 ├── pkg/types/will.go            # Shared types
-├── Makefile                     # Build commands
-└── Dockerfile                   # Container config
+├── Makefile                      # Build commands
+└── Dockerfile                    # Container config
 ```
 
 ## Quick Start
