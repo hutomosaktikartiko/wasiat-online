@@ -1,9 +1,6 @@
 # Stage 1: Build
-FROM golang:1.23-alpine AS builder
+FROM golang:1.23 AS builder
 WORKDIR /app
-
-# Install gcc for CGO (required by go-sqlite3)
-RUN apk add --no-cache gcc musl-dev
 
 COPY go.mod go.sum ./
 RUN go mod download
@@ -11,11 +8,13 @@ COPY . .
 RUN CGO_ENABLED=1 go build -o main ./cmd/keeper
 
 # Stage 2: Run
-FROM docker.io/library/alpine:latest
+FROM docker.io/library/debian:bookworm-slim
 WORKDIR /app
 
-# Install sqlite runtime dependency
-RUN apk add --no-cache sqlite-libs
+RUN apt-get update && apt-get install -y \
+    libsqlite3-0 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/main .
 EXPOSE 8080
