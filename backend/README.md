@@ -14,7 +14,7 @@ Backend service that functions as a keeper to monitor and trigger will who have 
 
 ```
 backend/
-├── cmd/keeper/main.go           # Entry point
+├── cmd/keeper/main.go            # Entry point
 ├── internal/
 │   ├── keeper/service.go        # Business logic
 │   ├── solana/client.go         # Blockchain client
